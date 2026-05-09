@@ -1,0 +1,31 @@
+{
+  "name": "ministry-report-v2",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "test": "vitest run",
+    "preview": "vite preview",
+    "smoke": "npm run build && playwright test",
+    "smoke:dev": "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5173 PLAYWRIGHT_WEB_SERVER_COMMAND=\"npm run dev -- --host 127.0.0.1\" playwright test",
+    "verify": "npm test && npm run smoke"
+  },
+  "dependencies": {
+    "idb": "^8.0.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.4.0",
+    "fake-indexeddb": "^6.2.5",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.2"
+  }
+}

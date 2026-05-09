@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 2,
+  "id": "docx-report-2026-05-03",
+  "title": "주간 사역보고서",
+  "reportDate": "2026-05-03",
+  "churchName": "연천장로교회",
+  "pastorName": "김우중",
+  "departments": {
+    "elementary": {
+      "key": "elementary",
+      "name": "유초등부",
+      "attendance": 0,
+      "newVisitors": 0,
+      "summary": ""
+    },
+    "middleHigh": {
+      "key": "middleHigh",
+      "name": "중고등부",
+      "attendance": 8,
+      "newVisitors": 0,
+      "summary": "특이사항: 오전 예배는 연합예배로 드림",
+      "members": [
+        {
+          "id": "mh-present-1",
+          "name": "김규인",
+          "status": "present"
+        },
+        {
+          "id": "mh-present-2",
+          "name": "김주영",
+          "status": "present"
+        },
+        {
+          "id": "mh-present-3",
+          "name": "김주혁",
+          "status": "present"
+        },
+        {
+          "id": "mh-present-4",
+          "name": "이예진",
+          "status": "present"
+        },
+        {
+          "id": "mh-present-5",
+          "name": "이태양",
+          "status": "present"
+        },
+        {
+          "id": "mh-present-6",
+          "name": "이호석",
+          "status": "present"
+        },
+        {
+          "id": "mh-present-7",
+          "name": "정서원",
+          "status": "present"
+        },
+        {
+          "id": "mh-present-8",
+          "name": "정시원",
+          "status": "present"
+        },
+        {
+          "id": "mh-absent-1",
+          "name": "김주찬",
+          "status": "absent"
+        },
+        {
+          "id": "mh-absent-2",
+          "name": "변아영",
+          "status": "absent"
+        },
+        {
+          "id": "mh-absent-3",
+          "name": "변현섭",
+          "status": "absent"
+        },
+        {
+          "id": "mh-absent-4",
+          "name": "정소원",
+          "status": "absent"
+        },
+        {
+          "id": "mh-absent-5",
+          "name": "최우진",
+          "status": "absent"
+        }
+      ]
+    },
+    "youngAdult": {
+      "key": "youngAdult",
+      "name": "청년부",
+      "attendance": 15,
+      "newVisitors": 0,
+      "summary": "특이사항: 차예담 아픔 / 예배 후 홈커밍 TF팀 모임",
+      "members": [
+        {
+          "id": "ya-present-1",
+          "name": "고현아",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-2",
+          "name": "김보은",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-3",
+          "name": "김정인",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-4",
+          "name": "김주은",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-5",
+          "name": "김태양",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-6",
+          "name": "라규미",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-7",
+          "name": "박시은",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-8",
+          "name": "안수용",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-9",
+          "name": "유다희",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-10",
+          "name": "유세희",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-11",
+          "name": "이석준",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-12",
+          "name": "정은정",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-13",
+          "name": "정혜정",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-14",
+          "name": "한상희",
+          "status": "present"
+        },
+        {
+          "id": "ya-present-15",
+          "name": "한혜원",
+          "status": "present"
+        },
+        {
+          "id": "ya-absent-1",
+          "name": "신승환",
+          "status": "absent"
+        },
+        {
+          "id": "ya-absent-2",
+          "name": "차예담",
+          "status": "absent"
+        },
+        {
+          "id": "ya-absent-3",
+          "name": "황원영",
+          "status": "absent"
+        }
+      ]
+    },
+    "adult": {
+      "key": "adult",
+      "name": "장년",
+      "attendance": 0,
+      "newVisitors": 0,
+      "summary": "결석 총 35명. 1구역 김명호 / 2구역 염재훈 / 3구역 권옥자 최현숙 / 4구역 임법상 유제경 / 5구역 고분선 임정숙 / 6구역 노학심 윤숙경 최태인 / 7구역 김연자 김희수 유순하 조자형 양태모 / 8구역 권금애 김병기 최필남 / 9구역 모동수 박순복 윤여임 한정애 / 10구역 박양권 윤정희 이옥현 / 11구역 최옥연 김광진 한승훈 / 12구역 이순용 강지아 천성현 정수미 민건우 윤승희 / 비고: 10구역 임춘희 권사 출석"
+    }
+  },
+  "offerings": {
+    "total": 0,
+    "memo": ""
+  },
+  "prayerRequests": [
+    "결석자들 빠짐 없이 출석하도록",
+    "아프지 않도록"
+  ],
+  "announcements": [
+    "중고등부: 어버이날 4행시",
+    "청년부: 정상예배",
+    "감동과 기쁨이 있는 5월 가정의 달 행사 즐겁게 마쳤습니다"
+  ],
+  "createdAt": "2026-05-03T12:00:00.000Z",
+  "updatedAt": "2026-05-03T12:00:00.000Z"
+}

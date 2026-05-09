@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 2,
+  "id": "sample-report-2026-05-03",
+  "title": "2026년 5월 3일 주간 사역보고",
+  "reportDate": "2026-05-03",
+  "churchName": "연천장로교회",
+  "pastorName": "김우중",
+  "departments": {
+    "elementary": {
+      "key": "elementary",
+      "name": "유초등부",
+      "attendance": 2,
+      "newVisitors": 0,
+      "summary": "어린이주일 준비와 말씀 암송 점검",
+      "members": [
+        {
+          "id": "elementary-1",
+          "name": "권상우",
+          "status": "present"
+        },
+        {
+          "id": "elementary-2",
+          "name": "천주아",
+          "status": "present"
+        }
+      ]
+    },
+    "middleHigh": {
+      "key": "middleHigh",
+      "name": "중고등부",
+      "attendance": 4,
+      "newVisitors": 1,
+      "summary": "시험 기간 전 말씀 나눔과 새친구 환영",
+      "members": [
+        {
+          "id": "middlehigh-1",
+          "name": "김도윤",
+          "status": "present"
+        },
+        {
+          "id": "middlehigh-2",
+          "name": "박지후",
+          "status": "present"
+        },
+        {
+          "id": "middlehigh-3",
+          "name": "이서윤",
+          "status": "present"
+        },
+        {
+          "id": "middlehigh-4",
+          "name": "최은우",
+          "status": "present"
+        },
+        {
+          "id": "middlehigh-5",
+          "name": "정하린",
+          "status": "absent"
+        }
+      ]
+    },
+    "youngAdult": {
+      "key": "youngAdult",
+      "name": "청년부",
+      "attendance": 6,
+      "newVisitors": 0,
+      "summary": "주일 예배 후 소그룹 모임과 봉사팀 편성",
+      "members": [
+        {
+          "id": "youngadult-1",
+          "name": "한지원",
+          "status": "present"
+        },
+        {
+          "id": "youngadult-2",
+          "name": "윤세민",
+          "status": "present"
+        },
+        {
+          "id": "youngadult-3",
+          "name": "김민서",
+          "status": "present"
+        },
+        {
+          "id": "youngadult-4",
+          "name": "조현우",
+          "status": "present"
+        },
+        {
+          "id": "youngadult-5",
+          "name": "오수빈",
+          "status": "present"
+        },
+        {
+          "id": "youngadult-6",
+          "name": "배지호",
+          "status": "present"
+        },
+        {
+          "id": "youngadult-7",
+          "name": "임지수",
+          "status": "absent"
+        }
+      ]
+    },
+    "adult": {
+      "key": "adult",
+      "name": "장년",
+      "attendance": 8,
+      "newVisitors": 2,
+      "summary": "구역 예배 보고와 상반기 섬김 일정 점검",
+      "members": [
+        {
+          "id": "adult-1",
+          "name": "김성호",
+          "status": "present"
+        },
+        {
+          "id": "adult-2",
+          "name": "이정숙",
+          "status": "present"
+        },
+        {
+          "id": "adult-3",
+          "name": "박영수",
+          "status": "present"
+        },
+        {
+          "id": "adult-4",
+          "name": "최명희",
+          "status": "present"
+        },
+        {
+          "id": "adult-5",
+          "name": "정은석",
+          "status": "present"
+        },
+        {
+          "id": "adult-6",
+          "name": "조미경",
+          "status": "present"
+        },
+        {
+          "id": "adult-7",
+          "name": "윤태호",
+          "status": "present"
+        },
+        {
+          "id": "adult-8",
+          "name": "강은주",
+          "status": "present"
+        },
+        {
+          "id": "adult-9",
+          "name": "문지성",
+          "status": "absent"
+        }
+      ]
+    }
+  },
+  "offerings": {
+    "total": 350000,
+    "memo": "어린이주일 준비 헌금 포함"
+  },
+  "prayerRequests": [
+    "어린이주일 준비와 예배 집중을 위해",
+    "시험 기간 중고등부 학생들의 건강과 지혜를 위해",
+    "청년부 소그룹 정착과 장년 구역장 리더십을 위해"
+  ],
+  "announcements": [
+    "5월 둘째 주는 어린이주일 연합예배",
+    "중고등부 토요 기도회 저녁 7시",
+    "청년부 봉사팀 편성표 다음 주 공지"
+  ],
+  "createdAt": "2026-05-03T09:00:00.000Z",
+  "updatedAt": "2026-05-03T12:00:00.000Z"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "사역보고서 v2",
+  "short_name": "사역보고서",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f7f8f5",
+  "theme_color": "#24564a",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

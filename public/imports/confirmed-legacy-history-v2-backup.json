@@ -1,0 +1,622 @@
+{
+  "schemaVersion": 2,
+  "exportedAt": "2026-05-07T12:32:39.147Z",
+  "reports": [
+    {
+      "schemaVersion": 2,
+      "id": "336d5d1a-5600-45dd-990c-008285e8ec30",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-04-26",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 7,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 6명; 결석자: 김규인, 김주찬, 변아영, 변현섭, 정소원, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 14,
+          "newVisitors": 0,
+          "summary": "총원 18명; 결석 4명; 결석자: 김주은, 차예담, 한혜원, 황원영"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 44명; 1구역: 김명호; 2구역: 송을범, 당윤수; 3구역: 박영준, 권옥자, 서유정, 황흥도, 최현숙; 4구역: 임법상, 조성주, 김수년, 유제경, 이도화, 최인숙, 이진우, 황영숙, 김주훈; 5구역: 고분선, 유분의, 임정숙; 7구역: 권성배, 김희수, 유순하, 조자형, 양태모; 8구역: 권금애, 김병기, 최필남; 9구역: 모동수, 박순복, 윤여임, 한정애; 10구역: 조옥희, 박양권, 윤정희, 이옥현; 11구역: 최옥연, 김광진, 한승훈; 12구역: 이순용, 강지아, 정수미, 민건우, 윤승희"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [
+        "결석자들 예배 자리 나오게 인도하소서"
+      ],
+      "announcements": [
+        "다음 주 계획: 어린이주일 연합예배 및 행사",
+        "종합 의견: 특이사항 없음"
+      ],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "f14fb25b-4409-4f8f-8b8f-3c5d11040d18",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-04-19",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 8,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 5명; 결석자: 김주찬, 변아영, 변현섭, 정소원, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 11,
+          "newVisitors": 0,
+          "summary": "총원 18명; 결석 7명; 결석자: 김보은, 김정인, 김주은, 신승환, 차예담, 한혜원, 황원영"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 32명; 10구역: 윤정희, 이옥현; 11구역: 김광진, 한승훈; 12구역: 이순용, 강지아, 천성현, 정수미, 민건우; 2구역: 박진숙, 염재훈; 3구역: 권옥자; 4구역: 임법상, 유제경, 이도화, 황영숙, 김주훈; 5구역: 고분선, 김교순, 임정숙; 7구역: 권성배, 김연자, 송경섭, 유순하, 양태모; 8구역: 권금애, 김병기, 최필남; 9구역: 모동수, 박순복, 윤여임, 한정애"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [],
+      "announcements": [
+        "다음 주 계획: 오후예배 장년/청년부 연합",
+        "종합 의견: 외부 목사님, 선교사님, 등 그 외부서들에서 요청 사항이 많았던 주간"
+      ],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "1f466c5a-b8f4-487a-b93b-92653269f9fe",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-04-12",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 8,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 5명; 결석자: 김주찬, 변아영, 변현섭, 이호석, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 12,
+          "newVisitors": 0,
+          "summary": "총원 18명; 결석 6명; 결석자: 김보은, 김정인, 김주은, 차예담, 한혜원, 황원영"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 47명; 2구역: 박진숙; 3구역: 권옥자, 황흥도, 최현숙; 4구역: 임법상, 김수년, 유제경, 황영숙, 김주훈; 5구역: 고분선, 김교순, 이성희, 이승현, 임정숙; 6구역: 윤숙경; 7구역: 김연자, 김희수, 송경섭, 유순하, 박광천, 조자형; 8구역: 권금애, 김병기, 최필남; 9구역: 고환필, 모동수, 박순복, 윤여임, 이영주, 김효철, 한정애; 10구역: 윤정희, 이옥현, 곽명희; 11구역: 최옥연, 김광진, 한승훈; 12구역: 이순용, 강지아, 나요나, 전진구, 정민시, 천성현, 정수미, 민건우, 한상미, 윤승희"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [
+        "결석자들 위해, 시험 있는 자들 위해,"
+      ],
+      "announcements": [
+        "다음 주 계획: 청년부, 오후예배 찬양인도 및 기도\n중보기도 세미나 있음",
+        "종합 의견: 특이한 건 없었던 주일"
+      ],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "fcf8fd01-307a-4563-aa07-e81e0cfd8c53",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-04-05",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 11,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 2명; 결석자: 김주찬, 변현섭"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 11,
+          "newVisitors": 0,
+          "summary": "총원 18명; 결석 7명; 결석자: 김보은, 김정인, 김주은, 신승환, 유세희, 한혜원, 황원영"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 42명; 10구역: 윤정희, 이옥현; 11구역: 최옥연, 송종란, 전준석, 김광진, 한승훈; 12구역: 이순용, 강지아, 천성현, 정수미, 민건우, 윤승희; 1구역: 김명호; 2구역: 염재훈; 3구역: 권옥자; 4구역: 임법상, 유제경, 엄동규, 최인숙, 이진우, 황영숙, 김주훈; 5구역: 고분선, 박승애, 이성희, 이승현, 임정숙; 6구역: 윤숙경; 7구역: 김연자, 김희수, 유순하, 박광천, 조자형; 8구역: 권금애, 김병기, 심기동, 최필남; 9구역: 강상희, 모동수, 윤여임, 한정애"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [
+        "결석자들, 지방에 있는 청년들 신양생활 잘 할 수 있도록"
+      ],
+      "announcements": [
+        "다음 주 계획: 다음주 중고등부, 청년부 정상 예배",
+        "종합 의견: 고난주간 The Cross Passport 프로그램 잘 마쳤습니다\n\n청년 12명, 중고등부 교사 포함 12명 참여\n선물은 각 부서에서 준비하여 제공함\n\n자작 앱으로 고난주간 프로그램을 진행 한 것이 신선함, 다만 모든 인원이 참여하지 못한 점은 아쉬움"
+      ],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "69ed03c7-045c-40e9-81c8-ebdbf7980151",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-03-29",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 9,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 4명; 결석자: 김규인, 김주찬, 변현섭, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 10,
+          "newVisitors": 0,
+          "summary": "총원 18명; 결석 8명; 결석자: 고현아, 김보은, 김정인, 김주은, 신승환, 유세희, 차예담, 황원영"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 44명; 1구역: 김명호; 2구역: 송을범, 이승숙, 당윤수; 3구역: 박영준, 권옥자, 최현숙; 4구역: 임법상, 유제경, 최인숙, 이진우, 황영숙, 김주훈; 5구역: 고분선, 이성희, 이승현, 임정숙; 7구역: 김연자, 김희수, 유순하, 조자형, 양태모; 8구역: 권금애, 김병기, 최필남, 정현숙, 심완섭; 9구역: 강상희, 모동수, 윤여임, 한정애; 10구역: 박양권, 윤정희, 이옥현; 11구역: 송종란, 전준석, 김광진, 한승훈; 12구역: 이순용, 강지아, 박진아, 정민시, 정수미, 민건우"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [],
+      "announcements": [],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "04b26066-c93f-408d-9a70-5526f270d176",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-03-22",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 7,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 6명; 결석자: 김주찬, 변아영, 변현섭, 이태양, 이호석, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 15,
+          "newVisitors": 0,
+          "summary": "총원 18명; 결석 3명; 결석자: 김주은, 신승환, 유세희"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 42명; 1구역: 김명호; 2구역: 염재훈, 이승숙, 당윤수; 3구역: 박영준, 권옥자, 최현숙; 4구역: 임법상, 유제경, 이도화, 황영숙, 김주훈; 5구역: 고분선, 유분의, 이성희, 이승현, 임정숙; 7구역: 김연자, 김희수, 유순하, 양태모; 8구역: 권금애, 김병기, 심기동, 최필남; 9구역: 고환필, 모동수, 윤여임, 한정애; 10구역: 윤정희, 이옥현; 11구역: 최옥연, 송종란, 전준석, 김광진, 한승훈; 12구역: 이순용, 강지아, 정수미, 민건우, 한상미, 윤승희"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [],
+      "announcements": [],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "325fbdd4-4328-4478-a213-82acc33f7fc9",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-03-15",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 9,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 4명; 결석자: 김주찬, 변아영, 변현섭, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 9,
+          "newVisitors": 0,
+          "summary": "총원 18명; 결석 9명; 결석자: 김태양, 한혜원, 신승환, 차예담, 황원영"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 36명; 10구역: 박양권, 이옥현, 임춘희; 11구역: 최옥연, 한승훈, 김광진; 12구역: 이사라, 천성현, 이순용; 2구역: 이윤형, 당윤수; 3구역: 우정식, 황흥도; 4구역: 임법상, 유제경, 엄동규, 이도화, 황영숙, 김주훈; 5구역: 이성희, 김승현, 임정숙, 유분의, 고분선; 7구역: 김연자, 김희수, 유순화, 조자형, 양태모; 8구역: 김병기, 최필남, 권금애; 9구역: 모동수, 김미용, 윤여임, 한정애"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [],
+      "announcements": [],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "4d82bdf7-0d94-4799-9843-735859bc0416",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-03-08",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 8,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 5명; 결석자: 김주찬, 변아영, 변현섭, 최우진, 이호석"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 12,
+          "newVisitors": 0,
+          "summary": "총원 19명; 결석 7명; 결석자: 라규미, 유세희, 차예담, 황원영, 김보은, 김정인, 김주은"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 37명; 10구역: 이옥현, 임춘희; 11구역: 최옥연, 한승훈, 김광진; 12구역: 나요나, 전진구, 이순용, 천성현; 2구역: 박진숙, 당윤수; 3구역: 황흥도; 4구역: 임법상, 유제경, 황영숙, 김주훈; 5구역: 이성희, 김승현, 임정숙, 박승애, 유분의, 최종분, 노필언, 고분선; 6구역: 윤숙경; 7구역: 김연자, 김희수, 유순화, 조자형, 양태모; 8구역: 김병기, 최필남, 권금애; 9구역: 모동수, 강상희, 윤여임, 한정애"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [],
+      "announcements": [],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "9e96ba89-4979-455d-a9ee-18983e1370d6",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-03-01",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 9,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 4명; 결석자: 김주찬, 변아영, 변현섭, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 15,
+          "newVisitors": 0,
+          "summary": "총원 19명; 결석 4명; 결석자: 김주은, 유세희, 차예담, 황원영"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 31명; 10구역: 이옥현, 임춘희; 11구역: 한승훈, 김광진; 12구역: 이순용, 천성현; 3구역: 최현숙, 유분의; 4구역: 임법상, 엄동규, 유제경, 황영숙, 김주훈; 5구역: 이성희, 김승현, 임정숙, 박승애, 유분의, 고분선; 7구역: 김연자, 김희수, 유순화, 조자형, 양태모; 8구역: 김병기, 최필남, 권금애; 9구역: 김미용, 윤여임, 한정애, 모동수"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [],
+      "announcements": [],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "188dd3a1-5eb4-4e94-8f3f-1730bced2979",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-02-28",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 9,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 4명; 결석자: 김주찬, 변아영, 변현섭, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 15,
+          "newVisitors": 0,
+          "summary": "총원 19명; 결석 4명; 결석자: 김주은, 유세희, 차예담, 황원영"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 31명; 10구역: 이옥현, 임춘희; 11구역: 한승훈, 김광진; 12구역: 이순용, 천성현; 3구역: 최현숙, 유분의; 4구역: 임법상, 엄동규, 유제경, 황영숙, 김주훈; 5구역: 이성희, 김승현, 임정숙, 박승애, 유분의, 고분선; 7구역: 김연자, 김희수, 유순화, 조자형, 양태모; 8구역: 김병기, 최필남, 권금애; 9구역: 김미용, 윤여임, 한정애, 모동수"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [],
+      "announcements": [],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "7a22f947-64c1-47c6-9cdf-6c887c3c3650",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-02-22",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 7,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 6명; 결석자: 이태양, 정소원, 김주찬, 변아영, 변현섭, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 17,
+          "newVisitors": 0,
+          "summary": "총원 19명; 결석 2명; 결석자: 김주은, 황원영"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 30명; 10구역: 이옥현, 임춘희; 11구역: 한승훈, 김광진; 12구역: 이순용, 천성현; 1구역: 김명호; 3구역: 최현숙, 유분의; 4구역: 임법상, 엄동규, 유제경, 황영숙, 김주훈; 5구역: 이성희, 김승현, 임정숙, 고분선, 박승애; 7구역: 김연자, 김희수, 유순화, 양태모; 8구역: 김병기, 최필남, 권금애; 9구역: 김미용, 모동수, 윤여임, 한정애"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [],
+      "announcements": [],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "b39bb5d2-3029-49ca-9b5f-9484534c3929",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-02-08",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 9,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 4명; 결석자: 김주찬, 변아영, 변현섭, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 12,
+          "newVisitors": 0,
+          "summary": "총원 19명; 결석 7명; 결석자: 고현아, 김주은, 황원영, 유세희"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 42명; 10구역: 이옥현, 임춘희; 11구역: 박종금, 한승훈, 김광진; 12구역: 이순용, 천성현, 박진아, 정민시, 정수미, 민건우, 강지아; 1구역: 김명호, 양창운, 최순복; 2구역: 조남주; 3구역: 황흥도, 최현숙, 유분의; 4구역: 임법상, 엄동규, 유제경, 황영숙, 김주훈; 5구역: 이성희, 김승현, 임정숙, 고분선; 6구역: 윤숙경; 7구역: 강상희, 고환필, 김연자, 김희수, 유순화, 양태모; 8구역: 김병기, 최필남, 권금애; 9구역: 모동수, 윤여임, 한정애, 박순복"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [],
+      "announcements": [],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    },
+    {
+      "schemaVersion": 2,
+      "id": "20d7ffd9-5b50-4734-9127-75f859ee03ab",
+      "title": "주간 사역보고서",
+      "reportDate": "2026-02-01",
+      "churchName": "",
+      "pastorName": "",
+      "departments": {
+        "elementary": {
+          "key": "elementary",
+          "name": "유초등부",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": ""
+        },
+        "middleHigh": {
+          "key": "middleHigh",
+          "name": "중고등부",
+          "attendance": 8,
+          "newVisitors": 0,
+          "summary": "총원 13명; 결석 5명; 결석자: 김주찬, 이태양, 변아영, 변현섭, 최우진"
+        },
+        "youngAdult": {
+          "key": "youngAdult",
+          "name": "청년부",
+          "attendance": 17,
+          "newVisitors": 0,
+          "summary": "총원 19명; 결석 2명; 결석자: 유세희, 신승환"
+        },
+        "adult": {
+          "key": "adult",
+          "name": "장년",
+          "attendance": 0,
+          "newVisitors": 0,
+          "summary": "결석 36명; 10구역: 이옥현; 11구역: 한승훈, 김광진; 12구역: 이순용, 윤승휘, 천성현, 박진아, 정민시, 정수미, 민건우, 강지아; 1구역: 황재희, 전정예; 2구역: 박진숙; 3구역: 황흥도; 4구역: 임법상, 유제경, 이도화, 황영숙, 김주훈; 5구역: 이성희, 김승현, 임정숙, 고분선; 7구역: 유순화, 양태모; 8구역: 심현섭, 김병기, 최필남, 권금애; 9구역: 강상희, 김미용, 모동수, 윤여임, 한정애, 박순복"
+        }
+      },
+      "offerings": {
+        "total": 0,
+        "memo": ""
+      },
+      "prayerRequests": [],
+      "announcements": [],
+      "createdAt": "2026-05-07T12:32:37.818Z",
+      "updatedAt": "2026-05-07T12:32:37.818Z"
+    }
+  ]
+}
