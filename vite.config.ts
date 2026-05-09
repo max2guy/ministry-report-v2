@@ -41,6 +41,6 @@ export default defineConfig({
     }),
   ],
   test: {
-    exclude: ["node_modules/**", "dist/**", "tests/smoke/**"],
+    exclude: ["node_modules/**", "dist/**", "tests/smoke/**", ".worktrees/**"],
   },
 });
