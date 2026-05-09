@@ -3,7 +3,7 @@ import type { Account } from "./auth/authTypes";
 import { listAccounts } from "./auth/internalAuthStore";
 import { ThemeSelector } from "./features/theme/ThemeSelector";
 import { applyTheme, getStoredTheme } from "./features/theme/useTheme";
-import { createDefaultRoster, type MemberRoster } from "./domain/memberRoster";
+import { createDefaultRoster, mergeRosterFromReport, type MemberRoster } from "./domain/memberRoster";
 import {
   cloneReportAsDraft,
   createEmptyReport,
@@ -403,19 +403,29 @@ export function App() {
     }
 
     await saveReports(importedReports);
+
+    // 가장 최신 보고서의 members/zones로 roster 동기화
     const latest = latestReport(importedReports);
     if (latest) {
       const upgradedReport = upgradeReportForEditor(latest);
       setReport(upgradedReport);
       saveReportDraft(upgradedReport);
+
+      // roster 업데이트: 기존 roster에 병합 (phone 등 추가 정보 보존)
+      setRoster((prev) => {
+        const nextRoster = mergeRosterFromReport(prev, latest);
+        if (currentAccount) void saveRoster(currentAccount.email, nextRoster);
+        return nextRoster;
+      });
     }
+
     setReports((currentReports) =>
       mergeReports(currentReports, importedReports),
     );
     setSaveStatus(
       warnings.length
         ? `${importedReports.length}개 보고서를 가져왔습니다. ${warnings.length}개 경고가 있습니다.`
-        : `${importedReports.length}개 보고서를 가져왔습니다.`,
+        : `${importedReports.length}개 보고서를 가져왔습니다. 명단도 업데이트되었습니다.`,
     );
   }
 

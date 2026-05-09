@@ -1,4 +1,4 @@
-import type { DepartmentKey, DepartmentMemberRole } from "./reportTypes";
+import type { DepartmentKey, DepartmentMemberRole, MinistryReport } from "./reportTypes";
 
 export type RosterMember = {
   id: string;
@@ -23,6 +23,86 @@ export type MemberRoster = {
   departments: Record<DepartmentKey, RosterDepartment>;
   updatedAt: string;
 };
+
+/**
+ * 보고서의 members/zones 데이터를 기반으로 roster를 생성하거나
+ * 기존 roster에 병합한다. (ID 기준 매칭 → 신규면 추가)
+ */
+export function mergeRosterFromReport(
+  base: MemberRoster | undefined,
+  report: MinistryReport,
+): MemberRoster {
+  const now = new Date().toISOString();
+
+  // ── 플랫 부서 (유초등부 / 중고등부 / 청년부) ────────────────
+  function mergeFlatDept(key: "elementary" | "middleHigh" | "youngAdult"): RosterDepartment {
+    const reportMembers = report.departments[key].members ?? [];
+    const existing = base?.departments[key];
+    const existingMap = new Map<string, RosterMember>(
+      existing?.kind === "flat" ? existing.members.map((m) => [m.id, m]) : [],
+    );
+
+    const merged = reportMembers
+      .filter((m) => m.name)
+      .map((m): RosterMember => {
+        const prev = existingMap.get(m.id);
+        return {
+          id: m.id,
+          name: m.name,
+          ...(prev?.phone && { phone: prev.phone }),
+          ...(m.group && { group: m.group }),
+          ...(m.role && { role: m.role }),
+        };
+      });
+
+    return { kind: "flat", members: merged };
+  }
+
+  // ── 장년 구역 ────────────────────────────────────────────────
+  function mergeAdultDept(): RosterDepartment {
+    const reportZones = report.departments.adult.zones ?? [];
+    const existing = base?.departments.adult;
+    const existingZoneById = new Map<string, RosterZone>(
+      existing?.kind === "zoned" ? existing.zones.map((z) => [z.id, z]) : [],
+    );
+
+    const zones = reportZones.map((rz): RosterZone => {
+      const prev = existingZoneById.get(rz.id);
+      const prevMemberById = new Map<string, RosterMember>(
+        prev?.members.map((m) => [m.id, m]) ?? [],
+      );
+      const members = rz.members
+        .filter((m) => m.name)
+        .map((m): RosterMember => {
+          const prevM = prevMemberById.get(m.id);
+          return {
+            id: m.id,
+            name: m.name,
+            ...(prevM?.phone && { phone: prevM.phone }),
+            ...(m.role && { role: m.role }),
+          };
+        });
+      return { id: rz.id, name: rz.name, district: rz.district, members };
+    });
+
+    // 보고서에 없는 구역도 보존
+    existingZoneById.forEach((z) => {
+      if (!zones.find((rz) => rz.id === z.id)) zones.push(z);
+    });
+
+    return { kind: "zoned", zones };
+  }
+
+  return {
+    departments: {
+      elementary: mergeFlatDept("elementary"),
+      middleHigh: mergeFlatDept("middleHigh"),
+      youngAdult: mergeFlatDept("youngAdult"),
+      adult: mergeAdultDept(),
+    },
+    updatedAt: now,
+  };
+}
 
 export function createDefaultRoster(): MemberRoster {
   return {
