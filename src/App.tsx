@@ -422,6 +422,21 @@ export function App() {
     setSaveStatus(message);
   }
 
+  async function handleForceRefresh() {
+    // 1) SW 전부 해제
+    if ("serviceWorker" in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map((r) => r.unregister()));
+    }
+    // 2) 모든 캐시 삭제
+    if ("caches" in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((k) => caches.delete(k)));
+    }
+    // 3) 강제 새로고침
+    window.location.reload();
+  }
+
   if (!isHydrated) {
     return <main className="app-shell" />;
   }
@@ -440,7 +455,18 @@ export function App() {
   return (
     <main className="app-shell">
       <header className="top-bar">
-        <h1>사역보고서 v2</h1>
+        <div className="top-bar-title-row">
+          <h1>사역보고서 v2</h1>
+          <button
+            type="button"
+            className="btn-force-refresh"
+            onClick={() => void handleForceRefresh()}
+            title="앱 강제 새로고침 (캐시 초기화)"
+            aria-label="강제 새로고침"
+          >
+            🔄
+          </button>
+        </div>
         <ThemeSelector />
         <div className="segmented-control" aria-label="보기 모드">
           <button
