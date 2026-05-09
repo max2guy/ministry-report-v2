@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 보고서: 로그인한 모든 사용자 읽기/쓰기
+    match /reports/{reportId} {
+      allow read, write: if request.auth != null;
+    }
+    // 명단: 로그인한 모든 사용자 읽기/쓰기
+    match /roster/shared {
+      allow read, write: if request.auth != null;
+    }
+    // 사용자 프로필: 로그인하면 읽기 가능, 본인 또는 admin만 쓰기
+    match /users/{uid} {
+      allow read: if request.auth != null;
+      allow write: if request.auth.uid == uid ||
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    // GitHub 설정: admin만 읽기/쓰기
+    match /settings/github {
+      allow read, write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+  }
+}
