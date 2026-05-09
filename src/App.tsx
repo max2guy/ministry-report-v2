@@ -11,6 +11,7 @@ import {
   upgradeReportForEditor,
 } from "./domain/reportTypes";
 import { validateReportForSave } from "./domain/reportValidation";
+import { useInstallPrompt } from "./features/pwa/useInstallPrompt";
 import { AdminRecoveryManager } from "./features/admin/AdminRecoveryManager";
 import { AuthGate } from "./features/auth/AuthGate";
 import { ReporterAccountPanel } from "./features/auth/ReporterAccountPanel";
@@ -127,6 +128,8 @@ function saveDisabledReason(account?: Account): string {
 export function App() {
   // 저장된 테마 즉시 적용
   useEffect(() => { applyTheme(getStoredTheme()); }, []);
+
+  const { state: installState, triggerInstall } = useInstallPrompt();
 
   const [mode, setMode] = useState<"edit" | "view" | "roster">("edit");
   const [roster, setRoster] = useState<MemberRoster | undefined>();
@@ -457,6 +460,19 @@ export function App() {
       <header className="top-bar">
         <div className="top-bar-title-row">
           <h1>사역보고서 v2</h1>
+          {installState === "ready" && (
+            <button
+              type="button"
+              className="btn-pwa-install"
+              onClick={() => void triggerInstall()}
+              aria-label="앱 설치"
+            >
+              📲 설치
+            </button>
+          )}
+          {installState === "installed" && (
+            <span className="pwa-installed-badge" aria-label="앱 설치됨">✓ 설치됨</span>
+          )}
           <button
             type="button"
             className="btn-force-refresh"

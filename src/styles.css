@@ -172,6 +172,35 @@ button:disabled {
   background: rgb(255 255 255 / 24%);
 }
 
+.btn-pwa-install {
+  background: #1ce783;
+  border: none;
+  border-radius: 8px;
+  color: var(--clr-auth-top);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 6px 12px;
+  flex-shrink: 0;
+  animation: pulse-install 2s ease-in-out infinite;
+}
+
+.btn-pwa-install:hover {
+  background: #10d474;
+}
+
+@keyframes pulse-install {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(28 231 131 / 60%); }
+  50%       { box-shadow: 0 0 0 6px rgb(28 231 131 / 0%); }
+}
+
+.pwa-installed-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1ce783;
+  flex-shrink: 0;
+}
+
 .workspace {
   padding-top: 28px;
 }
