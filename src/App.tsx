@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import type { Account } from "./auth/authTypes";
-import { listAccounts } from "./auth/internalAuthStore";
+import { onAuthChange, signOut as firebaseSignOut } from "./auth/firebaseAuthStore";
 import { ThemeSelector } from "./features/theme/ThemeSelector";
 import { applyTheme, getStoredTheme } from "./features/theme/useTheme";
-import { createDefaultRoster, mergeRosterFromReport, type MemberRoster } from "./domain/memberRoster";
+import {
+  createDefaultRoster,
+  mergeRosterFromReport,
+  type MemberRoster,
+} from "./domain/memberRoster";
 import {
   cloneReportAsDraft,
   createEmptyReport,
@@ -12,7 +16,6 @@ import {
 } from "./domain/reportTypes";
 import { validateReportForSave } from "./domain/reportValidation";
 import { useInstallPrompt } from "./features/pwa/useInstallPrompt";
-import { AdminRecoveryManager } from "./features/admin/AdminRecoveryManager";
 import { AuthGate } from "./features/auth/AuthGate";
 import { ReporterAccountPanel } from "./features/auth/ReporterAccountPanel";
 import { LegacyImportPanel } from "./features/import/LegacyImportPanel";
@@ -20,25 +23,33 @@ import { ReportEditor } from "./features/report/ReportEditor";
 import { ReportHistoryPanel } from "./features/report/ReportHistoryPanel";
 import { ReportViewer } from "./features/report/ReportViewer";
 import { MemberRosterTab } from "./features/roster/MemberRosterTab";
+import { GithubSettingsPanel } from "./features/sync/GithubSettingsPanel";
+import { uploadToGist } from "./features/sync/githubGistBackup";
 import { readReportDraft, saveReportDraft } from "./storage/reportDraftStore";
-import { loadRoster, saveRoster } from "./storage/memberRosterStore";
 import {
-  deleteReport,
-  listReports,
-  saveReport,
-  saveReports,
+  firestoreListReports,
+  firestoreSaveReport,
+  firestoreSaveReports,
+  firestoreDeleteReport,
+} from "./storage/firestoreReportStore";
+import {
+  firestoreLoadRoster,
+  firestoreSaveRoster,
+} from "./storage/firestoreRosterStore";
+import {
+  listReports as localListReports,
+  saveReport as localSaveReport,
+  saveReports as localSaveReports,
 } from "./storage/reportStore";
+import { loadRoster as localLoadRoster } from "./storage/memberRosterStore";
 
-const CURRENT_ACCOUNT_ID_KEY = "ministry-report-v2-current-account-id";
-
-/** roster 변경 시 현재 report의 members/zones를 동기화 (기존 출석 상태는 유지) */
+/** roster 변경 시 현재 report의 members/zones를 동기화 */
 function syncReportFromRoster(
   report: MinistryReport,
   roster: MemberRoster,
 ): MinistryReport {
   const departments = { ...report.departments };
 
-  // 플랫 부서 (유초등부, 중고등부, 청년부) 동기화
   for (const key of ["elementary", "middleHigh", "youngAdult"] as const) {
     const rDept = roster.departments[key];
     if (rDept.kind !== "flat") continue;
@@ -46,30 +57,32 @@ function syncReportFromRoster(
     const existing = departments[key].members ?? [];
     const existingMap = new Map(existing.map((m) => [m.id, m]));
     const members = rMembers.map((rm) => {
-      const existing = existingMap.get(rm.id);
-      return existing
-        ? { ...existing, id: rm.id, name: rm.name, group: rm.group }
+      const ex = existingMap.get(rm.id);
+      return ex
+        ? { ...ex, id: rm.id, name: rm.name, group: rm.group }
         : { id: rm.id, name: rm.name, status: "absent" as const, group: rm.group };
     });
     departments[key] = { ...departments[key], members };
   }
 
-  // 장년 구역 동기화
   const rAdult = roster.departments.adult;
   if (rAdult.kind === "zoned") {
     const existingZones = departments.adult.zones ?? [];
-    // ID로 먼저 매칭, 없으면 이름으로 매칭
     const existingById = new Map(existingZones.map((z) => [z.id, z]));
     const existingByName = new Map(existingZones.map((z) => [z.name, z]));
     const zones = rAdult.zones.map((rz) => {
       const existingZone = existingById.get(rz.id) ?? existingByName.get(rz.name);
-      // 멤버도 ID 우선, 없으면 이름으로 매칭
-      const existingMemberById = new Map((existingZone?.members ?? []).map((m) => [m.id, m]));
-      const existingMemberByName = new Map((existingZone?.members ?? []).map((m) => [m.name, m]));
+      const existingMemberById = new Map(
+        (existingZone?.members ?? []).map((m) => [m.id, m]),
+      );
+      const existingMemberByName = new Map(
+        (existingZone?.members ?? []).map((m) => [m.name, m]),
+      );
       const members = rz.members.map((rm) => {
-        const existing = existingMemberById.get(rm.id) ?? existingMemberByName.get(rm.name);
-        return existing
-          ? { ...existing, id: rm.id, name: rm.name }
+        const ex =
+          existingMemberById.get(rm.id) ?? existingMemberByName.get(rm.name);
+        return ex
+          ? { ...ex, id: rm.id, name: rm.name }
           : { id: rm.id, name: rm.name, status: "absent" as const };
       });
       return { id: rz.id, name: rz.name, district: rz.district, members };
@@ -115,19 +128,10 @@ function reportWithAccount(
   };
 }
 
-function canAccountSave(account?: Account): boolean {
-  return account?.status === "active";
-}
-
-function saveDisabledReason(account?: Account): string {
-  return account
-    ? "비밀번호를 먼저 변경해 주세요."
-    : "보고자 계정을 먼저 생성해 주세요.";
-}
-
 export function App() {
-  // 저장된 테마 즉시 적용
-  useEffect(() => { applyTheme(getStoredTheme()); }, []);
+  useEffect(() => {
+    applyTheme(getStoredTheme());
+  }, []);
 
   const { state: installState, triggerInstall } = useInstallPrompt();
 
@@ -135,97 +139,117 @@ export function App() {
   const [roster, setRoster] = useState<MemberRoster | undefined>();
   const [report, setReport] = useState(() => createEmptyReport());
   const [reports, setReports] = useState<MinistryReport[]>([]);
-  const [accounts, setAccounts] = useState<Account[]>([]);
   const [currentAccount, setCurrentAccount] = useState<Account | undefined>();
   const [isHydrated, setIsHydrated] = useState(false);
   const [importWarnings, setImportWarnings] = useState<string[]>([]);
   const [saveErrors, setSaveErrors] = useState<string[]>([]);
   const [saveStatus, setSaveStatus] = useState("");
+  const [showMigrationDialog, setShowMigrationDialog] = useState(false);
+  const [pendingMigrationReports, setPendingMigrationReports] = useState<
+    MinistryReport[]
+  >([]);
+  const [pendingMigrationRoster, setPendingMigrationRoster] = useState<
+    MemberRoster | undefined
+  >();
 
+  // Firebase Auth 상태 구독
   useEffect(() => {
-    let isMounted = true;
+    const unsubscribe = onAuthChange((account) => {
+      if (!account) {
+        setCurrentAccount(undefined);
+        setIsHydrated(true);
+        return;
+      }
+      setCurrentAccount(account);
+      void loadCloudData(account);
+    });
+    return unsubscribe;
+  }, []);
 
-    async function loadInitialState() {
-      const [storedReports, storedAccounts] = await Promise.all([
-        listReports(),
-        listAccounts(),
+  async function loadCloudData(account: Account) {
+    try {
+      const [cloudReports, cloudRoster] = await Promise.all([
+        firestoreListReports(),
+        firestoreLoadRoster(),
       ]);
 
       const draft = readReportDraft();
-      const latest = latestReport(storedReports);
-      const accountId = localStorage.getItem(CURRENT_ACCOUNT_ID_KEY);
-      const storedAccount = storedAccounts.find(
-        (account) => account.id === accountId,
-      );
 
-      let storedRoster = storedAccount
-        ? await loadRoster(storedAccount.email)
-        : undefined;
+      // 마이그레이션 확인: Firestore 비어있고 IndexedDB에 기존 데이터 있는 경우
+      if (cloudReports.length === 0) {
+        const localReports = await localListReports();
+        if (localReports.length > 0) {
+          const localRoster = await localLoadRoster(account.email);
+          setPendingMigrationReports(localReports);
+          setPendingMigrationRoster(localRoster);
+          setShowMigrationDialog(true);
 
-      // 저장된 roster가 없으면 기본값 생성 후 즉시 저장 (UUID 고정)
-      if (!storedRoster && storedAccount) {
-        storedRoster = createDefaultRoster();
-        await saveRoster(storedAccount.email, storedRoster);
+          const nextReport =
+            draft ?? latestReport(localReports) ?? createEmptyReport();
+          const upgraded = upgradeReportForEditor(nextReport);
+          setReport(reportWithAccount(upgraded, account));
+          setRoster(localRoster);
+          setReports(sortReports(localReports));
+          setIsHydrated(true);
+          return;
+        }
       }
 
-      if (!isMounted) return;
-
-      setReports(sortReports(storedReports));
-      setAccounts(storedAccounts);
-      if (storedAccount) setCurrentAccount(storedAccount);
-      if (storedRoster) setRoster(storedRoster);
+      const storedRoster = cloudRoster ?? createDefaultRoster();
+      const latest = latestReport(cloudReports);
       const initialReport = draft ?? latest;
+
+      setReports(sortReports(cloudReports));
+      setRoster(storedRoster);
       if (initialReport) {
-        const upgradedReport = upgradeReportForEditor(initialReport);
+        const upgraded = upgradeReportForEditor(initialReport);
         setReport(
-          storedAccount && !upgradedReport.pastorName
-            ? reportWithAccount(upgradedReport, storedAccount)
-            : upgradedReport,
+          !upgraded.pastorName
+            ? reportWithAccount(upgraded, account)
+            : upgraded,
         );
       }
       setIsHydrated(true);
+    } catch (err) {
+      console.error("Failed to load cloud data:", err);
+      setSaveStatus("데이터 로드 실패. 오프라인 상태일 수 있습니다.");
+      setIsHydrated(true);
     }
+  }
 
-    void loadInitialState();
+  async function handleMigrate() {
+    await firestoreSaveReports(pendingMigrationReports);
+    if (pendingMigrationRoster) {
+      await firestoreSaveRoster(pendingMigrationRoster);
+    }
+    setShowMigrationDialog(false);
+    setPendingMigrationReports([]);
+    setPendingMigrationRoster(undefined);
+    setSaveStatus(
+      `${pendingMigrationReports.length}개 보고서를 클라우드로 이전했습니다.`,
+    );
+  }
 
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  function handleMigrationSkip() {
+    setShowMigrationDialog(false);
+    setPendingMigrationReports([]);
+    setPendingMigrationRoster(undefined);
+  }
 
-  function setActiveAccount(account: Account) {
-    localStorage.setItem(CURRENT_ACCOUNT_ID_KEY, account.id);
+  function handleSignedIn(account: Account) {
     setCurrentAccount(account);
-    setReport((currentReport) => {
-      const nextReport = reportWithAccount(currentReport, account);
-      saveReportDraft(nextReport);
-      return nextReport;
-    });
+    setSaveStatus(`${account.displayName}으로 로그인되었습니다.`);
   }
 
-  function handleAccountCreated(account: Account) {
-    setAccounts((currentAccounts) => [...currentAccounts, account]);
-    setActiveAccount(account);
-    setSaveStatus(`${account.displayName} 계정이 준비되었습니다.`);
-  }
-
-  function handleAccountSignedIn(account: Account) {
-    setActiveAccount(account);
-    setSaveStatus(`${account.displayName} 계정으로 로그인되었습니다.`);
-  }
-
-  function handleSignOut() {
-    localStorage.removeItem(CURRENT_ACCOUNT_ID_KEY);
+  async function handleSignOut() {
+    await firebaseSignOut();
     setCurrentAccount(undefined);
+    setReports([]);
+    setRoster(undefined);
+    setReport(createEmptyReport());
     setSaveStatus("로그아웃되었습니다.");
     setMode("edit");
-  }
-
-  function replaceAccount(account: Account) {
-    setAccounts((currentAccounts) =>
-      currentAccounts.map((item) => (item.id === account.id ? account : item)),
-    );
-    if (currentAccount?.id === account.id) setCurrentAccount(account);
+    setIsHydrated(true);
   }
 
   function handleReportChange(nextReport: MinistryReport) {
@@ -234,8 +258,8 @@ export function App() {
     setReport(upgradedReport);
     saveReportDraft(upgradedReport);
 
-    // Report → Roster 완전 양방향 동기화 (추가·삭제·그룹 변경)
-    setRoster(prev => {
+    // Report → Roster 양방향 동기화
+    setRoster((prev) => {
       if (!prev) return prev;
       let nextDepts = { ...prev.departments };
       let changed = false;
@@ -245,70 +269,92 @@ export function App() {
         if (rDept.kind !== "flat") continue;
 
         const reportMembers = upgradedReport.departments[key].members ?? [];
-        const reportById    = new Map(reportMembers.map(m => [m.id, m]));
-        const rosterById    = new Map(rDept.members.map(m => [m.id, m]));
+        const reportById = new Map(reportMembers.map((m) => [m.id, m]));
+        const rosterById = new Map(rDept.members.map((m) => [m.id, m]));
 
-        const toAdd     = reportMembers.filter(m => !rosterById.has(m.id));
-        const removeIds = new Set(rDept.members.filter(m => !reportById.has(m.id)).map(m => m.id));
+        const toAdd = reportMembers.filter((m) => !rosterById.has(m.id));
+        const removeIds = new Set(
+          rDept.members.filter((m) => !reportById.has(m.id)).map((m) => m.id),
+        );
 
         let rosterMembers = rDept.members
-          .filter(m => !removeIds.has(m.id))
-          .map(m => {
+          .filter((m) => !removeIds.has(m.id))
+          .map((m) => {
             const rm = reportById.get(m.id);
             return rm && rm.group !== m.group ? { ...m, group: rm.group } : m;
           });
 
         for (const m of toAdd) {
-          rosterMembers = [...rosterMembers, { id: m.id, name: m.name, ...(m.group ? { group: m.group } : {}) }];
+          rosterMembers = [
+            ...rosterMembers,
+            { id: m.id, name: m.name, ...(m.group ? { group: m.group } : {}) },
+          ];
         }
 
-        if (toAdd.length > 0 || removeIds.size > 0 ||
-            rDept.members.some(m => { const rm = reportById.get(m.id); return rm && rm.group !== m.group; })) {
-          nextDepts = { ...nextDepts, [key]: { kind: "flat", members: rosterMembers } };
+        if (
+          toAdd.length > 0 ||
+          removeIds.size > 0 ||
+          rDept.members.some((m) => {
+            const rm = reportById.get(m.id);
+            return rm && rm.group !== m.group;
+          })
+        ) {
+          nextDepts = {
+            ...nextDepts,
+            [key]: { kind: "flat", members: rosterMembers },
+          };
           changed = true;
         }
       }
 
-      // adult 구역 동기화 (추가·삭제·구역 간 이동)
       const reportAdult = upgradedReport.departments.adult;
       const rAdult = prev.departments.adult;
       if (rAdult.kind === "zoned" && reportAdult.zones) {
-        const rosterZoneById = new Map(rAdult.zones.map(z => [z.id, z]));
+        const rosterZoneById = new Map(rAdult.zones.map((z) => [z.id, z]));
         let adultChanged = false;
-        const newRosterZones = reportAdult.zones.map(reportZone => {
+        const newRosterZones = reportAdult.zones.map((reportZone) => {
           const rosterZone = rosterZoneById.get(reportZone.id);
-          const rosterMemberById = new Map((rosterZone?.members ?? []).map(m => [m.id, m]));
-          const newMembers = reportZone.members.map(rm =>
-            rosterMemberById.get(rm.id) ?? { id: rm.id, name: rm.name },
+          const rosterMemberById = new Map(
+            (rosterZone?.members ?? []).map((m) => [m.id, m]),
           );
-          const oldIds = (rosterZone?.members ?? []).map(m => m.id).join(",");
-          const newIds = newMembers.map(m => m.id).join(",");
+          const newMembers = reportZone.members.map(
+            (rm) => rosterMemberById.get(rm.id) ?? { id: rm.id, name: rm.name },
+          );
+          const oldIds = (rosterZone?.members ?? []).map((m) => m.id).join(",");
+          const newIds = newMembers.map((m) => m.id).join(",");
           if (oldIds !== newIds) adultChanged = true;
-          return { ...(rosterZone ?? { id: reportZone.id, name: reportZone.name, district: reportZone.district }), members: newMembers };
+          return {
+            ...(rosterZone ?? {
+              id: reportZone.id,
+              name: reportZone.name,
+              district: reportZone.district,
+            }),
+            members: newMembers,
+          };
         });
         if (adultChanged) {
-          nextDepts = { ...nextDepts, adult: { kind: "zoned", zones: newRosterZones } };
+          nextDepts = {
+            ...nextDepts,
+            adult: { kind: "zoned", zones: newRosterZones },
+          };
           changed = true;
         }
       }
 
       if (!changed) return prev;
-      const nextRoster: MemberRoster = { ...prev, departments: nextDepts, updatedAt: new Date().toISOString() };
-      if (currentAccount) void saveRoster(currentAccount.email, nextRoster);
+      const nextRoster: MemberRoster = {
+        ...prev,
+        departments: nextDepts,
+        updatedAt: new Date().toISOString(),
+      };
+      void firestoreSaveRoster(nextRoster);
       return nextRoster;
     });
   }
 
   async function handleSave() {
     if (!currentAccount) {
-      setSaveErrors([]);
-      setSaveStatus("보고자 계정을 먼저 생성해 주세요.");
-      return;
-    }
-
-    if (!canAccountSave(currentAccount)) {
-      setSaveErrors([]);
-      setSaveStatus("비밀번호를 먼저 변경해 주세요.");
+      setSaveStatus("로그인 후 저장할 수 있습니다.");
       return;
     }
 
@@ -321,13 +367,20 @@ export function App() {
       return;
     }
 
-    await saveReport(reportToSave);
+    setSaveStatus("저장 중...");
+    await firestoreSaveReport(reportToSave);
+    await localSaveReport(reportToSave); // 로컬 캐시
+
     setSaveErrors([]);
     const upgradedReport = upgradeReportForEditor(reportToSave);
     setReport(upgradedReport);
     saveReportDraft(upgradedReport);
-    setReports((currentReports) => mergeReports(currentReports, [upgradedReport]));
-    setSaveStatus(`${currentAccount.displayName} 계정으로 저장되었습니다.`);
+    const nextReports = mergeReports(reports, [upgradedReport]);
+    setReports(nextReports);
+    setSaveStatus(`${currentAccount.displayName}으로 저장되었습니다.`);
+
+    // GitHub Gist 백업 (PAT 있을 때만, 실패해도 무시)
+    void uploadToGist({ reports: nextReports, roster });
   }
 
   function handleNewReport() {
@@ -343,10 +396,7 @@ export function App() {
 
   function handleRosterChange(nextRoster: MemberRoster) {
     setRoster(nextRoster);
-    if (currentAccount) {
-      void saveRoster(currentAccount.email, nextRoster);
-    }
-    // roster 변경 시 현재 report의 zones/members도 동기화
+    void firestoreSaveRoster(nextRoster);
     setReport((currentReport) => {
       const next = syncReportFromRoster(currentReport, nextRoster);
       saveReportDraft(next);
@@ -367,7 +417,6 @@ export function App() {
     const draft = currentAccount
       ? reportWithAccount(duplicate, currentAccount)
       : duplicate;
-
     setReport(draft);
     saveReportDraft(draft);
     setSaveErrors([]);
@@ -377,12 +426,11 @@ export function App() {
   }
 
   async function handleDeleteReport(storedReport: MinistryReport) {
-    await deleteReport(storedReport.id);
+    await firestoreDeleteReport(storedReport.id);
     const nextReports = reports.filter((item) => item.id !== storedReport.id);
     const nextReport = upgradeReportForEditor(
       latestReport(nextReports) ?? createEmptyReport(),
     );
-
     setReports(nextReports);
     if (report.id === storedReport.id) {
       setReport(nextReport);
@@ -402,26 +450,23 @@ export function App() {
       return;
     }
 
-    await saveReports(importedReports);
+    await firestoreSaveReports(importedReports);
+    await localSaveReports(importedReports);
 
-    // 가장 최신 보고서의 members/zones로 roster 동기화
     const latest = latestReport(importedReports);
     if (latest) {
       const upgradedReport = upgradeReportForEditor(latest);
       setReport(upgradedReport);
       saveReportDraft(upgradedReport);
 
-      // roster 업데이트: 기존 roster에 병합 (phone 등 추가 정보 보존)
       setRoster((prev) => {
         const nextRoster = mergeRosterFromReport(prev, latest);
-        if (currentAccount) void saveRoster(currentAccount.email, nextRoster);
+        void firestoreSaveRoster(nextRoster);
         return nextRoster;
       });
     }
 
-    setReports((currentReports) =>
-      mergeReports(currentReports, importedReports),
-    );
+    setReports((currentReports) => mergeReports(currentReports, importedReports));
     setSaveStatus(
       warnings.length
         ? `${importedReports.length}개 보고서를 가져왔습니다. ${warnings.length}개 경고가 있습니다.`
@@ -436,17 +481,14 @@ export function App() {
   }
 
   async function handleForceRefresh() {
-    // 1) SW 전부 해제
     if ("serviceWorker" in navigator) {
       const registrations = await navigator.serviceWorker.getRegistrations();
       await Promise.all(registrations.map((r) => r.unregister()));
     }
-    // 2) 모든 캐시 삭제
     if ("caches" in window) {
       const keys = await caches.keys();
       await Promise.all(keys.map((k) => caches.delete(k)));
     }
-    // 3) 강제 새로고침
     window.location.reload();
   }
 
@@ -457,16 +499,36 @@ export function App() {
   if (!currentAccount) {
     return (
       <main className="app-shell auth-shell">
-        <AuthGate
-          onCreated={handleAccountCreated}
-          onSignedIn={handleAccountSignedIn}
-        />
+        <AuthGate onCreated={handleSignedIn} onSignedIn={handleSignedIn} />
       </main>
     );
   }
 
   return (
     <main className="app-shell">
+      {showMigrationDialog && (
+        <div className="migration-dialog-overlay">
+          <div className="migration-dialog">
+            <h2>기존 데이터 이전</h2>
+            <p>
+              이 기기에 저장된 보고서 {pendingMigrationReports.length}개를
+              클라우드로 이전하시겠습니까?
+            </p>
+            <div className="migration-dialog-actions">
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={() => void handleMigrate()}
+              >
+                이전하기
+              </button>
+              <button type="button" onClick={handleMigrationSkip}>
+                건너뛰기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <header className="top-bar">
         <div className="top-bar-title-row">
           <h1>사역보고서 v2</h1>
@@ -481,7 +543,9 @@ export function App() {
             </button>
           )}
           {installState === "installed" && (
-            <span className="pwa-installed-badge" aria-label="앱 설치됨">✓ 설치됨</span>
+            <span className="pwa-installed-badge" aria-label="앱 설치됨">
+              ✓ 설치됨
+            </span>
           )}
           <button
             type="button"
@@ -523,19 +587,12 @@ export function App() {
           report={report}
           reports={reports}
           accountPanel={
-            <>
-              <ReporterAccountPanel
-                currentAccount={currentAccount}
-                onAccountChanged={replaceAccount}
-                onSignOut={handleSignOut}
-              />
-              <AdminRecoveryManager
-                accounts={accounts}
-                onRecovered={replaceAccount}
-              />
-            </>
+            <ReporterAccountPanel
+              currentAccount={currentAccount}
+              onSignOut={() => void handleSignOut()}
+            />
           }
-          canSave={canAccountSave(currentAccount)}
+          canSave={!!currentAccount}
           importPanel={
             <LegacyImportPanel
               warnings={importWarnings}
@@ -552,20 +609,20 @@ export function App() {
               onLoad={handleLoadReport}
             />
           }
+          githubPanel={
+            currentAccount.role === "admin" ? <GithubSettingsPanel /> : undefined
+          }
           onChange={handleReportChange}
           onNewReport={handleNewReport}
           onSave={handleSave}
           saveErrors={saveErrors}
           saveStatus={saveStatus}
-          saveDisabledReason={saveDisabledReason(currentAccount)}
+          saveDisabledReason="로그인 후 저장할 수 있습니다."
         />
       ) : mode === "roster" ? (
         <main className="roster-shell">
           {roster && (
-            <MemberRosterTab
-              roster={roster}
-              onChange={handleRosterChange}
-            />
+            <MemberRosterTab roster={roster} onChange={handleRosterChange} />
           )}
         </main>
       ) : (
