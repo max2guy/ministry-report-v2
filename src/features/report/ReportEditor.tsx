@@ -8,6 +8,7 @@ type ReportEditorProps = {
   accountPanel: ReactNode;
   canSave: boolean;
   historyPanel: ReactNode;
+  githubPanel?: ReactNode;
   importPanel: ReactNode;
   onChange: (report: MinistryReport) => void;
   onNewReport: () => void;
@@ -35,6 +36,7 @@ export function ReportEditor({
   accountPanel,
   canSave,
   historyPanel,
+  githubPanel,
   importPanel,
   onChange,
   onNewReport,
@@ -66,6 +68,7 @@ export function ReportEditor({
         </div>
         {importPanel}
         {historyPanel}
+        {githubPanel}
         {saveErrors.length ? (
           <section className="save-errors" aria-label="저장 오류" role="alert">
             <h2>저장 오류</h2>
