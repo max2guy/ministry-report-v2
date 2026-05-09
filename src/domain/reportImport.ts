@@ -7,6 +7,7 @@ import {
   createEmptyReport,
   type DepartmentKey,
   type DepartmentMember,
+  type DepartmentMemberRole,
   type DepartmentMemberStatus,
   type DepartmentReport,
   type MinistryReport,
@@ -43,6 +44,8 @@ function stringList(value: unknown): string[] {
   return Array.isArray(value) ? value.map(text).filter(Boolean) : [];
 }
 
+const VALID_ROLES = new Set<string>(["leader", "inspector", "member"]);
+
 function normalizeMembers(value: unknown): DepartmentMember[] | undefined {
   if (!Array.isArray(value)) {
     return undefined;
@@ -50,14 +53,18 @@ function normalizeMembers(value: unknown): DepartmentMember[] | undefined {
 
   return value
     .map((item) => objectRecord(item))
-    .map((member, index) => {
+    .map((member, index): DepartmentMember => {
       const status: DepartmentMemberStatus =
         member.status === "present" ? "present" : "absent";
+      const roleRaw = typeof member.role === "string" ? member.role : "";
+      const groupRaw = typeof member.group === "string" ? member.group : "";
 
       return {
         id: text(member.id) || `imported-member-${index + 1}`,
         name: text(member.name),
         status,
+        ...(VALID_ROLES.has(roleRaw) && { role: roleRaw as DepartmentMemberRole }),
+        ...(groupRaw && { group: groupRaw }),
       };
     })
     .filter((member) => member.name);
@@ -73,13 +80,45 @@ function isV2BackupBundle(value: unknown): value is V2BackupBundle {
   return record.schemaVersion === 2 && Array.isArray(record.reports);
 }
 
+function normalizeZones(value: unknown): DepartmentReport["zones"] {
+  if (!Array.isArray(value)) return undefined;
+  return value
+    .map((item) => objectRecord(item))
+    .map((zone, zi) => ({
+      id: text(zone.id) || `imported-zone-${zi + 1}`,
+      name: text(zone.name) || `${zi + 1}구역`,
+      district: typeof zone.district === "number" ? zone.district : 1,
+      members: (normalizeMembers(zone.members) ?? []) as DepartmentMember[],
+    }))
+    .filter((z) => z.members.length > 0 || text(z.name));
+}
+
 function normalizeDepartment(
   key: DepartmentKey,
   value: unknown,
 ): DepartmentReport {
   const department = objectRecord(value);
   const members = normalizeMembers(department.members);
-  const normalized = {
+
+  // 장년 구역: zones 배열 우선 처리
+  if (key === "adult" && Array.isArray(department.zones)) {
+    const zones = normalizeZones(department.zones);
+    const attendance =
+      zones?.reduce(
+        (sum, z) => sum + z.members.filter((m) => m.status === "present").length,
+        0,
+      ) ?? numberValue(department.attendance);
+    return {
+      key,
+      name: DEPARTMENT_NAMES[key],
+      attendance,
+      newVisitors: numberValue(department.newVisitors),
+      summary: text(department.summary),
+      zones,
+    };
+  }
+
+  const normalized: DepartmentReport = {
     key,
     name: DEPARTMENT_NAMES[key],
     attendance: numberValue(department.attendance),
