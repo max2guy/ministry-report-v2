@@ -2457,3 +2457,151 @@ button:disabled {
 .attendance-group-section .attendance-card-list {
   min-height: 36px;
 }
+
+/* ── Google Sign-in ────────────────────────────── */
+.google-signin-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn-google-signin {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  color: #3c4043;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 24px;
+  cursor: pointer;
+  min-width: 220px;
+  justify-content: center;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.btn-google-signin:hover:not(:disabled) {
+  background: #f8f9fa;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+}
+
+.btn-google-signin:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-error {
+  color: var(--clr-error, #d93025);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ── Migration Dialog ─────────────────────────── */
+.migration-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.migration-dialog {
+  background: var(--clr-surface, #ffffff);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 360px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 24%);
+}
+
+.migration-dialog h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.migration-dialog p {
+  font-size: 14px;
+  color: var(--clr-text-secondary, #666);
+  margin-bottom: 20px;
+}
+
+.migration-dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: var(--clr-accent, #1a73e8);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* ── GitHub Settings Panel ───────────────────── */
+.github-settings-panel {
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid var(--clr-border, #e0e0e0);
+  border-radius: 8px;
+}
+
+.github-settings-panel h2 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--clr-text-secondary, #666);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.github-settings-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.github-settings-row label {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.github-settings-row input {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--clr-border, #e0e0e0);
+  border-radius: 6px;
+  background: var(--clr-surface, #fff);
+  color: var(--clr-text, #222);
+}
+
+.github-gist-id {
+  font-size: 12px;
+  color: var(--clr-text-secondary, #666);
+  margin-top: 8px;
+}
+
+.github-status {
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 600;
+}
