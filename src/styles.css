@@ -1313,6 +1313,8 @@ button:disabled {
   .top-bar {
     align-items: stretch;
     flex-direction: column;
+    margin: -18px -18px 0;
+    padding: 14px 18px;
   }
 
   .segmented-control button {
@@ -1340,6 +1342,70 @@ button:disabled {
 
   .viewer-stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* 출석 카드: 10열 → 6열 */
+  .attendance-card-list {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .attendance-card {
+    font-size: 13px;
+    padding: 5px 2px;
+  }
+
+  .info-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .app-shell {
+    padding: 12px;
+  }
+
+  .top-bar {
+    margin: -12px -12px 0;
+    padding: 12px;
+    border-radius: 0;
+  }
+
+  /* 출석 카드: 5열 */
+  .attendance-card-list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .attendance-card {
+    font-size: 12px;
+    padding: 5px 1px;
+    min-height: 30px;
+  }
+
+  /* 상단바 제목 크기 줄이기 */
+  .top-bar h1 {
+    font-size: 17px;
+  }
+
+  /* 통계 패널 1열 */
+  .dstats-counts {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .report-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  /* 출석 카드: 4열 (초소형 화면) */
+  .attendance-card-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .attendance-card {
+    font-size: 11px;
   }
 }
 

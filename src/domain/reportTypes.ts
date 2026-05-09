@@ -315,7 +315,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
   return {
     schemaVersion: 2,
     id: crypto.randomUUID(),
-    title: "주간 사역보고서",
+    title: "주일 사역보고서",
     reportDate: localDate,
     churchName: "연천장로교회",
     pastorName: "",
