@@ -1,5 +1,13 @@
 import type { MemberRoster } from "./memberRoster";
 
+/** UTC가 아닌 로컬 타임존 기준 YYYY-MM-DD 반환 (한국 자정 전후 오류 방지) */
+function toLocalDateString(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 export type ReportSchemaVersion = 2;
 
 export type DepartmentKey = "elementary" | "middleHigh" | "youngAdult" | "adult";
@@ -252,6 +260,7 @@ function upgradeDepartmentToCards(department: DepartmentReport): DepartmentRepor
 
 export function createEmptyReport(now = new Date(), roster?: MemberRoster): MinistryReport {
   const iso = now.toISOString();
+  const localDate = toLocalDateString(now);
 
   const elementaryMembers = (() => {
     if (roster?.departments.elementary.kind === "flat") {
@@ -307,7 +316,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
     schemaVersion: 2,
     id: crypto.randomUUID(),
     title: "주간 사역보고서",
-    reportDate: iso.slice(0, 10),
+    reportDate: localDate,
     churchName: "연천장로교회",
     pastorName: "",
     departments: {
@@ -357,6 +366,7 @@ export function cloneReportAsDraft(
   now = new Date(),
 ): MinistryReport {
   const iso = now.toISOString();
+  const localDate = toLocalDateString(now);
   const upgraded = upgradeReportForEditor(report);
 
   function cloneDept(dept: DepartmentReport): DepartmentReport {
@@ -374,7 +384,7 @@ export function cloneReportAsDraft(
     ...upgraded,
     id: crypto.randomUUID(),
     title: `${report.title} 복사본`,
-    reportDate: iso.slice(0, 10),
+    reportDate: localDate,
     departments: {
       elementary: cloneDept(upgraded.departments.elementary),
       middleHigh: cloneDept(upgraded.departments.middleHigh),

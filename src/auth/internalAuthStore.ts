@@ -144,7 +144,9 @@ export async function changePassword(input: {
   newPassword: string;
 }): Promise<Account> {
   if (input.newPassword.length < 8) throw new Error("WEAK_PASSWORD");
-  if (!(await verifyPassword(input.account, input.currentPassword))) {
+  // mustChangePassword 상태면 임시 비밀번호이므로 현재 비밀번호 검증 스킵
+  const skipVerify = input.account.status === "mustChangePassword";
+  if (!skipVerify && !(await verifyPassword(input.account, input.currentPassword))) {
     throw new Error("INVALID_PASSWORD");
   }
 

@@ -11,6 +11,7 @@ export function PasswordChangePanel({
   account,
   onChanged,
 }: PasswordChangePanelProps) {
+  const isTempPassword = account.status === "mustChangePassword";
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -29,23 +30,25 @@ export function PasswordChangePanel({
       setMessage("비밀번호가 변경되었습니다.");
       onChanged(updated);
     } catch {
-      setMessage("비밀번호를 확인해 주세요.");
+      setMessage(isTempPassword ? "새 비밀번호를 확인해 주세요." : "현재 비밀번호가 맞지 않습니다.");
     }
   }
 
   return (
     <form className="password-change-panel" onSubmit={handleSubmit}>
-      <strong>비밀번호 변경 필요</strong>
+      <strong>{isTempPassword ? "임시 비밀번호 — 새 비밀번호를 설정해 주세요" : "비밀번호 변경"}</strong>
+      {!isTempPassword && (
+        <label>
+          현재 비밀번호
+          <input
+            type="password"
+            value={currentPassword}
+            onChange={(event) => setCurrentPassword(event.currentTarget.value)}
+          />
+        </label>
+      )}
       <label>
-        현재/임시 비밀번호
-        <input
-          type="password"
-          value={currentPassword}
-          onChange={(event) => setCurrentPassword(event.currentTarget.value)}
-        />
-      </label>
-      <label>
-        새 비밀번호
+        새 비밀번호 (8자 이상)
         <input
           type="password"
           value={newPassword}
