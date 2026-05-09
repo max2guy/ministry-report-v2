@@ -2,7 +2,10 @@ import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
+const base = process.env.GITHUB_ACTIONS ? "/ministry-report-v2/" : "/";
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -22,8 +25,8 @@ export default defineConfig({
         name: "사역보고서 v2",
         short_name: "사역보고서",
         description: "주일 사역 출결 및 현황 보고서",
-        start_url: "/",
-        scope: "/",
+        start_url: base,
+        scope: base,
         display: "standalone",
         background_color: "#f6f6f6",
         theme_color: "#24564a",
