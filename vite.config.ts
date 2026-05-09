@@ -1,8 +1,42 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: "autoUpdate",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest}"],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: "CacheFirst",
+            options: { cacheName: "google-fonts-cache" },
+          },
+        ],
+      },
+      includeAssets: ["icon.svg", "apple-touch-icon-180x180.png", "pwa-64x64.png"],
+      manifest: {
+        name: "사역보고서 v2",
+        short_name: "사역보고서",
+        description: "주일 사역 출결 및 현황 보고서",
+        start_url: "/",
+        scope: "/",
+        display: "standalone",
+        background_color: "#f6f6f6",
+        theme_color: "#24564a",
+        lang: "ko",
+        icons: [
+          { src: "pwa-64x64.png",              sizes: "64x64",    type: "image/png" },
+          { src: "pwa-192x192.png",             sizes: "192x192",  type: "image/png" },
+          { src: "pwa-512x512.png",             sizes: "512x512",  type: "image/png", purpose: "any" },
+          { src: "maskable-icon-512x512.png",   sizes: "512x512",  type: "image/png", purpose: "maskable" },
+        ],
+      },
+    }),
+  ],
   test: {
     exclude: ["node_modules/**", "dist/**", "tests/smoke/**"],
   },
