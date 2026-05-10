@@ -57,11 +57,29 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
   const currentYear = new Date().getFullYear();
   const [activeTab, setActiveTab] = useState<TabKey>("info");
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const touchStartX = useRef<number>(0);
+  const touchStartY = useRef<number>(0);
 
   function handleTabChange(key: TabKey) {
     setActiveTab(key);
     const btn = tabRefs.current[key];
     btn?.scrollIntoView({ inline: "center", behavior: "smooth", block: "nearest" });
+  }
+
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    // 수평 스와이프만 처리 (수직 스크롤과 구분)
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+    const keys = TABS.map((t) => t.key);
+    const idx = keys.indexOf(activeTab);
+    if (dx < 0 && idx < keys.length - 1) handleTabChange(keys[idx + 1]); // →
+    if (dx > 0 && idx > 0) handleTabChange(keys[idx - 1]);               // ←
   }
 
   function updateReport(patch: Partial<MinistryReport>) {
@@ -98,6 +116,13 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
           </button>
         ))}
       </div>
+
+      {/* 탭 패널 영역: 스와이프로 탭 전환 */}
+      <div
+        className="report-tab-panels"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
 
       {/* 기본정보 탭 */}
       <div
@@ -230,6 +255,8 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
           </label>
         </div>
       </div>
+
+      </div> {/* /report-tab-panels */}
     </div>
   );
 }

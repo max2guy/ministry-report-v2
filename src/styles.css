@@ -2098,6 +2098,10 @@ button:disabled {
   gap: 14px;
 }
 
+.report-tab-panels {
+  display: contents; /* 레이아웃에 영향 없이 자식만 렌더 */
+}
+
 /* ── Theme Selector ── */
 .theme-selector {
   display: flex;
