@@ -2,22 +2,25 @@ import type { Account } from "../../auth/authTypes";
 import { GoogleSignInButton } from "./GoogleSignInButton";
 
 type AuthGateProps = {
-  onCreated: (account: Account) => void;
   onSignedIn: (account: Account) => void;
 };
 
 export function AuthGate({ onSignedIn }: AuthGateProps) {
-  // onCreated is kept for API compatibility but unused — Google sign-in auto-creates accounts
   return (
-    <section className="auth-gate">
-      <div className="auth-gate-panel">
-        <p className="auth-gate-badge">연천장로교회</p>
-        <h1>사역보고서 v2</h1>
-        <p className="auth-gate-copy">
-          Google 계정으로 로그인하면 어느 기기에서든 보고서를 확인할 수 있습니다.
-        </p>
-        <GoogleSignInButton onSignedIn={onSignedIn} />
+    <div className="auth-gate-v2">
+      <div className="auth-gate-banner">
+        <div className="auth-gate-banner-icon">⛪</div>
+        <h1 className="auth-gate-title">사역보고서</h1>
+        <p className="auth-gate-subtitle">주일 사역 출결 · 현황 보고</p>
       </div>
-    </section>
+      <div className="auth-gate-card-wrapper">
+        <div className="auth-gate-card">
+          <p className="auth-gate-card-heading">시작하기</p>
+          <p className="auth-gate-card-desc">Google 계정으로 로그인하세요</p>
+          <GoogleSignInButton onSignedIn={onSignedIn} />
+          <p className="auth-gate-card-hint">첫 번째 로그인 계정이 관리자가 됩니다</p>
+        </div>
+      </div>
+    </div>
   );
 }
