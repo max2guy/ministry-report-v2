@@ -3,6 +3,10 @@ import type { Account } from "./auth/authTypes";
 import { onAuthChange, signOut as firebaseSignOut } from "./auth/firebaseAuthStore";
 import { ThemeSelector } from "./features/theme/ThemeSelector";
 import { applyTheme, getStoredTheme } from "./features/theme/useTheme";
+import { useAppMode } from "./features/mode/useAppMode";
+import { AppModeToggle } from "./features/mode/AppModeToggle";
+import { BottomTabBar, type MobileTab } from "./features/nav/BottomTabBar";
+import { MobileReportList } from "./features/report/MobileReportList";
 import {
   createDefaultRoster,
   mergeRosterFromReport,
@@ -136,6 +140,9 @@ export function App() {
   const { state: installState, triggerInstall } = useInstallPrompt();
 
   const [mode, setMode] = useState<"edit" | "view" | "roster">("edit");
+  const [appMode, setAppMode] = useAppMode();
+  const [mobileTab, setMobileTab] = useState<MobileTab>("edit");
+  const [mobileScreen, setMobileScreen] = useState<"list" | "editor">("list");
   const [roster, setRoster] = useState<MemberRoster | undefined>();
   const [report, setReport] = useState(() => createEmptyReport());
   const [reports, setReports] = useState<MinistryReport[]>([]);
@@ -392,6 +399,7 @@ export function App() {
     saveReportDraft(draft);
     setSaveErrors([]);
     setSaveStatus("새 보고서를 만들었습니다.");
+    setMobileScreen("editor");
   }
 
   function handleRosterChange(nextRoster: MemberRoster) {
@@ -410,6 +418,7 @@ export function App() {
     saveReportDraft(upgradedReport);
     setSaveErrors([]);
     setSaveStatus(`${storedReport.reportDate} 보고서를 불러왔습니다.`);
+    setMobileScreen("editor");
   }
 
   function handleDuplicateReport(storedReport: MinistryReport) {
@@ -531,31 +540,52 @@ export function App() {
       )}
       <header className="top-bar">
         <div className="top-bar-title-row">
-          <h1>사역보고서 v2</h1>
-          {installState === "ready" && (
+          <div className="top-bar-title-group">
+            <span className="top-bar-date">
+              {new Date().toLocaleDateString("ko-KR", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                weekday: "short",
+              })}
+            </span>
+            <h1>사역보고서</h1>
+          </div>
+          <div className="top-bar-actions">
+            {installState === "ready" && (
+              <button
+                type="button"
+                className="btn-pwa-install"
+                onClick={() => void triggerInstall()}
+                aria-label="앱 설치"
+              >
+                📲 설치
+              </button>
+            )}
+            {installState === "installed" && (
+              <span className="pwa-installed-badge" aria-label="앱 설치됨">
+                ✓ 설치됨
+              </span>
+            )}
             <button
               type="button"
-              className="btn-pwa-install"
-              onClick={() => void triggerInstall()}
-              aria-label="앱 설치"
+              className="btn-force-refresh"
+              onClick={() => void handleForceRefresh()}
+              title="앱 강제 새로고침 (캐시 초기화)"
+              aria-label="강제 새로고침"
             >
-              📲 설치
+              🔄
             </button>
-          )}
-          {installState === "installed" && (
-            <span className="pwa-installed-badge" aria-label="앱 설치됨">
-              ✓ 설치됨
-            </span>
-          )}
-          <button
-            type="button"
-            className="btn-force-refresh"
-            onClick={() => void handleForceRefresh()}
-            title="앱 강제 새로고침 (캐시 초기화)"
-            aria-label="강제 새로고침"
-          >
-            🔄
-          </button>
+            {currentAccount && (
+              <div
+                className="top-bar-avatar"
+                title={currentAccount.displayName}
+                aria-label={`로그인: ${currentAccount.displayName}`}
+              >
+                {currentAccount.displayName.charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div>
         </div>
         <ThemeSelector />
         <div className="segmented-control" aria-label="보기 모드">
@@ -582,52 +612,153 @@ export function App() {
           </button>
         </div>
       </header>
-      {mode === "edit" ? (
-        <ReportEditor
-          report={report}
-          reports={reports}
-          accountPanel={
+      {/* Mobile-only: MobileReportList home OR editor screen */}
+      <div className="mobile-only">
+        {mobileTab === "account" ? (
+          <div className="mobile-account-screen">
             <ReporterAccountPanel
               currentAccount={currentAccount}
               onSignOut={() => void handleSignOut()}
             />
+            <ThemeSelector />
+            <AppModeToggle appMode={appMode} onAppModeChange={setAppMode} />
+          </div>
+        ) : mobileTab === "roster" ? (
+          <main className="roster-shell">
+            {roster && (
+              <MemberRosterTab roster={roster} onChange={handleRosterChange} />
+            )}
+          </main>
+        ) : mobileScreen === "list" ? (
+          <MobileReportList
+            reports={reports}
+            appMode={appMode}
+            onSelectReport={(r) => {
+              if (appMode === "reporter") {
+                handleLoadReport(r);
+              } else {
+                const upgraded = upgradeReportForEditor(r);
+                setReport(upgraded);
+                setMobileScreen("editor");
+              }
+            }}
+            onNewReport={handleNewReport}
+          />
+        ) : (
+          <div className="mobile-editor-screen">
+            <div className="mobile-editor-back-bar">
+              <button
+                type="button"
+                className="mobile-back-btn"
+                onClick={() => setMobileScreen("list")}
+              >
+                ‹ 보고서 목록
+              </button>
+              {appMode === "viewer" && (
+                <span className="mobile-viewer-badge">뷰어 모드</span>
+              )}
+            </div>
+            {appMode === "reporter" ? (
+              <ReportEditor
+                report={report}
+                reports={reports}
+                accountPanel={
+                  <ReporterAccountPanel
+                    currentAccount={currentAccount}
+                    onSignOut={() => void handleSignOut()}
+                  />
+                }
+                canSave={!!currentAccount}
+                importPanel={
+                  <LegacyImportPanel
+                    warnings={importWarnings}
+                    onImport={handleImport}
+                    onImportError={handleImportError}
+                  />
+                }
+                historyPanel={null}
+                githubPanel={
+                  currentAccount.role === "admin" ? (
+                    <GithubSettingsPanel />
+                  ) : undefined
+                }
+                onChange={handleReportChange}
+                onNewReport={handleNewReport}
+                onSave={handleSave}
+                saveErrors={saveErrors}
+                saveStatus={saveStatus}
+                saveDisabledReason="로그인 후 저장할 수 있습니다."
+              />
+            ) : (
+              <ReportViewer report={report} reports={reports} />
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Desktop-only: existing layout unchanged */}
+      <div className="desktop-only">
+        {mode === "edit" ? (
+          <ReportEditor
+            report={report}
+            reports={reports}
+            accountPanel={
+              <ReporterAccountPanel
+                currentAccount={currentAccount}
+                onSignOut={() => void handleSignOut()}
+              />
+            }
+            canSave={!!currentAccount}
+            importPanel={
+              <LegacyImportPanel
+                warnings={importWarnings}
+                onImport={handleImport}
+                onImportError={handleImportError}
+              />
+            }
+            historyPanel={
+              <ReportHistoryPanel
+                reports={reports}
+                currentReportId={report.id}
+                onDelete={handleDeleteReport}
+                onDuplicate={handleDuplicateReport}
+                onLoad={handleLoadReport}
+              />
+            }
+            githubPanel={
+              currentAccount.role === "admin" ? (
+                <GithubSettingsPanel />
+              ) : undefined
+            }
+            onChange={handleReportChange}
+            onNewReport={handleNewReport}
+            onSave={handleSave}
+            saveErrors={saveErrors}
+            saveStatus={saveStatus}
+            saveDisabledReason="로그인 후 저장할 수 있습니다."
+          />
+        ) : mode === "roster" ? (
+          <main className="roster-shell">
+            {roster && (
+              <MemberRosterTab roster={roster} onChange={handleRosterChange} />
+            )}
+          </main>
+        ) : (
+          <ReportViewer report={report} reports={reports} />
+        )}
+      </div>
+      <BottomTabBar
+        activeTab={mobileTab}
+        onTabChange={(tab) => {
+          setMobileTab(tab);
+          if (tab === "edit") {
+            setMode("edit");
+            setMobileScreen("list");
+          } else if (tab === "roster") {
+            setMode("roster");
           }
-          canSave={!!currentAccount}
-          importPanel={
-            <LegacyImportPanel
-              warnings={importWarnings}
-              onImport={handleImport}
-              onImportError={handleImportError}
-            />
-          }
-          historyPanel={
-            <ReportHistoryPanel
-              reports={reports}
-              currentReportId={report.id}
-              onDelete={handleDeleteReport}
-              onDuplicate={handleDuplicateReport}
-              onLoad={handleLoadReport}
-            />
-          }
-          githubPanel={
-            currentAccount.role === "admin" ? <GithubSettingsPanel /> : undefined
-          }
-          onChange={handleReportChange}
-          onNewReport={handleNewReport}
-          onSave={handleSave}
-          saveErrors={saveErrors}
-          saveStatus={saveStatus}
-          saveDisabledReason="로그인 후 저장할 수 있습니다."
-        />
-      ) : mode === "roster" ? (
-        <main className="roster-shell">
-          {roster && (
-            <MemberRosterTab roster={roster} onChange={handleRosterChange} />
-          )}
-        </main>
-      ) : (
-        <ReportViewer report={report} reports={reports} />
-      )}
+        }}
+      />
     </main>
   );
 }
