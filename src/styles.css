@@ -2605,3 +2605,53 @@ button:disabled {
   margin-top: 6px;
   font-weight: 600;
 }
+
+/* ── AppModeToggle ── */
+.app-mode-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: var(--clr-card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--clr-border);
+}
+
+.app-mode-toggle-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.app-mode-toggle-buttons {
+  display: flex;
+  gap: 0;
+  background: var(--clr-surface);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.app-mode-btn {
+  flex: 1;
+  background: transparent;
+  color: var(--clr-text-muted);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 12px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.app-mode-btn.active {
+  background: var(--clr-card-bg);
+  color: var(--clr-primary);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-mode-hint {
+  font-size: 11px;
+  color: var(--clr-text-muted);
+  margin: 0;
+}
