@@ -2981,7 +2981,8 @@ button:disabled {
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px 6px;
-  background: color-mix(in srgb, var(--clr-primary) 70%, #000);
+  background: var(--clr-primary);   /* top-bar와 동일 색 → box-shadow 줄 제거 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12); /* 콘텐츠와 미세 구분선 */
 }
 
 .mobile-back-btn {
@@ -3188,9 +3189,9 @@ button:disabled {
     border-radius: 0;
   }
 
-  /* 탭 패널: D스타일 카드 레이아웃 */
+  /* 탭 패널: 좌우 패딩 제거 → editor-workspace의 12px만 사용 (계정탭 카드 너비와 통일) */
   .mobile-editor-screen .report-tab-panel {
-    padding: 14px;
+    padding: 12px 0;
     display: flex;
     flex-direction: column;
     gap: 12px;
