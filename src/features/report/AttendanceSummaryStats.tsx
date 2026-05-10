@@ -95,7 +95,7 @@ function StatRow({ row }: { row: RowData }) {
 type Props = { reports: MinistryReport[]; currentYear: number };
 
 export function AttendanceSummaryStats({ reports, currentYear }: Props) {
-  const [activeDept, setActiveDept] = useState<StatDept>("middleHigh");
+  const [activeDept, setActiveDept] = useState<StatDept>("elementary");
   const [activeView, setActiveView] = useState<ViewMode>("monthly");
 
   if (reports.length === 0) {
