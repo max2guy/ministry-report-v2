@@ -2184,7 +2184,12 @@ button:disabled {
   box-shadow: 0 1px 4px rgb(0 0 0 / 10%);
 }
 
-.stat-body { display: grid; gap: 8px; }
+.stat-body {
+  display: grid;
+  gap: 8px;
+  min-height: 200px;
+  overflow-y: auto;
+}
 
 .stat-year-label {
   font-size: 15px;
