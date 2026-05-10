@@ -254,7 +254,7 @@ button:disabled {
   border-radius: 14px;
   padding: 5px;
   gap: 4px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   position: sticky;
   top: 0;
   z-index: 10;
