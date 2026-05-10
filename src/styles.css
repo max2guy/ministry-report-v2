@@ -1990,9 +1990,9 @@ button:disabled {
 .report-tab-bar {
   border-bottom: 1px solid var(--clr-border);
   display: flex;
-  gap: 0;
+  gap: 4px;
   overflow-x: auto;
-  padding: 0 8px;
+  padding: 6px 8px;
   scrollbar-width: none;
 }
 
@@ -2003,19 +2003,19 @@ button:disabled {
 .report-tab-btn {
   background: transparent;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-radius: 8px;
   color: var(--clr-text-secondary);
   flex-shrink: 0;
   font-size: 14px;
   opacity: 0.5;
-  padding: 10px 14px;
+  padding: 8px 14px;
   white-space: nowrap;
-  transition: color 0.15s, opacity 0.15s;
+  transition: background 0.15s, color 0.15s, opacity 0.15s;
 }
 
 .report-tab-btn.is-active {
-  border-bottom-color: var(--clr-primary);
-  color: var(--clr-primary);
+  background: var(--clr-primary);
+  color: #fff;
   font-weight: 700;
   opacity: 1;
 }
