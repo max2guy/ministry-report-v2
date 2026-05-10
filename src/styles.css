@@ -3128,6 +3128,11 @@ button:disabled {
     gap: 12px;
   }
 
+  /* hidden 패널은 반드시 숨김 (specificity 우선순위 보장) */
+  .mobile-editor-screen .report-tab-panel[hidden] {
+    display: none;
+  }
+
   /* 기본정보·부서·기도 섹션: 카드 */
   .mobile-editor-screen .info-row,
   .mobile-editor-screen .department-edit,
