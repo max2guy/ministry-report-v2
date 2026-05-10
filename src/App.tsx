@@ -621,6 +621,7 @@ export function App() {
             명단관리
           </button>
         </div>
+        <p className="app-version-label desktop-only">v{__APP_VERSION__}</p>
       </header>
       {/* Mobile-only: MobileReportList home OR editor screen */}
       <div className="mobile-only">
@@ -650,6 +651,7 @@ export function App() {
               </div>
             </div>
             {currentAccount?.role === "admin" && <GithubSettingsPanel />}
+            <p className="app-version-label">v{__APP_VERSION__}</p>
           </div>
         ) : mobileTab === "roster" ? (
           <main className="roster-shell">
