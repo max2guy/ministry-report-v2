@@ -267,7 +267,7 @@ button:disabled {
 /* ── 통계 패널 ── */
 .dstats-panel {
   background: var(--clr-card-bg);
-  border: 1px solid var(--clr-border);
+  border: 1.5px solid var(--clr-border);
   border-radius: 12px;
   padding: 16px;
   display: flex;
@@ -848,7 +848,7 @@ button:disabled {
 
 .report-canvas {
   background: var(--clr-card-bg);
-  border: 1px solid var(--clr-border);
+  border: 1.5px solid var(--clr-border);
   border-radius: 8px;
   box-shadow: 0 12px 32px rgb(23 33 29 / 7%);
   display: grid;
@@ -1017,7 +1017,7 @@ button:disabled {
 
 .account-panel {
   background: var(--clr-card-bg);
-  border: 1px solid var(--clr-border);
+  border: 1.5px solid var(--clr-border);
   border-radius: 8px;
   padding: 14px;
 }
@@ -1053,7 +1053,7 @@ button:disabled {
 
 .admin-manager {
   background: var(--clr-card-bg);
-  border: 1px solid var(--clr-border);
+  border: 1.5px solid var(--clr-border);
   border-radius: 8px;
   padding: 14px;
 }
@@ -1077,7 +1077,7 @@ button:disabled {
 
 .history-panel {
   background: var(--clr-card-bg);
-  border: 1px solid var(--clr-border);
+  border: 1.5px solid var(--clr-border);
   border-radius: 8px;
   padding: 14px;
 }
@@ -2094,7 +2094,7 @@ button:disabled {
 /* ── TabbedReportForm ── */
 .tabbed-report-form {
   background: var(--clr-card-bg);
-  border: 1px solid var(--clr-border);
+  border: 1.5px solid var(--clr-border);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -2257,7 +2257,7 @@ button:disabled {
 /* ── 출결 통계 (bar-chart / report-canvas 스타일) ─────────── */
 .stat-section {
   background: var(--clr-card-bg);
-  border: 1px solid var(--clr-border);
+  border: 1.5px solid var(--clr-border);
   border-radius: 8px;
   box-shadow: 0 12px 32px rgb(23 33 29 / 7%);
   display: grid;
@@ -2450,7 +2450,7 @@ button:disabled {
 /* ── 중고등부 섹션 분리 ─────────────────────────────────────── */
 .roster-group-section {
   margin-bottom: 16px;
-  border: 1px solid var(--clr-border);
+  border: 1.5px solid var(--clr-border);
   border-radius: 8px;
   overflow: hidden;
 }
