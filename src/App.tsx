@@ -692,18 +692,21 @@ export function App() {
           />
         ) : (
           <div className="mobile-editor-screen">
-            <div className="mobile-editor-back-bar">
-              <button
-                type="button"
-                className="mobile-back-btn"
-                onClick={() => setMobileScreen("list")}
-              >
-                ‹ 보고서 목록
-              </button>
-              {appMode === "viewer" && (
+            {appMode === "viewer" ? (
+              <div className="mobile-editor-back-bar mobile-editor-back-bar--viewer">
                 <span className="mobile-viewer-badge">뷰어 모드</span>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="mobile-editor-back-bar">
+                <button
+                  type="button"
+                  className="mobile-back-btn"
+                  onClick={() => setMobileScreen("list")}
+                >
+                  ‹ 보고서 목록
+                </button>
+              </div>
+            )}
             {appMode === "reporter" ? (
               <>
                 <ReportEditor

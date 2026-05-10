@@ -3082,8 +3082,12 @@ button:disabled {
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px 6px;
-  background: var(--clr-primary);   /* top-bar와 동일 색 → box-shadow 줄 제거 */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12); /* 콘텐츠와 미세 구분선 */
+  background: var(--clr-primary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.mobile-editor-back-bar--viewer {
+  justify-content: center;
 }
 
 .mobile-back-btn {
