@@ -14,7 +14,7 @@ const DEPT_TABS: { key: DepartmentKey; label: string }[] = [
   { key: "elementary", label: "유초등부" },
   { key: "middleHigh", label: "중고등부" },
   { key: "youngAdult", label: "청년부" },
-  { key: "adult", label: "장년부" },
+  { key: "adult", label: "교구" },
 ];
 
 export function MemberRosterTab({ roster, onChange }: Props) {

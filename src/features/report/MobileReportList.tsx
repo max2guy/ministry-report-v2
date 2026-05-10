@@ -20,7 +20,7 @@ const DEPT_LABELS: { key: "elementary" | "middleHigh" | "youngAdult" | "adult"; 
   { key: "elementary", label: "유초등부" },
   { key: "middleHigh", label: "중고등부" },
   { key: "youngAdult", label: "청년부" },
-  { key: "adult", label: "장년부" },
+  { key: "adult", label: "교구" },
 ];
 
 function deptSummary(report: MinistryReport): string {
