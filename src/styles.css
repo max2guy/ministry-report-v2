@@ -469,31 +469,69 @@ button:disabled {
 .dstats-district {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0;
+  margin-bottom: 8px;
+}
+
+.dstats-district-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 8px 12px;
+  border-left: 3px solid var(--clr-primary);
   margin-bottom: 4px;
 }
 
-.dstats-district-label {
-  font-size: 11px;
+.dstats-district-header-text {
+  font-size: 13px;
   font-weight: 700;
   color: var(--clr-primary);
-  margin: 0;
 }
 
 .dstats-zone-row {
   display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  border-top: 1px solid var(--clr-border-soft);
+}
+
+.dstats-zone-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 52px;
+  flex-shrink: 0;
 }
 
 .dstats-zone-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--clr-text);
+  line-height: 1.2;
+}
+
+.dstats-zone-leader {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--clr-text-secondary);
-  min-width: 36px;
-  padding-top: 3px;
+  color: var(--clr-text-muted);
+  line-height: 1.2;
+}
+
+.dstats-zone-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex: 1;
+}
+
+.dstats-zone-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: #dc2626;
+  white-space: nowrap;
   flex-shrink: 0;
+  min-width: 28px;
+  text-align: right;
 }
 
 .edit-panel {

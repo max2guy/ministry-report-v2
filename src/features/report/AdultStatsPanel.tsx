@@ -90,16 +90,31 @@ export function AdultStatsPanel({ dept, reportDate, reports }: Props) {
               z.members.some((m) => m.status === "absent"),
             );
             if (!districtHasAbsent) return null;
+
+            // 교구 헤더: 구역 번호 범위 + 교구장(첫 번째 구역 리더)
+            const zoneNums = districtZones.map((z) => parseInt(z.name)).filter((n) => !isNaN(n));
+            const minZone = Math.min(...zoneNums);
+            const maxZone = Math.max(...zoneNums);
+            const elderName = districtZones[0]?.members.find((m) => m.role === "leader")?.name ?? "";
+
             return (
               <div key={d} className="dstats-district">
-                <p className="dstats-district-label">{d}교구</p>
+                <div className="dstats-district-header">
+                  <span className="dstats-district-header-text">
+                    {d}교구 ({minZone}~{maxZone}구역) · 교구장 {elderName}
+                  </span>
+                </div>
                 {districtZones.map((z) => {
                   const absentMembers = z.members.filter((m) => m.status === "absent");
                   if (absentMembers.length === 0) return null;
+                  const leaderName = z.members.find((m) => m.role === "leader")?.name ?? "";
                   return (
                     <div key={z.id} className="dstats-zone-row">
-                      <span className="dstats-zone-name">{z.name}</span>
-                      <div className="dstats-pills">
+                      <div className="dstats-zone-info">
+                        <span className="dstats-zone-name">{z.name}</span>
+                        {leaderName && <span className="dstats-zone-leader">{leaderName}</span>}
+                      </div>
+                      <div className="dstats-zone-pills">
                         {absentMembers.map((m) => {
                           const streak = streaks.find((s) => s.id === m.id)?.streak ?? 1;
                           const cls = streak >= 4 ? "streak-danger" : streak >= 2 ? "streak-warning" : "";
