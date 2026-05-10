@@ -3,7 +3,6 @@ import type { MinistryReport } from "../../domain/reportTypes";
 
 type MobileReportListProps = {
   reports: MinistryReport[];
-  currentReportId: string;
   appMode: AppMode;
   onSelectReport: (report: MinistryReport) => void;
   onNewReport: () => void;
