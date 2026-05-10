@@ -1341,14 +1341,14 @@ button:disabled {
     padding: 0;
   }
 
-  /* 상단바: 알림바 영역까지 배경색 확장 (viewport-fit=cover 연동) */
+  /* 상단바: theme-color와 동일한 solid primary로 seamless 연결 */
   .top-bar {
     background: var(--clr-primary);
     border-radius: 0;
     flex-direction: column;
     align-items: stretch;
     margin: 0;
-    padding: calc(16px + env(safe-area-inset-top)) 16px 0;
+    padding: 16px 16px 0;
     gap: 0;
     position: sticky;
     top: 0;
