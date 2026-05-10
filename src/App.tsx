@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Account } from "./auth/authTypes";
 import { onAuthChange, signOut as firebaseSignOut } from "./auth/firebaseAuthStore";
 import { ThemeSelector } from "./features/theme/ThemeSelector";
@@ -145,6 +145,22 @@ function downloadCurrentReport(report: MinistryReport) {
 export function App() {
   useEffect(() => {
     applyTheme(getStoredTheme());
+  }, []);
+
+  // fixed 헤더 높이를 CSS 변수로 동기화 (모바일 콘텐츠 padding-top 용)
+  const topBarRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const el = topBarRef.current;
+    if (!el) return;
+    const update = () =>
+      document.documentElement.style.setProperty(
+        "--top-bar-height",
+        `${el.offsetHeight}px`,
+      );
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
   const { state: installState, triggerInstall } = useInstallPrompt();
@@ -548,7 +564,7 @@ export function App() {
           </div>
         </div>
       )}
-      <header className="top-bar">
+      <header className="top-bar" ref={topBarRef}>
         <div className="top-bar-title-row">
           <div className="top-bar-title-group">
             <span className="top-bar-date">

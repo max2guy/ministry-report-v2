@@ -1341,18 +1341,37 @@ button:disabled {
     padding: 0;
   }
 
-  /* 상단바: theme-color와 동일한 solid primary로 seamless 연결 */
+  /* 상단바: fixed + viewport-fit=cover로 WebView가 status bar 뒤까지 확장 */
   .top-bar {
     background: var(--clr-primary);
     border-radius: 0;
     flex-direction: column;
     align-items: stretch;
     margin: 0;
-    padding: 16px 16px 0;
+    padding: calc(env(safe-area-inset-top) + 16px) 16px 0;
     gap: 0;
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 50;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+
+  /* 방안 B: ::before로 뷰포트 위쪽을 primary 색으로 메움 (픽셀 반올림 보조) */
+  .top-bar::before {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: var(--clr-primary);
+    z-index: -1;
+  }
+
+  /* fixed 헤더 높이만큼 콘텐츠 밀어내기 */
+  .app-shell {
+    padding-top: var(--top-bar-height, 90px);
   }
 
   /* 헤더 타이틀 행 */
