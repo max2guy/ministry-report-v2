@@ -160,10 +160,10 @@ export function AttendanceSummaryStats({ reports, currentYear }: Props) {
 
       <div className="stat-body">
         {activeView === "annual" && (
-          <>
+          <div>
             <p className="stat-year-label">연도별 평균 출결률</p>
             {rows.map(row => <StatRow key={row.label} row={row} />)}
-          </>
+          </div>
         )}
         {activeView === "monthly" && yearGroups.map(({ year, rows: yrows }) => (
           <div key={year}>
