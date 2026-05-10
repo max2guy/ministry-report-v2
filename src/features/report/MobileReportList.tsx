@@ -17,10 +17,10 @@ function formatDate(dateStr: string): string {
 }
 
 const DEPT_LABELS: { key: "elementary" | "middleHigh" | "youngAdult" | "adult"; label: string }[] = [
-  { key: "elementary", label: "초등" },
-  { key: "middleHigh", label: "중고등" },
-  { key: "youngAdult", label: "청년" },
-  { key: "adult", label: "장년" },
+  { key: "elementary", label: "유초등부" },
+  { key: "middleHigh", label: "중고등부" },
+  { key: "youngAdult", label: "청년부" },
+  { key: "adult", label: "장년부" },
 ];
 
 function deptSummary(report: MinistryReport): string {
