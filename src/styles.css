@@ -2937,3 +2937,82 @@ button:disabled {
   flex-direction: column;
   gap: 12px;
 }
+
+/* ── 모바일 데이터 패널 (계정 탭) ── */
+.mobile-data-panel {
+  background: var(--clr-card-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  padding: 14px 16px;
+}
+
+.mobile-data-panel-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 10px;
+}
+
+.mobile-data-panel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-data-btn {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 8px;
+  border: 1.5px solid var(--clr-border);
+  background: var(--clr-card-bg);
+  color: var(--clr-text);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* ── 모바일 저장바 ── */
+.mobile-save-bar {
+  display: none;
+}
+
+@media (max-width: 820px) {
+  .mobile-save-bar {
+    display: block;
+    position: fixed;
+    bottom: calc(56px + env(safe-area-inset-bottom));
+    left: 0;
+    right: 0;
+    padding: 8px 16px;
+    background: var(--clr-bg);
+    border-top: 1px solid var(--clr-border);
+    z-index: 90;
+  }
+
+  .mobile-save-bar-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, var(--clr-primary), color-mix(in srgb, var(--clr-primary) 70%, #000));
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 10px color-mix(in srgb, var(--clr-primary) 40%, transparent);
+    transition: opacity 0.15s;
+  }
+
+  .mobile-save-bar-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* 저장바 공간 확보: 편집 폼 하단 패딩 */
+  .mobile-editor-screen .tabbed-report-form {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+}

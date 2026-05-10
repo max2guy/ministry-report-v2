@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { hasMemberCards, hasZones } from "../../domain/reportMembers";
 import type {
   DepartmentKey,
@@ -51,6 +51,13 @@ function listToText(value: string[]): string {
 export function TabbedReportForm({ report, reports, onChange }: Props) {
   const currentYear = new Date().getFullYear();
   const [activeTab, setActiveTab] = useState<TabKey>("info");
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  function handleTabChange(key: TabKey) {
+    setActiveTab(key);
+    const btn = tabRefs.current[key];
+    btn?.scrollIntoView({ inline: "center", behavior: "smooth", block: "nearest" });
+  }
 
   function updateReport(patch: Partial<MinistryReport>) {
     const now = new Date().toISOString();
@@ -75,11 +82,12 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
         {TABS.map((tab) => (
           <button
             key={tab.key}
+            ref={(el) => { tabRefs.current[tab.key] = el; }}
             type="button"
             role="tab"
             aria-selected={activeTab === tab.key}
             className={`report-tab-btn${activeTab === tab.key ? " is-active" : ""}`}
-            onClick={() => setActiveTab(tab.key)}
+            onClick={() => handleTabChange(tab.key)}
           >
             {tab.label}
           </button>

@@ -46,11 +46,12 @@ export function mergeRosterFromReport(
       .filter((m) => m.name)
       .map((m): RosterMember => {
         const prev = existingMap.get(m.id);
+        const group = m.group ?? prev?.group;
         return {
           id: m.id,
           name: m.name,
           ...(prev?.phone && { phone: prev.phone }),
-          ...(m.group && { group: m.group }),
+          ...(group !== undefined && { group }),
           ...(m.role && { role: m.role }),
         };
       });
