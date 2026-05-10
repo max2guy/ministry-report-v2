@@ -1219,7 +1219,7 @@ button:disabled {
 
 .auth-gate-card {
   background: var(--clr-card-bg);
-  border-radius: 20px;
+  border-radius: 16px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
   padding: 28px 24px;
   width: 100%;
@@ -2673,6 +2673,7 @@ button:disabled {
     bottom: 0;
     left: 0;
     right: 0;
+    min-height: 56px;
     background: var(--clr-card-bg);
     border-top: 1px solid var(--clr-border);
     box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);

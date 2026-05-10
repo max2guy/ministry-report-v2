@@ -2,7 +2,6 @@ import type { Account } from "../../auth/authTypes";
 import { GoogleSignInButton } from "./GoogleSignInButton";
 
 type AuthGateProps = {
-  onCreated: (account: Account) => void;
   onSignedIn: (account: Account) => void;
 };
 

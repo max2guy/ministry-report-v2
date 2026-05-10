@@ -508,7 +508,7 @@ export function App() {
   if (!currentAccount) {
     return (
       <main className="app-shell auth-shell">
-        <AuthGate onCreated={handleSignedIn} onSignedIn={handleSignedIn} />
+        <AuthGate onSignedIn={handleSignedIn} />
       </main>
     );
   }
@@ -756,6 +756,9 @@ export function App() {
             setMobileScreen("list");
           } else if (tab === "roster") {
             setMode("roster");
+            setMobileScreen("list");
+          } else {
+            setMobileScreen("list");
           }
         }}
       />
