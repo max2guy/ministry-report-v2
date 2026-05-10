@@ -29,7 +29,7 @@ describe("migrateLegacyReport", () => {
         elementary: { name: "유초등부", attendance: 9 },
         middleHigh: { name: "중고등부", attendance: 12 },
         youngAdult: { name: "청년부", attendance: 30 },
-        adult: { name: "장년", attendance: 80 },
+        adult: { name: "교구", attendance: 80 },
       },
     });
     expect(result.warnings).toEqual([]);

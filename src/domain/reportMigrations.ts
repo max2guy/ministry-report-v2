@@ -169,7 +169,7 @@ export function migrateLegacyReport(
         }),
         adult: departmentReport({
           key: "adult",
-          name: "장년",
+          name: "교구",
           legacyDepartment: objectRecord(departments.adult),
           legacyGroup: adult,
           fallbackAttendance: attendance.adult,

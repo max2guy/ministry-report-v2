@@ -23,7 +23,7 @@ const DEPARTMENT_NAMES: Record<DepartmentKey, string> = {
   elementary: "유초등부",
   middleHigh: "중고등부",
   youngAdult: "청년부",
-  adult: "장년",
+  adult: "교구",
 };
 
 function objectRecord(value: unknown): Record<string, unknown> {

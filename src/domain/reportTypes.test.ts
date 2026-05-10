@@ -16,7 +16,7 @@ describe("createEmptyReport", () => {
     expect(report.departments.elementary.name).toBe("유초등부");
     expect(report.departments.middleHigh.name).toBe("중고등부");
     expect(report.departments.youngAdult.name).toBe("청년부");
-    expect(report.departments.adult.name).toBe("장년");
+    expect(report.departments.adult.name).toBe("교구");
     expect(report.departments.elementary.members?.map((member) => member.name)).toEqual([
       "권상우",
       "천주아",
@@ -103,7 +103,7 @@ describe("createEmptyReport", () => {
         },
         adult: {
           key: "adult",
-          name: "장년",
+          name: "교구",
           attendance: 0,
           newVisitors: 0,
           summary: "",

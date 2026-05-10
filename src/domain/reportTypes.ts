@@ -346,7 +346,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
       },
       adult: {
         key: "adult",
-        name: "장년",
+        name: "교구",
         attendance: deriveAdultAttendance(adultZones),
         newVisitors: 0,
         summary: "",
