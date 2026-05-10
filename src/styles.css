@@ -197,7 +197,7 @@ button:disabled {
 .pwa-installed-badge {
   font-size: 12px;
   font-weight: 700;
-  color: #1ce783;
+  color: var(--clr-primary-light);
   flex-shrink: 0;
 }
 
