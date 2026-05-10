@@ -2188,8 +2188,6 @@ button:disabled {
 .stat-body {
   display: grid;
   gap: 8px;
-  min-height: 200px;
-  overflow-y: auto;
 }
 
 .stat-year-label {
