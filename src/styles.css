@@ -2713,3 +2713,122 @@ button:disabled {
     padding-bottom: calc(70px + env(safe-area-inset-bottom));
   }
 }
+
+/* ── MobileReportList ── */
+.mobile-report-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+}
+
+.mobile-report-new-btn {
+  background: linear-gradient(135deg, var(--clr-primary) 0%, color-mix(in srgb, var(--clr-primary) 80%, #009966) 100%);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 16px rgba(var(--clr-primary-rgb), 0.3);
+  color: #fff;
+  text-align: left;
+  width: 100%;
+}
+
+.mobile-report-new-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mobile-report-new-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.mobile-report-new-date {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.mobile-report-new-icon {
+  font-size: 24px;
+  opacity: 0.8;
+}
+
+.mobile-report-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 4px 2px 0;
+}
+
+.mobile-report-card-list {
+  display: flex;
+  flex-direction: column;
+  background: var(--clr-card-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.mobile-report-card {
+  background: transparent;
+  color: inherit;
+  font-weight: inherit;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--clr-border-soft);
+  text-align: left;
+  width: 100%;
+  gap: 8px;
+}
+
+.mobile-report-card:last-child {
+  border-bottom: none;
+}
+
+.mobile-report-card:active {
+  background: var(--clr-surface);
+}
+
+.mobile-report-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.mobile-report-card-date {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+.mobile-report-card-summary {
+  font-size: 11px;
+  color: var(--clr-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-report-card-chevron {
+  font-size: 18px;
+  color: var(--clr-border);
+  flex-shrink: 0;
+}
+
+.mobile-report-empty {
+  text-align: center;
+  color: var(--clr-text-muted);
+  font-size: 14px;
+  padding: 40px 16px;
+}
