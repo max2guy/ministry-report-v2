@@ -267,6 +267,7 @@ button:disabled {
 .dstats-panel {
   background: var(--clr-card-bg);
   border: 1px solid var(--clr-border);
+  border-top: 3px solid var(--clr-primary);  /* 상단 컬러 강조선 */
   border-radius: 12px;
   padding: 16px;
   display: flex;
@@ -283,7 +284,7 @@ button:disabled {
 .dstats-name {
   font-size: 14px;
   font-weight: 700;
-  color: var(--clr-text);
+  color: var(--clr-primary);
 }
 
 .dstats-date {
@@ -684,7 +685,8 @@ button:disabled {
 .attendance-card.is-present {
   background: var(--clr-present-bg);
   border-color: var(--clr-primary);
-  color: var(--clr-text);
+  color: var(--clr-primary);   /* 출석자 이름을 primary 색으로 강조 */
+  font-weight: 700;
 }
 
 .attendance-card.is-absent {
@@ -1723,8 +1725,11 @@ button:disabled {
 
 .roster-zone-count {
   font-size: 11px;
-  color: var(--clr-text-muted);
-  font-weight: 400;
+  font-weight: 600;
+  color: var(--clr-primary);
+  background: var(--clr-present-bg);
+  border-radius: 20px;
+  padding: 1px 7px;
 }
 
 .roster-zone-chevron {
@@ -2024,6 +2029,7 @@ button:disabled {
 }
 
 .report-tab-bar {
+  background: rgba(var(--clr-primary-rgb), 0.05);  /* 탭바 은은한 주색 배경 */
   border-bottom: 1px solid var(--clr-border);
   display: flex;
   gap: 4px;
@@ -2111,7 +2117,7 @@ button:disabled {
 .report-tab-panel legend {
   font-size: 15px;
   font-weight: 700;
-  color: var(--clr-text);
+  color: var(--clr-primary);   /* 섹션 제목을 주색으로 강조 */
   margin-bottom: 8px;
 }
 
@@ -2880,7 +2886,7 @@ button:disabled {
 .mobile-report-card-date {
   font-size: 13px;
   font-weight: 700;
-  color: var(--clr-text);
+  color: var(--clr-primary);   /* 보고서 날짜를 주색으로 */
 }
 
 .mobile-report-card-summary {
@@ -3089,11 +3095,16 @@ button:disabled {
 }
 
 .mobile-editor-screen .report-mode {
-  padding: 0;             /* 모든 여백 제거 → 카드 너비 계정탭과 통일 */
+  padding: 0;             /* 외부 그리드 여백 제거 */
 }
 
 .mobile-editor-screen .editor-workspace {
-  padding: 0;             /* 좌우 패딩 제거 → 너비 최대 확보 */
+  padding: 0 12px;        /* 좌우 여백만 유지 → 카드가 화면 끝에 붙지 않음 */
+}
+
+/* 뷰어 모드: 좌우 여백 */
+.mobile-editor-screen .viewer-mode {
+  padding: 0 12px 20px;
 }
 
 /* ── 모바일 데이터 패널 (계정 탭) ── */

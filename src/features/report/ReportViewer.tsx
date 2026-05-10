@@ -19,11 +19,6 @@ export function ReportViewer({ report, reports }: ReportViewerProps) {
 
   return (
     <section className="report-mode viewer-mode">
-      <div className="viewer-actions" aria-label="뷰어 작업">
-        <button type="button" onClick={() => window.print()}>
-          인쇄
-        </button>
-      </div>
       <ReportCanvas report={report} />
 
       {hasStats && (
