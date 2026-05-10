@@ -42,6 +42,21 @@ export function ReportViewer({ report, reports, activeTabIdx, tabs, onTabChange 
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      {/* 데스크탑 전용 탭 바 (모바일에서는 CSS로 숨김 — 모바일은 헤더 탭 바 사용) */}
+      {tabs.length > 1 && (
+        <div className="viewer-dept-tabs viewer-dept-tabs--desktop">
+          {tabs.map((tab, i) => (
+            <button
+              key={tab.key}
+              type="button"
+              className={`viewer-dept-tab-btn${i === activeTabIdx ? " is-active" : ""}`}
+              onClick={() => onTabChange(i)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      )}
       {activeKey === "summary" ? (
         <ReportCanvas report={report} />
       ) : activeKey === "adult" ? (

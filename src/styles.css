@@ -257,11 +257,17 @@ button:disabled {
   margin-bottom: 0;
 }
 
-/* 헤더 통합 탭 바 */
+/* 헤더 통합 탭 바 — 모바일 전용 (데스크탑에서는 숨김) */
 .viewer-dept-tabs--in-header {
+  display: none;
   background: rgba(0, 0, 0, 0.18);
   border-radius: 10px;
   margin: 6px 0 0;
+}
+
+/* 데스크탑 전용 뷰어 탭 바 (뷰어 콘텐츠 상단) */
+.viewer-dept-tabs--desktop {
+  margin-bottom: 12px;
 }
 
 .viewer-dept-tab-btn {
@@ -1550,6 +1556,14 @@ button:disabled {
   .roster-shell,
   .report-mode {
     padding: 12px;
+  }
+
+  /* 모바일에서 헤더 탭 바 표시, 데스크탑 탭 바 숨김 */
+  .viewer-dept-tabs--in-header {
+    display: flex;
+  }
+  .viewer-dept-tabs--desktop {
+    display: none;
   }
 }
 
