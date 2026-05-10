@@ -1363,7 +1363,8 @@ button:disabled {
   }
 
   /* 세그먼트 컨트롤: 모바일에서 숨김 (하단 탭바로 대체) */
-  .segmented-control {
+  /* 단, 명단 부서 탭은 예외 */
+  .segmented-control:not(.roster-dept-tabs) {
     display: none;
   }
 
