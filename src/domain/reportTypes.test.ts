@@ -23,10 +23,10 @@ describe("createEmptyReport", () => {
     ]);
     expect(
       report.departments.elementary.members?.every(
-        (member) => member.status === "present",
+        (member) => member.status === "absent",
       ),
     ).toBe(true);
-    expect(report.departments.elementary.attendance).toBe(2);
+    expect(report.departments.elementary.attendance).toBe(0);
   });
 
   it("copies an existing report as a fresh draft", () => {

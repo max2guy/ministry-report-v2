@@ -64,7 +64,7 @@ export function createDepartmentMembers(names: string[]): DepartmentMember[] {
   return names.map((name) => ({
     id: crypto.randomUUID(),
     name,
-    status: "present",
+    status: "absent",
   }));
 }
 
@@ -81,7 +81,7 @@ function createZone(
       id: crypto.randomUUID(),
       name: n,
       role,
-      status: "present",
+      status: "absent",
     })),
   };
 }
@@ -265,7 +265,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
   const elementaryMembers = (() => {
     if (roster?.departments.elementary.kind === "flat") {
       return roster.departments.elementary.members.map(m => ({
-        id: m.id, name: m.name, status: "present" as const, role: m.role, phone: m.phone,
+        id: m.id, name: m.name, status: "absent" as const, role: m.role, phone: m.phone,
       }));
     }
     return createDepartmentMembers(["권상우", "천주아"]);
@@ -274,7 +274,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
   const middleHighMembers = (() => {
     if (roster?.departments.middleHigh.kind === "flat") {
       return roster.departments.middleHigh.members.map(m => ({
-        id: m.id, name: m.name, status: "present" as const, role: m.role, phone: m.phone,
+        id: m.id, name: m.name, status: "absent" as const, role: m.role, phone: m.phone,
       }));
     }
     return createDepartmentMembers([
@@ -287,7 +287,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
   const youngAdultMembers = (() => {
     if (roster?.departments.youngAdult.kind === "flat") {
       return roster.departments.youngAdult.members.map(m => ({
-        id: m.id, name: m.name, status: "present" as const, role: m.role, phone: m.phone,
+        id: m.id, name: m.name, status: "absent" as const, role: m.role, phone: m.phone,
       }));
     }
     return createDepartmentMembers([
@@ -305,7 +305,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
         name: z.name,
         district: z.district,
         members: z.members.map(m => ({
-          id: m.id, name: m.name, status: "present" as const, role: m.role, phone: m.phone,
+          id: m.id, name: m.name, status: "absent" as const, role: m.role, phone: m.phone,
         })),
       }));
     }
@@ -323,7 +323,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
       elementary: {
         key: "elementary",
         name: "유초등부",
-        attendance: elementaryMembers.length,
+        attendance: 0,
         newVisitors: 0,
         summary: "",
         members: elementaryMembers,
@@ -331,7 +331,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
       middleHigh: {
         key: "middleHigh",
         name: "중고등부",
-        attendance: middleHighMembers.length,
+        attendance: 0,
         newVisitors: 0,
         summary: "",
         members: middleHighMembers,
@@ -339,7 +339,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
       youngAdult: {
         key: "youngAdult",
         name: "청년부",
-        attendance: youngAdultMembers.length,
+        attendance: 0,
         newVisitors: 0,
         summary: "",
         members: youngAdultMembers,
