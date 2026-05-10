@@ -2187,9 +2187,9 @@ button:disabled {
 .stat-body { display: grid; gap: 8px; }
 
 .stat-year-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--clr-text-secondary);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--clr-text);
   margin: 8px 0 4px;
 }
 
