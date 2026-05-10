@@ -264,10 +264,11 @@ button:disabled {
   gap: 14px;
 }
 
+/* ── 통계 패널 ── */
 .dstats-panel {
   background: var(--clr-card-bg);
   border: 1px solid var(--clr-border);
-  border-top: 3px solid var(--clr-primary);  /* 상단 컬러 강조선 */
+  border-top: 3px solid var(--clr-primary);
   border-radius: 12px;
   padding: 16px;
   display: flex;
@@ -282,127 +283,144 @@ button:disabled {
 }
 
 .dstats-name {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 800;
   color: var(--clr-primary);
 }
+
+/* 출석률 배지 */
+.dstats-rate-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.dstats-rate-badge.rate-good { background: #dcfce7; color: #15803d; }
+.dstats-rate-badge.rate-mid  { background: #fef3c7; color: #b45309; }
+.dstats-rate-badge.rate-low  { background: #fee2e2; color: #b91c1c; }
 
 .dstats-date {
   font-size: 11px;
   color: var(--clr-text-muted);
 }
 
-.dstats-hero {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-}
-
-.dstats-hero-value {
-  font-size: 38px;
-  font-weight: 800;
-  color: var(--clr-primary);
-  line-height: 1;
-}
-
-.dstats-hero-label {
-  font-size: 14px;
-  color: var(--clr-text-muted);
-}
-
+/* 출석/결석/전체 카운트 */
 .dstats-counts {
   display: flex;
-  gap: 20px;
+  align-items: stretch;
+  background: var(--clr-surface);
+  border-radius: 10px;
+  padding: 10px 0;
 }
 
 .dstats-count-item {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 3px;
+}
+
+.dstats-count-divider {
+  width: 1px;
+  background: var(--clr-border);
+  margin: 4px 0;
 }
 
 .dstats-count-num {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
   color: var(--clr-text);
+  line-height: 1;
+}
+
+.dstats-count-unit {
+  font-size: 13px;
+  font-weight: 500;
+  font-style: normal;
+  margin-left: 2px;
 }
 
 .dstats-present { color: var(--clr-primary); }
-.dstats-absent  { color: #d94f4f; }
+.dstats-absent  { color: #dc2626; }
 
 .dstats-count-label {
   font-size: 11px;
   color: var(--clr-text-muted);
 }
 
+/* 섹션 */
 .dstats-section {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   border-top: 1px solid var(--clr-border-soft);
   padding-top: 10px;
 }
 
 .dstats-section-title {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--clr-text-muted);
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--clr-text-secondary);
   margin: 0;
 }
 
+/* 결석자/연속결석 pill 컨테이너 */
 .dstats-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
 }
 
-.dstats-pill {
-  background: var(--clr-surface);
+/* 결석자 pill: 빨간 테두리 스타일 */
+.dstats-absent-pill {
+  background: #fef2f2;
+  border: 1.5px solid #fca5a5;
+  color: #b91c1c;
   border-radius: 99px;
-  padding: 2px 10px;
+  padding: 3px 12px;
   font-size: 12px;
-  color: var(--clr-text-secondary);
+  font-weight: 500;
 }
+/* 장기 결석자 강조 */
+.dstats-absent-pill.streak-danger  { background: #fee2e2; border-color: #f87171; }
+.dstats-absent-pill.streak-warning { background: #fef3c7; border-color: #fbbf24; color: #92400e; }
 
-.dstats-pill.streak-warning { background: #fff3cd; color: #7a5c00; }
-.dstats-pill.streak-danger  { background: #fde8e8; color: #b02020; }
-
-.dstats-streak-pill {
-  border-radius: 99px;
-  padding: 2px 10px;
-  font-size: 12px;
+/* 연속결석: 이름(outline) + 주수 배지(solid) */
+.dstats-streak-item {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-}
-
-.dstats-streak-pill.streak-normal {
+  gap: 5px;
   background: var(--clr-surface);
-  color: var(--clr-text-secondary);
+  border: 1px solid var(--clr-border);
+  border-radius: 99px;
+  padding: 3px 4px 3px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--clr-text);
 }
 
-.dstats-streak-pill.streak-warning {
-  background: #fff3cd;
-  color: #7a5c00;
+.dstats-streak-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  line-height: 1.4;
 }
+.dstats-streak-badge.streak-normal  { background: var(--clr-muted); color: #fff; }
+.dstats-streak-badge.streak-warning { background: #f59e0b; color: #fff; }
+.dstats-streak-badge.streak-danger  { background: #dc2626; color: #fff; }
 
-.dstats-streak-pill.streak-danger {
-  background: #fde8e8;
-  color: #b02020;
-}
-
+/* 바 차트 */
 .dstats-bars {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 
 .dstats-bar-row {
   display: grid;
-  grid-template-columns: 52px 1fr 44px;
+  grid-template-columns: 44px 1fr;
   align-items: center;
   gap: 8px;
 }
@@ -414,27 +432,38 @@ button:disabled {
   white-space: nowrap;
 }
 
-.dstats-bar-val {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--clr-text-secondary);
-  white-space: nowrap;
-}
-
-/* Shorter bar for dstats panels */
+/* 바 트랙 */
 .dstats-sbar-track {
-  height: 10px;
+  height: 22px;
   background: var(--clr-surface);
   border-radius: 20px;
   overflow: hidden;
-  display: flex;
-  justify-content: flex-end;
 }
 
-/* Weekly bar: absence-level coloring (low→yellow, high→red) */
-.sbar-absence-low  { background: linear-gradient(to right, #ffe566, #ffc200); }
-.sbar-absence-mid  { background: linear-gradient(to right, #ffc200, #ff7000); }
-.sbar-absence-high { background: linear-gradient(to right, #ff7000, #d42000); }
+/* 바 채우기 (왼쪽→오른쪽) */
+.sbar-fill {
+  height: 100%;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  min-width: 0;
+}
+
+.sbar-fill.sbar-primary { background: var(--clr-primary); }
+.sbar-fill.sbar-absence-low  { background: linear-gradient(to right, #ffe566, #ffc200); }
+.sbar-fill.sbar-absence-mid  { background: linear-gradient(to right, #ffc200, #ff7000); }
+.sbar-fill.sbar-absence-high { background: linear-gradient(to right, #ff7000, #d42000); }
+
+/* 바 내부 라벨 */
+.sbar-fill-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
 
 /* Adult zone styles */
 .dstats-district {
