@@ -86,12 +86,20 @@ export function mergeRosterFromReport(
       return { id: rz.id, name: rz.name, district: rz.district, members };
     });
 
-    // 보고서에 없는 구역도 보존
+    // 보고서에 없는 구역도 보존 (ID 또는 이름으로 중복 방지)
     existingZoneById.forEach((z) => {
-      if (!zones.find((rz) => rz.id === z.id)) zones.push(z);
+      if (!zones.find((rz) => rz.id === z.id || rz.name === z.name)) zones.push(z);
     });
 
-    return { kind: "zoned", zones };
+    // 이름 기준 중복 제거 (첫 번째 항목 우선) — 다른 기기에서 생성된 UUID 충돌 방어
+    const seen = new Set<string>();
+    const deduped = zones.filter((z) => {
+      if (seen.has(z.name)) return false;
+      seen.add(z.name);
+      return true;
+    });
+
+    return { kind: "zoned", zones: deduped };
   }
 
   return {

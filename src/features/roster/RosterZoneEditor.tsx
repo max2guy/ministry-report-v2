@@ -83,7 +83,13 @@ function ZoneSection({
 export function RosterZoneEditor({ roster, onChange }: Props) {
   const adult = roster.departments.adult;
   if (adult.kind !== "zoned") return null;
-  const zones = adult.zones;
+  // 이름 기준 중복 제거 (Firestore에 이미 중복 저장된 경우 방어)
+  const seenNames = new Set<string>();
+  const zones = adult.zones.filter((z) => {
+    if (seenNames.has(z.name)) return false;
+    seenNames.add(z.name);
+    return true;
+  });
   const districts = [...new Set(zones.map(z => z.district))].sort();
 
   function handleZoneUpdate(updatedZone: RosterZone) {

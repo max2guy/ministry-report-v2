@@ -3080,7 +3080,7 @@ button:disabled {
 }
 
 .mobile-editor-screen .report-mode {
-  padding-top: 0;         /* 데스크톱 상단 여백 제거 */
+  padding: 0;             /* 모든 여백 제거 → 카드 너비 계정탭과 통일 */
 }
 
 .mobile-editor-screen .editor-workspace {
