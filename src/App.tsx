@@ -163,18 +163,6 @@ export function App() {
     return () => ro.disconnect();
   }, []);
 
-  // 뷰어 탭 바가 헤더에 추가/제거될 때 높이 재계산 (한 프레임 뒤)
-  useEffect(() => {
-    const el = topBarRef.current;
-    if (!el) return;
-    const id = requestAnimationFrame(() => {
-      document.documentElement.style.setProperty(
-        "--top-bar-height",
-        `${el.offsetHeight}px`,
-      );
-    });
-    return () => cancelAnimationFrame(id);
-  }, [appMode, mobileScreen]);
 
   const { state: installState, triggerInstall } = useInstallPrompt();
 
@@ -198,6 +186,19 @@ export function App() {
   const [pendingMigrationRoster, setPendingMigrationRoster] = useState<
     MemberRoster | undefined
   >();
+
+  // 뷰어 탭 바가 헤더에 추가/제거될 때 높이 재계산 (한 프레임 뒤)
+  useEffect(() => {
+    const el = topBarRef.current;
+    if (!el) return;
+    const id = requestAnimationFrame(() => {
+      document.documentElement.style.setProperty(
+        "--top-bar-height",
+        `${el.offsetHeight}px`,
+      );
+    });
+    return () => cancelAnimationFrame(id);
+  }, [appMode, mobileScreen]);
 
   // Firebase Auth 상태 구독
   useEffect(() => {
