@@ -1,0 +1,4 @@
+{"type":"server-started","port":52135,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:52135","screen_dir":"/Users/kimwoojung/Documents/New project/Projects/ministry-report-v2/.superpowers/brainstorm/96672-1778383503/content","state_dir":"/Users/kimwoojung/Documents/New project/Projects/ministry-report-v2/.superpowers/brainstorm/96672-1778383503/state"}
+{"type":"screen-added","file":"/Users/kimwoojung/Documents/New project/Projects/ministry-report-v2/.superpowers/brainstorm/96672-1778383503/content/mobile-editor-approach.html"}
+{"type":"screen-added","file":"/Users/kimwoojung/Documents/New project/Projects/ministry-report-v2/.superpowers/brainstorm/96672-1778383503/content/mobile-editor-design.html"}
+{"type":"server-stopped","reason":"idle timeout"}

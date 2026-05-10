@@ -1,0 +1,149 @@
+<h2>모바일 편집기 — 개선 방향</h2>
+<p class="subtitle">현재 문제: 데스크톱 사이드바가 폼 위에 그대로 쌓임. 어떻게 고칠까요?</p>
+
+<div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-bottom:24px;">
+
+  <!-- Current (bad) -->
+  <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+    <div style="font-size:11px; font-weight:700; color:#e53935; letter-spacing:.5px;">❌ 현재</div>
+    <div style="width:180px; background:#f0f2f5; border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.12); display:flex; flex-direction:column;">
+      <div style="background:linear-gradient(135deg,#24564a,#1a3d35); padding:10px 14px; font-size:10px; color:rgba(255,255,255,.7);">‹ 보고서 목록</div>
+      <!-- Problem: all sidebar stuff piled up -->
+      <div style="flex:1; padding:8px; display:flex; flex-direction:column; gap:5px; overflow:hidden;">
+        <div style="background:#fff; border-radius:8px; padding:8px 10px; font-size:9px; color:#555;">
+          <div style="font-weight:700; font-size:10px; margin-bottom:4px;">보고자 계정</div>
+          WooJung Isaac Kim<br/>max2guy@gmail.com
+          <div style="background:#24564a; border-radius:6px; padding:5px; text-align:center; color:#fff; font-size:9px; font-weight:700; margin-top:6px;">로그아웃</div>
+        </div>
+        <div style="background:#fff; border-radius:8px; padding:6px 10px; display:flex; flex-direction:column; gap:4px;">
+          <div style="background:#24564a; border-radius:5px; padding:5px; text-align:center; color:#fff; font-size:9px; font-weight:700;">새 보고서</div>
+          <div style="background:#24564a; border-radius:5px; padding:5px; text-align:center; color:#fff; font-size:9px; font-weight:700;">저장</div>
+          <div style="background:#fff; border:1px solid #ccc; border-radius:5px; padding:5px; text-align:center; font-size:9px;">내보내기</div>
+        </div>
+        <div style="background:#fff; border-radius:8px; padding:6px 10px; font-size:9px; color:#999;">JSON 가져오기</div>
+        <div style="background:#fff; border-radius:8px; padding:6px 10px; font-size:9px; color:#555;">GITHUB 백업 설정 (관리자)</div>
+        <!-- Tab bar barely visible at bottom -->
+        <div style="background:#fff; border-radius:8px; padding:5px; display:flex; gap:3px; overflow:hidden;">
+          <div style="background:#e8f4f0; border-radius:4px; padding:4px 6px; font-size:8px; font-weight:700; color:#24564a; white-space:nowrap;">기본정보</div>
+          <div style="padding:4px 6px; font-size:8px; color:#999; white-space:nowrap;">유초등부</div>
+          <div style="padding:4px 6px; font-size:8px; color:#999; white-space:nowrap; opacity:.5;">중고…</div>
+        </div>
+        <div style="font-size:8px; color:#bbb; text-align:center;">↑ 편집 폼은 저 아래...</div>
+      </div>
+      <div style="background:#fff; border-top:1px solid #eee; display:flex; padding:6px 0 10px; box-shadow:0 -2px 10px rgba(0,0,0,.05);">
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:1px;">
+          <span style="font-size:14px;">📋</span><span style="font-size:7px; font-weight:700; color:#24564a;">보고서</span>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:1px; opacity:.4;">
+          <span style="font-size:14px;">👥</span><span style="font-size:7px; color:#aaa;">명단</span>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:1px; opacity:.4;">
+          <span style="font-size:14px;">⚙️</span><span style="font-size:7px; color:#aaa;">계정</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div style="display:flex; align-items:center; font-size:20px; color:#ccc; padding-top:30px;">→</div>
+
+  <!-- Option A: Header save button -->
+  <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+    <div style="font-size:11px; font-weight:700; color:#2e7d32; letter-spacing:.5px;">A · 헤더 저장버튼</div>
+    <div style="width:180px; background:#f0f2f5; border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.12); display:flex; flex-direction:column;" data-choice="A" onclick="toggleSelect(this)">
+      <!-- Header with back + save -->
+      <div style="background:linear-gradient(135deg,#24564a,#1a3d35); padding:10px 14px;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div style="font-size:9px; color:rgba(255,255,255,.7);">‹ 보고서 목록</div>
+          <div style="background:rgba(255,255,255,.25); border-radius:12px; padding:4px 10px; font-size:9px; color:#fff; font-weight:700;">저장 ✓</div>
+        </div>
+        <div style="font-size:12px; font-weight:800; color:#fff; margin-top:3px;">5월 10일 주일</div>
+      </div>
+      <!-- Scrollable tab bar -->
+      <div style="background:#fff; border-bottom:1px solid #eee; display:flex; overflow-x:auto; padding:0 10px; gap:0;">
+        <div style="padding:8px 10px; font-size:9px; font-weight:700; color:#24564a; border-bottom:2px solid #24564a; white-space:nowrap;">기본정보</div>
+        <div style="padding:8px 10px; font-size:9px; color:#999; white-space:nowrap;">유초등부</div>
+        <div style="padding:8px 10px; font-size:9px; color:#999; white-space:nowrap;">중고등부</div>
+        <div style="padding:8px 10px; font-size:9px; color:#999; white-space:nowrap;">청년부</div>
+        <div style="padding:8px 10px; font-size:9px; color:#999; white-space:nowrap;">교구</div>
+        <div style="padding:8px 10px; font-size:9px; color:#999; white-space:nowrap;">기도·광고</div>
+      </div>
+      <!-- Form content (main) -->
+      <div style="flex:1; padding:10px; display:flex; flex-direction:column; gap:6px;">
+        <div style="background:#fff; border-radius:8px; padding:10px; box-shadow:0 2px 6px rgba(0,0,0,.07);">
+          <div style="font-size:9px; color:#999; margin-bottom:4px;">제목</div>
+          <div style="border:1px solid #e0e0e0; border-radius:6px; padding:6px 8px; font-size:10px; color:#333;">주일 사역보고서</div>
+        </div>
+        <div style="background:#fff; border-radius:8px; padding:10px; box-shadow:0 2px 6px rgba(0,0,0,.07);">
+          <div style="font-size:9px; color:#999; margin-bottom:4px;">보고일</div>
+          <div style="border:1px solid #e0e0e0; border-radius:6px; padding:6px 8px; font-size:10px; color:#333;">2026-05-10</div>
+        </div>
+        <div style="background:#e8f4f0; border-radius:8px; padding:8px 10px; text-align:center; font-size:9px; color:#24564a; font-weight:700;">출결 통계 ↓</div>
+      </div>
+      <div style="background:#fff; border-top:1px solid #eee; display:flex; padding:6px 0 10px;">
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:1px;">
+          <span style="font-size:14px;">📋</span><span style="font-size:7px; font-weight:700; color:#24564a;">보고서</span>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:1px; opacity:.4;">
+          <span style="font-size:14px;">👥</span><span style="font-size:7px; color:#aaa;">명단</span>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:1px; opacity:.4;">
+          <span style="font-size:14px;">⚙️</span><span style="font-size:7px; color:#aaa;">계정</span>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:10px; color:#555; max-width:180px; text-align:center;">헤더 우측에 저장 버튼.<br/>사이드바 요소 완전 제거.</div>
+  </div>
+
+  <!-- Option B: Sticky bottom save bar -->
+  <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+    <div style="font-size:11px; font-weight:700; color:#1565c0; letter-spacing:.5px;">B · 하단 저장바</div>
+    <div style="width:180px; background:#f0f2f5; border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.12); display:flex; flex-direction:column;" data-choice="B" onclick="toggleSelect(this)">
+      <!-- Header with just back -->
+      <div style="background:linear-gradient(135deg,#24564a,#1a3d35); padding:10px 14px;">
+        <div style="font-size:9px; color:rgba(255,255,255,.7);">‹ 보고서 목록</div>
+        <div style="font-size:12px; font-weight:800; color:#fff; margin-top:3px;">5월 10일 주일</div>
+      </div>
+      <!-- Scrollable tab bar -->
+      <div style="background:#fff; border-bottom:1px solid #eee; display:flex; overflow-x:auto; padding:0 10px; gap:0;">
+        <div style="padding:8px 10px; font-size:9px; font-weight:700; color:#24564a; border-bottom:2px solid #24564a; white-space:nowrap;">기본정보</div>
+        <div style="padding:8px 10px; font-size:9px; color:#999; white-space:nowrap;">유초등부</div>
+        <div style="padding:8px 10px; font-size:9px; color:#999; white-space:nowrap;">중고등부</div>
+        <div style="padding:8px 10px; font-size:9px; color:#999; white-space:nowrap;">청년부</div>
+        <div style="padding:8px 10px; font-size:9px; color:#999; white-space:nowrap;">교구</div>
+      </div>
+      <!-- Form content -->
+      <div style="flex:1; padding:10px; display:flex; flex-direction:column; gap:6px;">
+        <div style="background:#fff; border-radius:8px; padding:10px; box-shadow:0 2px 6px rgba(0,0,0,.07);">
+          <div style="font-size:9px; color:#999; margin-bottom:4px;">제목</div>
+          <div style="border:1px solid #e0e0e0; border-radius:6px; padding:6px 8px; font-size:10px; color:#333;">주일 사역보고서</div>
+        </div>
+        <div style="background:#fff; border-radius:8px; padding:10px; box-shadow:0 2px 6px rgba(0,0,0,.07);">
+          <div style="font-size:9px; color:#999; margin-bottom:4px;">보고일</div>
+          <div style="border:1px solid #e0e0e0; border-radius:6px; padding:6px 8px; font-size:10px; color:#333;">2026-05-10</div>
+        </div>
+      </div>
+      <!-- Save bar above bottom nav -->
+      <div style="background:#fff; border-top:1px solid #eee; padding:8px 10px;">
+        <div style="background:linear-gradient(135deg,#24564a,#1a6b5a); border-radius:8px; padding:10px; text-align:center; font-size:10px; font-weight:700; color:#fff; box-shadow:0 2px 8px rgba(36,86,74,.3);">저장하기</div>
+      </div>
+      <div style="background:#fff; border-top:1px solid #eee; display:flex; padding:6px 0 10px;">
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:1px;">
+          <span style="font-size:14px;">📋</span><span style="font-size:7px; font-weight:700; color:#24564a;">보고서</span>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:1px; opacity:.4;">
+          <span style="font-size:14px;">👥</span><span style="font-size:7px; color:#aaa;">명단</span>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:1px; opacity:.4;">
+          <span style="font-size:14px;">⚙️</span><span style="font-size:7px; color:#aaa;">계정</span>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:10px; color:#555; max-width:180px; text-align:center;">하단 탭바 위에 저장 버튼.<br/>눈에 잘 띄고 엄지손가락 닿기 좋음.</div>
+  </div>
+
+</div>
+
+<div style="background:#f8f9fa; border-radius:10px; padding:14px 16px; font-size:11px; color:#555; margin-top:8px;">
+  <strong>공통 변경:</strong> 계정·새보고서·내보내기·JSON가져오기·GitHub설정은 <strong>계정 탭으로 이동</strong> (또는 숨김). 편집기에는 폼만 보임. 탭바는 가로 스크롤 가능하게 수정.
+</div>

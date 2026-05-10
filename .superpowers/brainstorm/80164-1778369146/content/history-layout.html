@@ -1,0 +1,134 @@
+<h2>보고서 목록은 어디에?</h2>
+<p class="subtitle">모바일에서 히스토리 패널의 위치와 UX를 결정합니다</p>
+
+<div class="split">
+
+  <!-- A: Home = List screen -->
+  <div class="mockup">
+    <div class="mockup-header">A · 홈 = 목록 화면</div>
+    <div class="mockup-body" style="padding:0; background:#f0f2f5; min-height:480px; display:flex; flex-direction:column;">
+      <!-- Header -->
+      <div style="background:linear-gradient(135deg,#24564a,#1a3d35); padding:16px;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div>
+            <div style="font-size:10px; color:rgba(255,255,255,.55); margin-bottom:2px;">2026년 5월 10일 (일)</div>
+            <div style="font-size:16px; font-weight:800; color:#fff;">사역보고서</div>
+          </div>
+          <div style="width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,.2); display:flex; align-items:center; justify-content:center;">
+            <span style="font-size:12px; color:#fff; font-weight:700;">K</span>
+          </div>
+        </div>
+      </div>
+      <!-- Content: list of reports -->
+      <div style="flex:1; padding:12px; display:flex; flex-direction:column; gap:8px; overflow:hidden;">
+        <!-- New report button (prominent) -->
+        <div style="background:linear-gradient(135deg,#24564a,#1a6b5a); border-radius:12px; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(36,86,74,.3);">
+          <div>
+            <div style="font-size:13px; font-weight:800; color:#fff;">+ 새 보고서 작성</div>
+            <div style="font-size:10px; color:rgba(255,255,255,.6); margin-top:2px;">5월 10일 (오늘)</div>
+          </div>
+          <span style="font-size:22px; color:rgba(255,255,255,.7);">✏️</span>
+        </div>
+        <!-- Past reports -->
+        <div style="font-size:10px; font-weight:700; color:#999; padding:4px 2px; letter-spacing:.5px;">이전 보고서</div>
+        <div style="background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.06);">
+          <div style="padding:12px 14px; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:12px; font-weight:700; color:#17211d;">5월 3일 (주일)</div>
+              <div style="font-size:10px; color:#888; margin-top:2px;">초등 39 · 중고등 31 · 청년 62</div>
+            </div>
+            <span style="font-size:11px; color:#ccc;">›</span>
+          </div>
+          <div style="padding:12px 14px; display:flex; justify-content:space-between; align-items:center; opacity:.7;">
+            <div>
+              <div style="font-size:12px; font-weight:700; color:#17211d;">4월 27일 (주일)</div>
+              <div style="font-size:10px; color:#888; margin-top:2px;">초등 41 · 중고등 29 · 청년 60</div>
+            </div>
+            <span style="font-size:11px; color:#ccc;">›</span>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom nav -->
+      <div style="background:#fff; border-top:1px solid #eee; display:flex; padding:8px 0 14px; box-shadow:0 -2px 12px rgba(0,0,0,.06);">
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;">
+          <span style="font-size:18px;">📋</span>
+          <span style="font-size:9px; font-weight:700; color:#24564a;">보고서</span>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; opacity:.4;">
+          <span style="font-size:18px;">👥</span>
+          <span style="font-size:9px; font-weight:500; color:#aaa;">명단</span>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; opacity:.4;">
+          <span style="font-size:18px;">⚙️</span>
+          <span style="font-size:9px; font-weight:500; color:#aaa;">계정</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B: Editor first, bottom sheet history -->
+  <div class="mockup">
+    <div class="mockup-header">B · 편집기 + 하단 시트 목록</div>
+    <div class="mockup-body" style="padding:0; background:#f0f2f5; min-height:480px; display:flex; flex-direction:column; position:relative; overflow:hidden;">
+      <!-- Header -->
+      <div style="background:linear-gradient(135deg,#24564a,#1a3d35); padding:16px;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div>
+            <div style="font-size:10px; color:rgba(255,255,255,.55); margin-bottom:2px;">2026년 5월 10일 (일)</div>
+            <div style="font-size:16px; font-weight:800; color:#fff;">사역보고서</div>
+          </div>
+          <div style="background:rgba(255,255,255,.15); border-radius:20px; padding:5px 10px; font-size:10px; color:#fff; font-weight:600;">목록 보기 ↑</div>
+        </div>
+      </div>
+      <!-- Editor content -->
+      <div style="flex:1; padding:12px; display:flex; flex-direction:column; gap:8px;">
+        <div style="background:#fff; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,.07);">
+          <div style="font-size:11px; color:#888; margin-bottom:6px;">편집 중</div>
+          <div style="font-size:13px; font-weight:700; color:#17211d; margin-bottom:10px;">5월 10일 주일 보고서</div>
+          <div style="display:flex; gap:6px; margin-bottom:10px;">
+            <div style="flex:1; background:#f6f6f6; border-radius:8px; padding:8px; text-align:center;">
+              <div style="font-size:16px; font-weight:800; color:#24564a;">42</div>
+              <div style="font-size:9px; color:#888;">초등부</div>
+            </div>
+            <div style="flex:1; background:#f6f6f6; border-radius:8px; padding:8px; text-align:center;">
+              <div style="font-size:16px; font-weight:800; color:#24564a;">28</div>
+              <div style="font-size:9px; color:#888;">중고등부</div>
+            </div>
+            <div style="flex:1; background:#f6f6f6; border-radius:8px; padding:8px; text-align:center;">
+              <div style="font-size:16px; font-weight:800; color:#24564a;">65</div>
+              <div style="font-size:9px; color:#888;">청년부</div>
+            </div>
+          </div>
+          <div style="background:#24564a; border-radius:10px; padding:12px; text-align:center; font-size:12px; font-weight:700; color:#fff;">저장하기</div>
+        </div>
+      </div>
+      <!-- Bottom sheet (peeking) -->
+      <div style="position:absolute; bottom:56px; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; padding:12px 16px; box-shadow:0 -4px 20px rgba(0,0,0,.12);">
+        <div style="width:36px; height:4px; background:#e0e0e0; border-radius:2px; margin:0 auto 10px;"></div>
+        <div style="font-size:11px; font-weight:700; color:#999; margin-bottom:8px;">이전 보고서</div>
+        <div style="font-size:12px; font-weight:700; color:#17211d; padding:6px 0; border-bottom:1px solid #f5f5f5;">5월 3일 · 초등 39 · 중고등 31</div>
+      </div>
+      <!-- Bottom nav -->
+      <div style="background:#fff; border-top:1px solid #eee; display:flex; padding:8px 0 14px; position:absolute; bottom:0; left:0; right:0;">
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;">
+          <span style="font-size:18px;">📋</span>
+          <span style="font-size:9px; font-weight:700; color:#24564a;">보고서</span>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; opacity:.4;">
+          <span style="font-size:18px;">👥</span>
+          <span style="font-size:9px; color:#aaa;">명단</span>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; opacity:.4;">
+          <span style="font-size:18px;">⚙️</span>
+          <span style="font-size:9px; color:#aaa;">계정</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:16px; background:#f8f9fa; border-radius:8px; padding:12px 16px; font-size:12px; color:#666;">
+  <strong>A:</strong> 앱을 열면 목록이 먼저 — 보고서를 탭해서 열고 편집. iOS 메일 앱 방식<br>
+  <strong>B:</strong> 앱을 열면 편집기가 먼저 — 위로 스와이프하면 이전 목록 시트가 올라옴
+</div>

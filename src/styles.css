@@ -1357,20 +1357,14 @@ button:disabled {
     z-index: 100;
   }
 
-  /* 방안 B: ::before로 뷰포트 위쪽을 primary 색으로 메움 (픽셀 반올림 보조) */
-  .top-bar::before {
-    content: '';
-    position: fixed;
-    top: -200px;
-    left: 0;
-    right: 0;
-    height: 200px;
+  /* 방안 B: body 배경을 primary로 → status bar/헤더 경계 색상 통일 */
+  body {
     background: var(--clr-primary);
-    z-index: -1;
   }
 
-  /* fixed 헤더 높이만큼 콘텐츠 밀어내기 */
+  /* fixed 헤더 높이만큼 콘텐츠 밀어내기; 내부 배경은 --clr-bg로 복원 */
   .app-shell {
+    background: var(--clr-bg);
     padding-top: var(--top-bar-height, 90px);
   }
 

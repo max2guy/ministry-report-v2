@@ -3,7 +3,7 @@
   "short_name": "사역보고서",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#f7f8f5",
+  "background_color": "#24564a",
   "theme_color": "#24564a",
   "lang": "ko",
   "icons": [
