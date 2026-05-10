@@ -1348,13 +1348,15 @@ button:disabled {
     flex-direction: column;
     align-items: stretch;
     margin: 0;
-    padding: calc(env(safe-area-inset-top) + 16px) 16px 0;
+    padding: calc(env(safe-area-inset-top) + 16px) 16px 14px;
     gap: 0;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 100;
+    /* 서브픽셀 갭을 primary 색으로 덮기 */
+    box-shadow: 0 2px 0 var(--clr-primary);
   }
 
   /* 알림바 영역 검은색 통일 - 로딩바/gap이 검은색에 묻힘 */
@@ -1363,16 +1365,16 @@ button:disabled {
   }
 
   /* fixed 헤더 높이만큼 콘텐츠 밀어내기; 내부 배경은 --clr-bg로 복원 */
-  /* fallback: env(safe-area-inset-top) + 68px (title row ~40px + padding 16px + margin 12px) */
+  /* fallback: env(safe-area-inset-top) + 70px (title ~40px + padding-top 16px + padding-bottom 14px) */
   .app-shell {
     background: var(--clr-bg);
-    padding-top: var(--top-bar-height, calc(env(safe-area-inset-top, 0px) + 68px));
+    padding-top: var(--top-bar-height, calc(env(safe-area-inset-top, 0px) + 70px));
   }
 
   /* 헤더 타이틀 행 */
   .top-bar-title-row {
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: 0;
   }
 
   .top-bar h1 {
@@ -1771,6 +1773,13 @@ button:disabled {
   padding: 20px;
   max-width: 680px;
   margin: 0 auto;
+}
+
+/* 모바일에서 roster-shell 패딩 재정의 (전역 20px보다 나중에 선언해야 cascade 이김) */
+@media (max-width: 820px) {
+  .roster-shell {
+    padding: 0 12px;
+  }
 }
 
 /* ── SmsPanel ── */
