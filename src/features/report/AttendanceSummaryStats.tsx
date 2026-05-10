@@ -8,7 +8,7 @@ const STAT_DEPTS: { key: StatDept; label: string }[] = [
   { key: "elementary", label: "유초등부" },
   { key: "middleHigh", label: "중고등부" },
   { key: "youngAdult", label: "청년부" },
-  { key: "adult",      label: "교구" },
+  { key: "adult",      label: "장년부" },
 ];
 
 function getTotal(r: MinistryReport, key: DepartmentKey): number {

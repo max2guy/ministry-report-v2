@@ -23,7 +23,7 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: "elementary", label: "유초등부" },
   { key: "middleHigh", label: "중고등부" },
   { key: "youngAdult", label: "청년부" },
-  { key: "adult", label: "교구" },
+  { key: "adult", label: "장년부" },
   { key: "prayer", label: "기도·광고" },
 ];
 

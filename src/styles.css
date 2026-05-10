@@ -1336,14 +1336,14 @@ button:disabled {
     padding: 0;
   }
 
-  /* 상단바: 그라데이션 헤더 */
+  /* 상단바: 알림바 영역까지 배경색 확장 (viewport-fit=cover 연동) */
   .top-bar {
-    background: linear-gradient(135deg, var(--clr-primary) 0%, color-mix(in srgb, var(--clr-primary) 70%, #000) 100%);
+    background: var(--clr-primary);
     border-radius: 0;
     flex-direction: column;
     align-items: stretch;
     margin: 0;
-    padding: 16px 16px 0;
+    padding: calc(16px + env(safe-area-inset-top)) 16px 0;
     gap: 0;
     position: sticky;
     top: 0;
@@ -1407,8 +1407,12 @@ button:disabled {
     padding: 5px 2px;
   }
 
+  /* 제목: 전체너비, 보고일+보고자: 2열 */
   .info-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+  .info-row label:first-child {
+    grid-column: 1 / -1;
   }
 
   /* 카드 스타일: 모바일에서 그림자 + 둥근 모서리 강조 */
@@ -1724,9 +1728,13 @@ button:disabled {
 .roster-dept-tabs.segmented-control button {
   flex: 1;
   min-width: 0;
+  padding: 8px 2px;
   text-align: center;
   color: var(--clr-text-secondary);
   background: transparent;
+  white-space: nowrap;
+  font-size: 13px;
+  overflow: hidden;
 }
 
 .roster-dept-tabs.segmented-control button[aria-pressed="true"] {
@@ -2222,9 +2230,9 @@ button:disabled {
   justify-content: flex-end;
 }
 
-/* gradient spans the full track; empty overlay hides the right portion */
+/* solid fill; empty overlay hides the right portion */
 .sbar-primary {
-  background: linear-gradient(to right, var(--clr-primary-light), var(--clr-primary));
+  background: var(--clr-primary);
 }
 
 .sbar-empty {
@@ -2987,17 +2995,35 @@ button:disabled {
   }
 }
 
-/* ── 모바일 편집기: 탭 균등 분배 (한 화면에 전부) ── */
+/* ── 모바일 편집기: 알약형 탭 (한 화면에 전부, 스크롤 없음) ── */
 .mobile-editor-screen .report-tab-bar {
-  overflow-x: visible;
-  padding: 0;
+  overflow-x: hidden;
+  padding: 8px;
+  gap: 4px;
+  background: var(--clr-bg);
+  border-bottom: 1px solid var(--clr-border-soft);
 }
 
 .mobile-editor-screen .report-tab-btn {
   flex: 1;
-  font-size: 12px;
-  padding: 10px 4px;
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 7px 2px;
   text-align: center;
+  border-radius: 20px;
+  background: var(--clr-surface);
+  color: var(--clr-text-secondary);
+  opacity: 1;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.mobile-editor-screen .report-tab-btn.is-active {
+  background: var(--clr-primary);
+  color: #fff;
+  font-weight: 700;
+  opacity: 1;
 }
 
 /* ── 모바일 편집기: 사이드바·패딩 제거 ── */
@@ -3089,5 +3115,33 @@ button:disabled {
   /* 저장바 공간 확보: 편집 폼 하단 패딩 */
   .mobile-editor-screen .tabbed-report-form {
     padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    background: var(--clr-bg);
+    border: none;
+    border-radius: 0;
+  }
+
+  /* 탭 패널: D스타일 카드 레이아웃 */
+  .mobile-editor-screen .report-tab-panel {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* 기본정보·부서·기도 섹션: 카드 */
+  .mobile-editor-screen .info-row,
+  .mobile-editor-screen .department-edit,
+  .mobile-editor-screen .report-tab-panel fieldset {
+    background: var(--clr-card-bg);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: none;
+  }
+
+  /* 출결통계·ReportCanvas: 카드 느낌 유지 */
+  .mobile-editor-screen .stat-section {
+    margin-top: 0;
+    margin-bottom: 0;
   }
 }
