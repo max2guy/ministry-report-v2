@@ -1358,21 +1358,48 @@ button:disabled {
 }
 
 @media (max-width: 820px) {
+  /* 앱 쉘 */
   .app-shell {
-    padding: 18px;
+    padding: 0;
   }
 
+  /* 상단바: 그라데이션 헤더 */
   .top-bar {
-    align-items: stretch;
+    background: linear-gradient(135deg, var(--clr-primary) 0%, color-mix(in srgb, var(--clr-primary) 70%, #000) 100%);
+    border-radius: 0;
     flex-direction: column;
-    margin: -18px -18px 0;
-    padding: 14px 18px;
+    align-items: stretch;
+    margin: 0;
+    padding: 16px 16px 0;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
   }
 
-  .segmented-control button {
-    flex: 1;
+  /* 헤더 타이틀 행 */
+  .top-bar-title-row {
+    justify-content: space-between;
+    margin-bottom: 12px;
   }
 
+  .top-bar h1 {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+  }
+
+  /* 세그먼트 컨트롤: 모바일에서 숨김 (하단 탭바로 대체) */
+  .segmented-control {
+    display: none;
+  }
+
+  /* ThemeSelector: 헤더에서 숨김 → 계정 탭으로 이동 */
+  .top-bar .theme-selector {
+    display: none;
+  }
+
+  /* 콘텐츠 그리드 */
   .report-mode,
   .report-meta,
   .department-list,
@@ -1409,19 +1436,26 @@ button:disabled {
   .info-row {
     grid-template-columns: 1fr;
   }
+
+  /* 카드 스타일: 모바일에서 그림자 + 둥근 모서리 강조 */
+  .report-form,
+  .account-panel,
+  .history-panel,
+  .import-panel {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    border: none;
+  }
+
+  /* 콘텐츠 영역 패딩 */
+  .editor-workspace,
+  .roster-shell,
+  .report-mode {
+    padding: 12px;
+  }
 }
 
 @media (max-width: 500px) {
-  .app-shell {
-    padding: 12px;
-  }
-
-  .top-bar {
-    margin: -12px -12px 0;
-    padding: 12px;
-    border-radius: 0;
-  }
-
   /* 출석 카드: 5열 */
   .attendance-card-list {
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1434,12 +1468,10 @@ button:disabled {
     min-height: 30px;
   }
 
-  /* 상단바 제목 크기 줄이기 */
   .top-bar h1 {
-    font-size: 17px;
+    font-size: 16px;
   }
 
-  /* 통계 패널 1열 */
   .dstats-counts {
     flex-wrap: wrap;
     gap: 12px;
