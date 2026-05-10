@@ -169,6 +169,7 @@ export function App() {
   const [appMode, setAppMode] = useAppMode();
   const [mobileTab, setMobileTab] = useState<MobileTab>("edit");
   const [mobileScreen, setMobileScreen] = useState<"list" | "editor">("list");
+  const [viewerTabIdx, setViewerTabIdx] = useState(0);
   const [roster, setRoster] = useState<MemberRoster | undefined>();
   const [report, setReport] = useState(() => createEmptyReport());
   const [reports, setReports] = useState<MinistryReport[]>([]);
@@ -539,6 +540,21 @@ export function App() {
     );
   }
 
+  // 뷰어 탭 목록 계산 (헤더 + ReportViewer 공유)
+  const viewerTabs: { key: "summary" | "elementary" | "middleHigh" | "youngAdult" | "adult"; label: string }[] = [
+    { key: "summary", label: "통합보고" },
+  ];
+  const flatDeptDefs = [
+    { key: "elementary" as const, label: "유초등부" },
+    { key: "middleHigh" as const, label: "중고등부" },
+    { key: "youngAdult" as const, label: "청년부" },
+  ];
+  for (const { key, label } of flatDeptDefs) {
+    if ((report.departments[key].members?.length ?? 0) > 0) viewerTabs.push({ key, label });
+  }
+  if ((report.departments.adult.zones?.length ?? 0) > 0) viewerTabs.push({ key: "adult", label: "교구" });
+  const safeTabIdx = Math.min(viewerTabIdx, viewerTabs.length - 1);
+
   return (
     <main className="app-shell">
       {showMigrationDialog && (
@@ -638,6 +654,21 @@ export function App() {
           </button>
         </div>
         <p className="app-version-label desktop-only">v{__APP_VERSION__}</p>
+        {/* 뷰어 모드 탭 바: 헤더 하단에 통합 */}
+        {appMode === "viewer" && mobileScreen === "editor" && (
+          <div className="viewer-dept-tabs viewer-dept-tabs--in-header">
+            {viewerTabs.map((tab, i) => (
+              <button
+                key={tab.key}
+                type="button"
+                className={`viewer-dept-tab-btn${i === safeTabIdx ? " is-active" : ""}`}
+                onClick={() => setViewerTabIdx(i)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        )}
       </header>
       {/* Mobile-only: MobileReportList home OR editor screen */}
       <div className="mobile-only">
@@ -733,7 +764,13 @@ export function App() {
                 </div>
               </>
             ) : (
-              <ReportViewer report={report} reports={reports} />
+              <ReportViewer
+                report={report}
+                reports={reports}
+                activeTabIdx={safeTabIdx}
+                tabs={viewerTabs}
+                onTabChange={setViewerTabIdx}
+              />
             )}
           </div>
         )}
@@ -787,7 +824,13 @@ export function App() {
             )}
           </main>
         ) : (
-          <ReportViewer report={report} reports={reports} />
+          <ReportViewer
+            report={report}
+            reports={reports}
+            activeTabIdx={safeTabIdx}
+            tabs={viewerTabs}
+            onTabChange={setViewerTabIdx}
+          />
         )}
       </div>
       <BottomTabBar

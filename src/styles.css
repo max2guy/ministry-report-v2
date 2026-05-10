@@ -255,9 +255,13 @@ button:disabled {
   padding: 4px;
   gap: 3px;
   margin-bottom: 0;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+}
+
+/* 헤더 통합 탭 바 */
+.viewer-dept-tabs--in-header {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 10px;
+  margin: 6px 0 0;
 }
 
 .viewer-dept-tab-btn {
