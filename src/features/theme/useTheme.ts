@@ -23,7 +23,7 @@ export function applyTheme(theme: Theme) {
   }
   localStorage.setItem(STORAGE_KEY, theme);
 
-  // Android 상단 상태바 색상 동기화
+  // Android 알림바는 항상 검은색 고정 (로딩바/gap 색상 문제 방지)
   const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-  if (meta) meta.content = THEME_COLORS[theme];
+  if (meta) meta.content = "#000000";
 }

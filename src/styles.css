@@ -84,9 +84,9 @@
   box-sizing: border-box;
 }
 
-/* viewport-fit=cover 시 상단 틈이 생겨도 primary 색으로 메워짐 */
+/* 모바일에서 알림바 영역(html background)을 검은색으로 통일 */
 html {
-  background: var(--clr-primary);
+  background: #000000;
 }
 
 body {
@@ -1357,9 +1357,9 @@ button:disabled {
     z-index: 100;
   }
 
-  /* 방안 B: body 배경을 primary로 → status bar/헤더 경계 색상 통일 */
+  /* 알림바 영역 검은색 통일 - 로딩바/gap이 검은색에 묻힘 */
   body {
-    background: var(--clr-primary);
+    background: #000000;
   }
 
   /* fixed 헤더 높이만큼 콘텐츠 밀어내기; 내부 배경은 --clr-bg로 복원 */
