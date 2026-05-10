@@ -575,7 +575,7 @@ export function App() {
                 weekday: "short",
               })}
             </span>
-            <h1>사역보고서</h1>
+            <h1>사역보고서 <span className="top-bar-version">v{__APP_VERSION__}</span></h1>
           </div>
           <div className="top-bar-actions">
             {installState === "ready" && (
