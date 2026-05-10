@@ -84,6 +84,11 @@
   box-sizing: border-box;
 }
 
+/* viewport-fit=cover 시 상단 틈이 생겨도 primary 색으로 메워짐 */
+html {
+  background: var(--clr-primary);
+}
+
 body {
   margin: 0;
   min-width: 320px;
