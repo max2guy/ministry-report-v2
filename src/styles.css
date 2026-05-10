@@ -248,20 +248,44 @@ button:disabled {
 
 /* ── Viewer stats panels ─────────────────────────────────────── */
 .viewer-stats {
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
-.viewer-stats-title {
-  font-size: 17px;
-  font-weight: 700;
+/* 부서 탭 바 */
+.viewer-dept-tabs {
+  display: flex;
+  background: var(--clr-primary);
+  border-radius: 14px;
+  padding: 5px;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.viewer-dept-tab-btn {
+  flex: 1;
+  padding: 9px 4px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  white-space: nowrap;
+}
+
+.viewer-dept-tab-btn.is-active {
+  background: #ffffff;
   color: var(--clr-primary);
-  margin: 0 0 14px;
+  font-weight: 700;
 }
 
-.viewer-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+/* 통계 패널 영역 */
+.viewer-stats-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 /* ── 통계 패널 ── */
@@ -1489,9 +1513,6 @@ button:disabled {
     max-width: none;
   }
 
-  .viewer-stats-grid {
-    grid-template-columns: 1fr;
-  }
 
   /* 출석 카드: 10열 → 6열 */
   .attendance-card-list {
