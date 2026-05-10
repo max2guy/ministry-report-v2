@@ -132,6 +132,16 @@ function reportWithAccount(
   };
 }
 
+function downloadCurrentReport(report: MinistryReport) {
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${report.reportDate}-ministry-report-v2.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export function App() {
   useEffect(() => {
     applyTheme(getStoredTheme());
@@ -622,6 +632,24 @@ export function App() {
             />
             <ThemeSelector />
             <AppModeToggle appMode={appMode} onAppModeChange={setAppMode} />
+            <div className="mobile-data-panel">
+              <p className="mobile-data-panel-label">데이터</p>
+              <div className="mobile-data-panel-actions">
+                <button
+                  type="button"
+                  className="mobile-data-btn"
+                  onClick={() => downloadCurrentReport(report)}
+                >
+                  내보내기
+                </button>
+                <LegacyImportPanel
+                  warnings={importWarnings}
+                  onImport={handleImport}
+                  onImportError={handleImportError}
+                />
+              </div>
+            </div>
+            {currentAccount?.role === "admin" && <GithubSettingsPanel />}
           </div>
         ) : mobileTab === "roster" ? (
           <main className="roster-shell">
@@ -659,36 +687,34 @@ export function App() {
               )}
             </div>
             {appMode === "reporter" ? (
-              <ReportEditor
-                report={report}
-                reports={reports}
-                accountPanel={
-                  <ReporterAccountPanel
-                    currentAccount={currentAccount}
-                    onSignOut={() => void handleSignOut()}
-                  />
-                }
-                canSave={!!currentAccount}
-                importPanel={
-                  <LegacyImportPanel
-                    warnings={importWarnings}
-                    onImport={handleImport}
-                    onImportError={handleImportError}
-                  />
-                }
-                historyPanel={null}
-                githubPanel={
-                  currentAccount.role === "admin" ? (
-                    <GithubSettingsPanel />
-                  ) : undefined
-                }
-                onChange={handleReportChange}
-                onNewReport={handleNewReport}
-                onSave={handleSave}
-                saveErrors={saveErrors}
-                saveStatus={saveStatus}
-                saveDisabledReason="로그인 후 저장할 수 있습니다."
-              />
+              <>
+                <ReportEditor
+                  report={report}
+                  reports={reports}
+                  accountPanel={null}
+                  canSave={!!currentAccount}
+                  importPanel={null}
+                  historyPanel={null}
+                  githubPanel={undefined}
+                  onChange={handleReportChange}
+                  onNewReport={handleNewReport}
+                  onSave={handleSave}
+                  saveErrors={saveErrors}
+                  saveStatus={saveStatus}
+                  saveDisabledReason="로그인 후 저장할 수 있습니다."
+                />
+                <div className="mobile-save-bar">
+                  <button
+                    type="button"
+                    className="mobile-save-bar-btn"
+                    disabled={!currentAccount}
+                    onClick={handleSave}
+                    title={!currentAccount ? "로그인 후 저장할 수 있습니다." : undefined}
+                  >
+                    저장하기
+                  </button>
+                </div>
+              </>
             ) : (
               <ReportViewer report={report} reports={reports} />
             )}
