@@ -1991,7 +1991,7 @@ button:disabled {
   display: flex;
   gap: 0;
   overflow-x: auto;
-  padding: 8px 8px 0;
+  padding: 0 8px;
   scrollbar-width: none;
 }
 
@@ -2001,23 +2001,20 @@ button:disabled {
 
 .report-tab-btn {
   background: transparent;
-  border: 1px solid transparent;
-  border-bottom: none;
-  border-radius: 6px 6px 0 0;
+  border: none;
+  border-bottom: 2px solid transparent;
   color: var(--clr-text-secondary);
   flex-shrink: 0;
   font-size: 14px;
-  padding: 8px 16px;
+  padding: 10px 14px;
   white-space: nowrap;
+  transition: color 0.15s;
 }
 
 .report-tab-btn.is-active {
-  background: var(--clr-present-bg);
-  border-color: var(--clr-primary);
-  border-bottom-color: var(--clr-present-bg);
+  border-bottom-color: var(--clr-primary);
   color: var(--clr-primary);
   font-weight: 700;
-  margin-bottom: -1px;
 }
 
 .report-tab-panel {
@@ -2936,6 +2933,19 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+/* ── 모바일 편집기: 탭 균등 분배 (한 화면에 전부) ── */
+.mobile-editor-screen .report-tab-bar {
+  overflow-x: visible;
+  padding: 0;
+}
+
+.mobile-editor-screen .report-tab-btn {
+  flex: 1;
+  font-size: 12px;
+  padding: 10px 4px;
+  text-align: center;
 }
 
 /* ── 모바일 편집기: 사이드바·패딩 제거 ── */
