@@ -6,36 +6,9 @@ type ReportCanvasProps = {
 
 export function ReportCanvas({ report }: ReportCanvasProps) {
   const departments = Object.values(report.departments);
-  const totalAttendance = departments.reduce(
-    (total, department) => total + department.attendance,
-    0,
-  );
 
   return (
     <article className="report-canvas">
-      <header className="report-heading">
-        <h2>{report.title}</h2>
-      </header>
-
-      <dl className="report-meta">
-        <div>
-          <dt>보고일</dt>
-          <dd>{report.reportDate}</dd>
-        </div>
-        <div>
-          <dt>교회</dt>
-          <dd>{report.churchName || "-"}</dd>
-        </div>
-        <div>
-          <dt>담당자</dt>
-          <dd>{report.pastorName || "-"}</dd>
-        </div>
-        <div>
-          <dt>출석 합계</dt>
-          <dd>{totalAttendance.toLocaleString("ko-KR")}명</dd>
-        </div>
-      </dl>
-
       <section className="department-section" aria-label="부서별 보고">
         <h3>부서별 보고</h3>
         <ul className="department-list">
