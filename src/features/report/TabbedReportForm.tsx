@@ -34,6 +34,11 @@ const DEPT_TABS: { key: DepartmentKey }[] = [
   { key: "adult" },
 ];
 
+// UI 라벨 맵 (도메인 name 대신 표시)
+const TAB_LABEL: Record<string, string> = Object.fromEntries(
+  TABS.map((t) => [t.key, t.label]),
+);
+
 type Props = {
   report: MinistryReport;
   reports: MinistryReport[];
@@ -143,7 +148,7 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
             hidden={activeTab !== key}
           >
             <section className="department-edit">
-              <h3>{department.name}</h3>
+              <h3>{TAB_LABEL[key] ?? department.name}</h3>
               {hasMemberCards(department) || hasZones(department) ? (
                 <>
                   <DepartmentAttendanceEditor
@@ -198,8 +203,7 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
         role="tabpanel"
         hidden={activeTab !== "prayer"}
       >
-        <fieldset>
-          <legend>기도와 광고</legend>
+        <div className="prayer-section">
           <label>
             기도제목
             <textarea
@@ -224,7 +228,7 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
               }
             />
           </label>
-        </fieldset>
+        </div>
       </div>
     </div>
   );

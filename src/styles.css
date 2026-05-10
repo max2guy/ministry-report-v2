@@ -2092,6 +2092,12 @@ button:disabled {
   margin-bottom: 8px;
 }
 
+.prayer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 /* ── Theme Selector ── */
 .theme-selector {
   display: flex;
@@ -3141,7 +3147,7 @@ button:disabled {
   /* 기본정보·부서·기도 섹션: 카드 */
   .mobile-editor-screen .info-row,
   .mobile-editor-screen .department-edit,
-  .mobile-editor-screen .report-tab-panel fieldset {
+  .mobile-editor-screen .prayer-section {
     background: var(--clr-card-bg);
     border-radius: 16px;
     padding: 16px;
