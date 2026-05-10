@@ -2938,6 +2938,19 @@ button:disabled {
   gap: 12px;
 }
 
+/* ── 모바일 편집기: 사이드바·패딩 제거 ── */
+.mobile-editor-screen .edit-panel {
+  display: none;          /* 새 보고서 / 저장 / 내보내기 버튼 숨김 */
+}
+
+.mobile-editor-screen .report-mode {
+  padding-top: 0;         /* 데스크톱 상단 여백 제거 */
+}
+
+.mobile-editor-screen .editor-workspace {
+  padding: 0;             /* 좌우 패딩 제거 → 너비 최대 확보 */
+}
+
 /* ── 모바일 데이터 패널 (계정 탭) ── */
 .mobile-data-panel {
   background: var(--clr-card-bg);
