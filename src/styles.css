@@ -247,10 +247,6 @@ button:disabled {
 }
 
 /* ── Viewer stats panels ─────────────────────────────────────── */
-.viewer-stats {
-  margin-top: 16px;
-}
-
 /* 부서 탭 바 */
 .viewer-dept-tabs {
   display: flex;
@@ -258,7 +254,10 @@ button:disabled {
   border-radius: 14px;
   padding: 5px;
   gap: 4px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .viewer-dept-tab-btn {

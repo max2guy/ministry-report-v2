@@ -9,8 +9,10 @@ type ReportViewerProps = {
   reports: MinistryReport[];
 };
 
-type DeptTab = {
-  key: DepartmentKey;
+type TabKey = "summary" | DepartmentKey;
+
+type Tab = {
+  key: TabKey;
   label: string;
 };
 
@@ -21,17 +23,18 @@ const FLAT_DEPT_DEFS: { key: "elementary" | "middleHigh" | "youngAdult"; label: 
 ];
 
 export function ReportViewer({ report, reports }: ReportViewerProps) {
-  const tabs: DeptTab[] = [];
+  // 항상 첫 탭은 통합보고
+  const tabs: Tab[] = [{ key: "summary", label: "통합보고" }];
+
   for (const { key, label } of FLAT_DEPT_DEFS) {
     if ((report.departments[key].members?.length ?? 0) > 0) {
       tabs.push({ key, label });
     }
   }
   if ((report.departments.adult.zones?.length ?? 0) > 0) {
-    tabs.push({ key: "adult", label: "장년" });
+    tabs.push({ key: "adult", label: "교구" });
   }
 
-  const hasStats = tabs.length > 0;
   const [activeIdx, setActiveIdx] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
@@ -49,51 +52,47 @@ export function ReportViewer({ report, reports }: ReportViewerProps) {
     touchStartX.current = null;
   }
 
-  const activeTab = tabs[activeIdx];
+  const activeKey = tabs[activeIdx]?.key ?? "summary";
 
   return (
     <section className="report-mode viewer-mode">
-      <ReportCanvas report={report} />
-
-      {hasStats && (
-        <div className="viewer-stats">
-          {/* 부서 탭 바 */}
-          <div className="viewer-dept-tabs">
-            {tabs.map((tab, i) => (
-              <button
-                key={tab.key}
-                type="button"
-                className={`viewer-dept-tab-btn${i === activeIdx ? " is-active" : ""}`}
-                onClick={() => setActiveIdx(i)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* 부서별 통계 패널 (스와이프 가능) */}
-          <div
-            className="viewer-stats-pane"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
+      {/* 탭 바 */}
+      <div className="viewer-dept-tabs">
+        {tabs.map((tab, i) => (
+          <button
+            key={tab.key}
+            type="button"
+            className={`viewer-dept-tab-btn${i === activeIdx ? " is-active" : ""}`}
+            onClick={() => setActiveIdx(i)}
           >
-            {activeTab?.key === "adult" ? (
-              <AdultStatsPanel
-                dept={report.departments.adult}
-                reportDate={report.reportDate}
-                reports={reports}
-              />
-            ) : activeTab ? (
-              <DeptStatsPanel
-                dept={report.departments[activeTab.key]}
-                deptKey={activeTab.key}
-                reportDate={report.reportDate}
-                reports={reports}
-              />
-            ) : null}
-          </div>
-        </div>
-      )}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 탭 콘텐츠 (스와이프 가능) */}
+      <div
+        className="viewer-stats-pane"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {activeKey === "summary" ? (
+          <ReportCanvas report={report} />
+        ) : activeKey === "adult" ? (
+          <AdultStatsPanel
+            dept={report.departments.adult}
+            reportDate={report.reportDate}
+            reports={reports}
+          />
+        ) : (
+          <DeptStatsPanel
+            dept={report.departments[activeKey]}
+            deptKey={activeKey}
+            reportDate={report.reportDate}
+            reports={reports}
+          />
+        )}
+      </div>
     </section>
   );
 }
