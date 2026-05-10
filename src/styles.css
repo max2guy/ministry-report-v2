@@ -1366,11 +1366,18 @@ button:disabled {
     background: #000000;
   }
 
-  /* fixed 헤더 높이만큼 콘텐츠 밀어내기; 내부 배경은 --clr-bg로 복원 */
-  /* fallback: env(safe-area-inset-top) + 70px (title ~40px + padding-top 16px + padding-bottom 14px) */
+  /* fixed 헤더 높이만큼 콘텐츠 밀어내기; 헤더 영역은 primary 색, 그 아래부터 --clr-bg */
+  /* 그라디언트: 서브픽셀 렌더링 차이로 생기는 틈을 primary 색으로 완전히 덮음 */
   .app-shell {
-    background: var(--clr-bg);
-    padding-top: var(--top-bar-height, calc(env(safe-area-inset-top, 0px) + 70px));
+    --_bar: var(--top-bar-height, calc(env(safe-area-inset-top, 0px) + 70px));
+    background:
+      linear-gradient(
+        to bottom,
+        var(--clr-primary) 0,
+        var(--clr-primary) calc(var(--_bar) + 4px),
+        var(--clr-bg)      calc(var(--_bar) + 4px)
+      );
+    padding-top: var(--_bar);
   }
 
   /* 헤더 타이틀 행 */
