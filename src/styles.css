@@ -2191,10 +2191,10 @@ button:disabled {
 }
 
 .stat-year-label {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--clr-text);
-  margin: 8px 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  margin: 4px 0 2px;
   white-space: nowrap;
 }
 
