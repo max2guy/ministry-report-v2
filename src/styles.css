@@ -3184,9 +3184,9 @@ button:disabled {
   padding: 0 12px;        /* 좌우 여백만 유지 → 카드가 화면 끝에 붙지 않음 */
 }
 
-/* 뷰어 모드: 좌우 여백 */
+/* 뷰어 모드: 상하좌우 여백 */
 .mobile-editor-screen .viewer-mode {
-  padding: 0 12px 20px;
+  padding: 16px 12px 24px;
 }
 
 /* ── 모바일 데이터 패널 (계정 탭) ── */
