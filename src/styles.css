@@ -268,7 +268,6 @@ button:disabled {
 .dstats-panel {
   background: var(--clr-card-bg);
   border: 1px solid var(--clr-border);
-  border-top: 3px solid var(--clr-primary);
   border-radius: 12px;
   padding: 16px;
   display: flex;
