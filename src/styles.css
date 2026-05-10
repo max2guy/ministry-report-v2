@@ -254,7 +254,7 @@ button:disabled {
   border-radius: 14px;
   padding: 5px;
   gap: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 0;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -3210,7 +3210,7 @@ button:disabled {
 
 /* 뷰어 모드: 상하좌우 여백 */
 .mobile-editor-screen .viewer-mode {
-  padding: 8px 12px 24px;
+  padding: 0 12px 24px;
 }
 
 /* ── 모바일 데이터 패널 (계정 탭) ── */
