@@ -28,7 +28,7 @@ export async function getOrCreateUserDoc(user: User): Promise<Account> {
     return {
       id: user.uid,
       email: user.email ?? "",
-      displayName: user.displayName ?? (data.displayName as string) ?? "",
+      displayName: (data.displayName as string) || user.displayName || "",
       role: (data.role as UserRole) ?? "reporter",
       createdAt: data.createdAt as string,
       updatedAt: data.updatedAt as string,
