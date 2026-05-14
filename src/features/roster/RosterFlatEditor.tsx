@@ -55,7 +55,9 @@ export function RosterFlatEditor({ deptKey, roster, onChange }: Props) {
   function handleAdd(name: string, group?: string, clearDraft?: () => void) {
     const trimmed = name.trim();
     if (!trimmed) return;
-    updateMembers([...members, { id: crypto.randomUUID(), name: trimmed, ...(group ? { group } : {}) }]);
+    const next = [...members, { id: crypto.randomUUID(), name: trimmed, ...(group ? { group } : {}) }];
+    next.sort((a, b) => a.name.localeCompare(b.name, "ko"));
+    updateMembers(next);
     clearDraft?.();
   }
 

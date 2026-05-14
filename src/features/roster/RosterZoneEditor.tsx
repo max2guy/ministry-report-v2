@@ -19,10 +19,9 @@ function ZoneSection({
   function handleAdd() {
     const name = draft.trim();
     if (!name) return;
-    onUpdate({
-      ...zone,
-      members: [...zone.members, { id: crypto.randomUUID(), name, role: "member" }],
-    });
+    const next = [...zone.members, { id: crypto.randomUUID(), name, role: "member" as const }];
+    next.sort((a, b) => a.name.localeCompare(b.name, "ko"));
+    onUpdate({ ...zone, members: next });
     setDraft("");
   }
 
