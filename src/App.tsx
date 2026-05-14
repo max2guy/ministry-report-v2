@@ -54,6 +54,9 @@ function syncReportFromRoster(
 ): MinistryReport {
   const departments = { ...report.departments };
 
+  const byKo = (a: { name: string }, b: { name: string }) =>
+    a.name.localeCompare(b.name, "ko");
+
   for (const key of ["elementary", "middleHigh", "youngAdult"] as const) {
     const rDept = roster.departments[key];
     if (rDept.kind !== "flat") continue;
@@ -66,6 +69,7 @@ function syncReportFromRoster(
         ? { ...ex, id: rm.id, name: rm.name, group: rm.group }
         : { id: rm.id, name: rm.name, status: "absent" as const, group: rm.group };
     });
+    members.sort(byKo);
     departments[key] = { ...departments[key], members };
   }
 
@@ -89,6 +93,7 @@ function syncReportFromRoster(
           ? { ...ex, id: rm.id, name: rm.name }
           : { id: rm.id, name: rm.name, status: "absent" as const };
       });
+      members.sort(byKo);
       return { id: rz.id, name: rz.name, district: rz.district, members };
     });
     const attendance = zones.reduce(
