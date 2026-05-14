@@ -1517,7 +1517,7 @@ button:disabled {
   /* fixed 헤더 높이만큼 콘텐츠 밀어내기; 헤더 영역은 primary 색, 그 아래부터 --clr-bg */
   /* 그라디언트: 서브픽셀 렌더링 차이로 생기는 틈을 primary 색으로 완전히 덮음 */
   .app-shell {
-    --_bar: var(--top-bar-height, calc(env(safe-area-inset-top, 0px) + 70px));
+    --_bar: var(--top-bar-height, calc(env(safe-area-inset-top, 0px) + 110px));
     background:
       linear-gradient(
         to bottom,
@@ -3344,7 +3344,7 @@ button:disabled {
 
 /* 뷰어 모드: 상하좌우 여백 */
 .mobile-editor-screen .viewer-mode {
-  padding: 0 12px 24px;
+  padding: 10px 12px 24px;
 }
 
 /* ── 모바일 데이터 패널 (계정 탭) ── */

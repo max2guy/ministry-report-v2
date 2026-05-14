@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Account } from "./auth/authTypes";
 import { onAuthChange, signOut as firebaseSignOut } from "./auth/firebaseAuthStore";
 import { ThemeSelector } from "./features/theme/ThemeSelector";
@@ -148,8 +148,9 @@ export function App() {
   }, []);
 
   // fixed 헤더 높이를 CSS 변수로 동기화 (모바일 콘텐츠 padding-top 용)
+  // useLayoutEffect: 페인트 전에 실행 → 뷰어 탭바 포함 시에도 겹침 없음
   const topBarRef = useRef<HTMLElement | null>(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = topBarRef.current;
     if (!el) return;
     const update = () =>
