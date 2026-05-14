@@ -399,14 +399,29 @@ export function cloneReportAsDraft(
   };
 }
 
+/**
+ * Firestore에서 읽어온 구버전 문서에는 일부 필드가 없을 수 있음.
+ * undefined → 기본값으로 정규화해 폼/로직에서 안전하게 사용.
+ */
+function normalizeDepartment(dept: DepartmentReport): DepartmentReport {
+  return {
+    ...dept,
+    summary: dept.summary ?? "",
+    attendance: dept.attendance ?? 0,
+    newVisitors: dept.newVisitors ?? 0,
+  };
+}
+
 export function upgradeReportForEditor(report: MinistryReport): MinistryReport {
   return {
     ...report,
+    prayerRequests: report.prayerRequests ?? [],
+    announcements: report.announcements ?? [],
     departments: {
-      elementary: upgradeDepartmentToCards(report.departments.elementary),
-      middleHigh: upgradeDepartmentToCards(report.departments.middleHigh),
-      youngAdult: upgradeDepartmentToCards(report.departments.youngAdult),
-      adult: upgradeDepartmentToCards(report.departments.adult),
+      elementary: upgradeDepartmentToCards(normalizeDepartment(report.departments.elementary)),
+      middleHigh: upgradeDepartmentToCards(normalizeDepartment(report.departments.middleHigh)),
+      youngAdult: upgradeDepartmentToCards(normalizeDepartment(report.departments.youngAdult)),
+      adult: upgradeDepartmentToCards(normalizeDepartment(report.departments.adult)),
     },
   };
 }
