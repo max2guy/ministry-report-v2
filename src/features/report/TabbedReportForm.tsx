@@ -59,6 +59,7 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const touchStartX = useRef<number>(0);
   const touchStartY = useRef<number>(0);
+  const touchStartTime = useRef<number>(0);
 
   function handleTabChange(key: TabKey) {
     setActiveTab(key);
@@ -69,13 +70,16 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
   function handleTouchStart(e: React.TouchEvent) {
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
+    touchStartTime.current = Date.now();
   }
 
   function handleTouchEnd(e: React.TouchEvent) {
+    const duration = Date.now() - touchStartTime.current;
     const dx = e.changedTouches[0].clientX - touchStartX.current;
     const dy = e.changedTouches[0].clientY - touchStartY.current;
-    // 수평 80px 이상 + 수직보다 수평이 더 큰 경우만 탭 전환
-    if (Math.abs(dx) < 80 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    // 롱프레스(500ms) 도중/이후 터치는 카드 드래그로 간주 → 탭 전환 무시
+    // 빠른 스와이프(450ms 미만) + 수평 80px 이상 + 수직보다 수평이 큰 경우만 탭 전환
+    if (duration > 450 || Math.abs(dx) < 80 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
     const keys = TABS.map((t) => t.key);
     const idx = keys.indexOf(activeTab);
     if (dx < 0 && idx < keys.length - 1) handleTabChange(keys[idx + 1]); // →
