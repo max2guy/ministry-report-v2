@@ -171,14 +171,15 @@ export function App() {
   const [pendingMigrationRoster, setPendingMigrationRoster] = useState<
     MemberRoster | undefined
   >();
+  const [authFallbackReady, setAuthFallbackReady] = useState(false);
 
   useEffect(() => {
-    if (isHydrated) return;
+    if (isHydrated || currentAccount) return;
     const timer = window.setTimeout(() => {
-      setIsHydrated(true);
-    }, 1500);
+      setAuthFallbackReady(true);
+    }, 1800);
     return () => window.clearTimeout(timer);
-  }, [isHydrated]);
+  }, [isHydrated, currentAccount]);
 
   // Firebase Auth 상태 구독
   useEffect(() => {
@@ -539,6 +540,14 @@ export function App() {
   }
 
   if (!isHydrated) {
+    if (authFallbackReady && !currentAccount) {
+      return (
+        <main className="app-shell auth-shell">
+          <AuthGate onSignedIn={handleSignedIn} />
+        </main>
+      );
+    }
+
     return (
       <main className="app-shell auth-shell">
         <div className="auth-gate-v2">

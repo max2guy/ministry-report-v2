@@ -1,11 +1,15 @@
-# ministry-report-v2 — Codex Handoff (v2.4.23)
+# ministry-report-v2 — Codex Handoff (v2.4.24)
 
 ## 현재 상태
 - 브랜치: `main`
-- 최신 배포 기준: `v2.4.23`
+- 최신 배포 기준: `v2.4.24`
 - 최신 커밋: 작업 중
 
 ## 최근 버전 흐름
+- `v2.4.24`
+  - `isHydrated`를 시간으로 강제 해제하지 않도록 조정
+  - 로그인 정보는 있으나 클라우드 데이터가 아직 준비되지 않은 상태에서 본문이 먼저 렌더되어 블랙 스크린으로 가는 경로 차단
+  - auth 응답이 느릴 때만 로그인 진입 화면으로 우회
 - `v2.4.23`
   - 모바일/PWA 환경에서 Firestore `persistentLocalCache()` 초기화가 실패해도 기본 Firestore로 폴백
   - auth hydration이 지연되더라도 검은 빈 화면 대신 로딩/로그인 화면이 보이도록 fallback 추가
@@ -33,12 +37,13 @@
 - `src/App.tsx`
   - 모바일 헤더 높이 계산을 상태 전환형으로 변경
   - hydration fallback UI 추가
+  - hydration 타이밍을 auth/data 준비 상태에 맞게 조정
 - `src/lib/firebase.ts`
   - Firestore local cache 실패 시 기본 Firestore로 fallback
 - `src/styles.css`
   - 헤더 상단 글씨 블록 하향 조정
 - `package.json`
-  - 버전 `2.4.22 -> 2.4.23`
+  - 버전 `2.4.23 -> 2.4.24`
 
 ## 프로젝트 개요
 - **프레임워크**: React 19 + TypeScript + Vite PWA
