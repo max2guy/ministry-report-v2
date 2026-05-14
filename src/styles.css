@@ -458,7 +458,7 @@ button:disabled {
   line-height: 1.4;
 }
 .dstats-streak-badge.streak-normal  { background: var(--clr-muted); color: #fff; }
-.dstats-streak-badge.streak-warning { background: #dc2626; color: #fff; }
+.dstats-streak-badge.streak-warning { background: #f59e0b; color: #fff; }
 .dstats-streak-badge.streak-danger  { background: #dc2626; color: #fff; }
 
 /* 바 차트 */
