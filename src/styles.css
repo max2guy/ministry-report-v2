@@ -2985,8 +2985,12 @@ button:disabled {
 }
 
 .mobile-report-new-icon {
-  font-size: 24px;
-  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+  transform: rotate(90deg) scaleX(-1);
+  flex-shrink: 0;
 }
 
 .mobile-report-section-label {
