@@ -1898,20 +1898,40 @@ button:disabled {
   font-size: 13px;
 }
 
-.phone-manager-contact-btn {
+/* 입력 행 버튼 공통 — 주소록·저장·취소 */
+.phone-manager-input-row button {
   flex-shrink: 0;
-  background: transparent;
-  border: 1px solid #7c3aed;
-  color: #7c3aed;
-  border-radius: 4px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  padding: 3px 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
   white-space: nowrap;
+  line-height: 1;
+}
+
+/* 주소록 버튼 */
+.phone-manager-contact-btn {
+  background: transparent;
+  border: 1px solid var(--clr-border);
+  color: var(--clr-text-secondary);
 }
 
 .phone-manager-contact-btn:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
+}
+
+/* 저장 버튼 */
+.phone-manager-save-btn {
+  background: var(--clr-primary);
+  border: 1px solid var(--clr-primary);
+  color: #fff;
+}
+
+/* 취소 버튼 */
+.phone-manager-cancel-btn {
+  background: transparent;
+  border: 1px solid var(--clr-border);
+  color: var(--clr-text-muted);
 }
 
 .btn-cancel {

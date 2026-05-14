@@ -141,8 +141,8 @@ export function PhoneNumberManager({ roster, onChange }: Props) {
                     {picking ? "…" : "주소록"}
                   </button>
                 )}
-                <button type="button" onClick={() => handleSave(i)}>저장</button>
-                <button type="button" className="btn-cancel" onClick={() => { setOpenIdx(null); setDraft(""); }}>취소</button>
+                <button type="button" className="phone-manager-save-btn" onClick={() => handleSave(i)}>저장</button>
+                <button type="button" className="phone-manager-cancel-btn" onClick={() => { setOpenIdx(null); setDraft(""); }}>취소</button>
               </div>
             )}
           </li>
