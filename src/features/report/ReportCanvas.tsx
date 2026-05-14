@@ -16,7 +16,7 @@ export function ReportCanvas({ report }: ReportCanvasProps) {
             <li key={department.key}>
               <div>
                 <strong>{department.name}</strong>
-                {department.summary ? <p>{department.summary}</p> : null}
+                {department.summary ? <p className="dept-summary-text">{department.summary}</p> : null}
               </div>
               <span>{department.attendance.toLocaleString("ko-KR")}명</span>
             </li>

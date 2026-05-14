@@ -983,6 +983,7 @@ button:disabled {
   font-size: 12px;
   margin: 3px 0 0;
   overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 
 .department-list span {
@@ -1018,6 +1019,7 @@ button:disabled {
   color: var(--clr-text-secondary);
   font-size: 13px;
   line-height: 1.6;
+  white-space: pre-wrap;
 }
 
 .auth-form,
