@@ -1,41 +1,36 @@
-# ministry-report-v2 — Codex Handoff (v2.4.41)
+# ministry-report-v2 — Codex Handoff (v2.5.0)
 
 ## 현재 상태
-- 커밋: `907d9d8` — fix(v2.4.41): 전화번호 입력 행 버튼 스타일 통일
+- 커밋: `eb0c44f` — feat(rbac): merge role-based access control (v2.5.0)
 - 브랜치: `main`
 - 배포: GitHub Pages (main push → Actions 자동 배포)
 
 ---
 
-## 이번 세션에서 수정한 내용 (v2.4.36 ~ v2.4.41)
+## 이번 세션에서 수정한 내용 (v2.5.0 — RBAC)
 
-### v2.4.36 — 보고서 구역 이동 버튼
-- `src/domain/reportMembers.ts`: `moveZoneMemberToZone(department, fromZoneId, memberId, targetZoneId)` 추가
-- `src/features/report/ZonedDepartmentAttendanceEditor.tsx`:
-  - 각 구역 헤더에 "이동" 버튼 추가
-  - 2단계 피커: ① 목적 구역 선택 → ② 이동할 인원 선택
-  - `MoveStep` 타입, `allZones` prop, `onMoveToZone` 콜백 전달 체인 구현
-- `src/styles.css`: `.zone-btn-move`, `.zone-move-picker` 등 스타일 추가
+### RBAC (Role-Based Access Control) 구현
+프론트엔드 전용 권한 제어 시스템 추가.
 
-### v2.4.37 — SMS 패널 하단 잘림 수정
-- `src/styles.css`: 모바일에서 `.sms-panel`이 하단 탭바(56px) 뒤에 가려지던 문제
-- `bottom: calc(56px + env(safe-area-inset-bottom, 0px))`, `z-index: 110`으로 수정
+**역할 체계:**
+- `superAdmin` — 런타임: `email === "max2guy@gmail.com"` (Firestore 미저장)
+- `admin` — Firestore `users/{uid}.role = "admin"`
+- `deptManager` — Firestore `users/{uid}.role = "deptManager"` + `departments[]`
+- `viewer` — Firestore `users/{uid}.role = "viewer"` (기본값, 레거시 "reporter" 포함)
 
-### v2.4.38 — 구역장 전화번호 주소록 불러오기
-- `src/features/roster/PhoneNumberManager.tsx`:
-  - Contact Picker API (`navigator.contacts.select(['tel'])`) 연동
-  - 전화번호 자동 포맷 (010-XXXX-XXXX)
-  - API 미지원 기기에서 버튼 자동 숨김 (`canPickContact()` feature detection)
-
-### v2.4.39 ~ v2.4.40 — 전화번호 입력 레이아웃 수정
-- 입력 필드가 화면 밖으로 넘치는 문제
-- `.phone-manager-item`을 `flex-direction: column`으로 변경
-- 구역명/이름 → 윗 줄 (`.phone-manager-top-row`), 입력 행 → 아랫 줄 전체 너비
-
-### v2.4.41 — 버튼 스타일 통일
-- 전역 `button` 기본 스타일(진한 파란, padding 10px 14px)이 저장 버튼에 오염되던 문제
-- `.phone-manager-save-btn`, `.phone-manager-cancel-btn`, `.phone-manager-contact-btn` 명시적 클래스로 통일
-- font-size: 13px / padding: 6px 12px / border-radius: 6px 동일 크기
+**수정 파일:**
+- `src/auth/authTypes.ts`: UserRole 확장 (`viewer|deptManager|admin`), `departments?`, `isSuperAdmin()`
+- `src/auth/firebaseAuthStore.ts`: `listAllUsers()`, `updateUserRole()`, 기본값 viewer, reporter→viewer 정규화
+- `src/auth/usePermissions.ts` (신규): 권한 계산 훅 — `Permissions` 타입, 역할별 권한 반환
+- `src/features/auth/UserManagementPanel.tsx` (신규): 사용자 목록, 역할 드롭다운, 부서 체크박스
+- `src/features/auth/ReporterAccountPanel.tsx`: superAdmin일 때 UserManagementPanel 표시
+- `src/features/report/TabbedReportForm.tsx`: `editableDepts` prop으로 부서 탭 필터링
+- `src/features/report/ReportEditor.tsx`: `editableDepts` prop 추가 및 전달
+- `src/features/roster/MemberRosterTab.tsx`: `visibleDepts` prop으로 부서 탭 필터링
+- `src/features/nav/BottomTabBar.tsx`: `canAccessRoster` prop으로 명단 탭 제어
+- `src/features/report/MobileReportList.tsx`: `canCreateReport` prop으로 새 보고서 버튼 제어
+- `src/App.tsx`: `usePermissions()` 연결, 모든 permission props 전달, viewer→view 모드 강제
+- `src/styles.css`: `.user-mgmt-*` 클래스 추가
 
 ---
 
@@ -59,103 +54,37 @@ npm run smoke       # playwright e2e (빌드 선행 필요)
 npm run verify      # npm test && npm run smoke
 ```
 
-> ⚠️ **SW 주의**: dev 서버에서 Service Worker가 등록되면 캐시 문제 발생.
-> `localhost:5173` 고정, vite.config.ts에서 dev 모드 SW 등록 비활성화 상태.
-
 ---
 
 ## 주요 파일 구조
 
 ```
 src/
-├── App.tsx                          # 루트: 상태·라우팅·syncReportFromRoster
-├── lib/
-│   └── firebase.ts                  # Firebase 초기화 (Auth + Firestore)
-├── domain/
-│   ├── reportTypes.ts               # 전체 타입 정의 (MinistryReport, DepartmentZone 등)
-│   ├── reportMembers.ts             # 출석 도메인 로직 (toggle/move/add/delete)
-│   └── memberRoster.ts              # 명단 도메인 로직
+├── App.tsx                          # 루트: 상태·라우팅·usePermissions 연결
+├── auth/
+│   ├── authTypes.ts                 # UserRole, Account, isSuperAdmin()
+│   ├── firebaseAuthStore.ts         # Google 로그인, listAllUsers, updateUserRole
+│   └── usePermissions.ts            # Permissions 훅 (역할 → 권한 계산)
 ├── features/
 │   ├── auth/
-│   │   └── AuthGate.tsx             # 로그인 화면 ("연천장로교회 사역보고서")
+│   │   ├── AuthGate.tsx             # 로그인 화면
+│   │   ├── ReporterAccountPanel.tsx # 계정 설정 패널 (superAdmin: UserManagementPanel 포함)
+│   │   └── UserManagementPanel.tsx  # 사용자 역할·부서 관리 UI (superAdmin 전용)
 │   ├── report/
-│   │   ├── TabbedReportForm.tsx     # 보고서 작성 폼 (6개 탭, 스와이프)
-│   │   ├── ReportViewer.tsx         # 보고서 뷰어 (스와이프 탭)
-│   │   ├── ZonedDepartmentAttendanceEditor.tsx  # 교구 출석 (구역 카드 + 이동 버튼)
-│   │   ├── DepartmentAttendanceEditor.tsx        # 유·중·청 출석
-│   │   ├── SmsPanel.tsx             # 문자 발송 패널 (fixed bottom)
-│   │   ├── smsUtils.ts              # SMS 대상 추출 로직
-│   │   ├── ReportCanvas.tsx         # 보고서 요약 캔버스
-│   │   └── AdultStatsPanel.tsx      # 교구 통계 패널
-│   └── roster/
-│       ├── RosterFlatEditor.tsx     # 유·중·청 명단 편집 (접기/펼치기 기본 collapsed)
-│       ├── RosterZoneEditor.tsx     # 교구 구역 명단 편집
-│       └── PhoneNumberManager.tsx   # 구역장 전화번호 관리 (주소록 연동)
-└── styles.css                       # 전체 스타일 (단일 파일, ~3600줄)
+│   │   ├── TabbedReportForm.tsx     # 보고서 폼 (editableDepts 기반 탭 필터링)
+│   │   ├── ReportEditor.tsx         # 보고서 편집기 래퍼
+│   │   └── MobileReportList.tsx     # 보고서 목록 (canCreateReport 기반 버튼 제어)
+│   ├── roster/
+│   │   └── MemberRosterTab.tsx      # 명단 탭 (visibleDepts 기반 부서 필터링)
+│   └── nav/
+│       └── BottomTabBar.tsx         # 하단 탭바 (canAccessRoster 기반 명단 탭 제어)
+└── styles.css                       # 전체 스타일 (~3760줄)
 ```
-
----
-
-## 핵심 도메인 개념
-
-### 보고서 구조 (MinistryReport)
-```ts
-MinistryReport {
-  id, title, reportDate, pastorName
-  departments: {
-    elementary: DepartmentReport   // 유초등부 (members[])
-    middleHigh: DepartmentReport   // 중고등부 (members[])
-    youngAdult: DepartmentReport   // 청년부 (members[])
-    adult:      DepartmentReport   // 교구 (zones[])
-  }
-  prayerRequests: string[]
-  announcements: string[]
-}
-```
-
-### 교구 구조 (교구만 zones 사용)
-```ts
-DepartmentReport.zones: DepartmentZone[] = [
-  { id, name: "1구역", district: 1, members: DepartmentMember[] },
-  ...
-]
-DepartmentMember { id, name, role?: "leader"|"inspector", status: "present"|"absent", phone?: string }
-```
-
-### 명단 → 보고서 동기화
-- `App.tsx`의 `syncReportFromRoster()` — 명단(Roster)이 변경될 때 보고서의 members/zones 구조를 갱신
-- 기존 출석 상태(present/absent)는 보존, 구조만 동기화
-- 추가된 인원은 가나다순 정렬(`localeCompare("ko")`)
-
-### 카드 드래그 & 스와이프 구분
-- 카드 롱프레스(500ms) 후 드래그: `useSortCards`, `useCrossGroupDrag` 훅
-- 탭 스와이프: 수평 80px 이상 + 450ms 미만 + 수직보다 수평이 큰 경우만
-- 두 동작이 겹치지 않도록 `touchStartTime` 기반으로 구분
-
----
-
-## CSS 주요 변수 (styles.css 상단)
-```css
---clr-primary        # 메인 파란색
---clr-primary-light  # 연한 파란
---clr-text-secondary # 보조 텍스트
---clr-text-muted     # 뮤트 텍스트
---clr-border         # 테두리
---clr-border-soft    # 연한 테두리
---clr-card-bg        # 카드 배경
---clr-bg             # 앱 배경
-```
-
-### 모바일 레이아웃 (max-width: 820px)
-- 하단 탭바: `position: fixed; bottom: 0; height: 56px; z-index: 100`
-- 앱 전체: `padding-bottom: calc(70px + env(safe-area-inset-bottom))`
-- SMS 패널: `position: fixed; bottom: calc(56px + env(safe-area-inset-bottom, 0px)); z-index: 110`
-- 헤더 상단 safe area: `top-bar-safe-spacer` div (모바일에서만 표시)
 
 ---
 
 ## 알려진 이슈 / 후속 작업 후보
-- 구역 이동 후 목적지 구역으로 자동 스크롤 (UX 개선)
-- 이동된 인원 일시적 하이라이트 (애니메이션)
+- Firestore 보안 규칙 강화 (현재 프론트엔드 전용 권한 제어)
+- viewer가 roster 탭에 접근 시 강제로 report 탭으로 이동시키는 UX
+- 구역 이동 후 목적지 구역으로 자동 스크롤
 - 보고서 이미지/PDF 내보내기
-- Firebase FCM 푸시 알림
