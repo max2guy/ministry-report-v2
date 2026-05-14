@@ -740,6 +740,9 @@ export function App() {
                 >
                   ‹ 보고서 목록
                 </button>
+                <span className="mobile-editor-context-badge">
+                  {report.reportDate} 수정 중
+                </span>
               </div>
             )}
             {appMode === "reporter" ? (

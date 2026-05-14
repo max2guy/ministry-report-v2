@@ -3062,6 +3062,17 @@ button:disabled {
   flex-shrink: 0;
 }
 
+.mobile-report-card-edit-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--clr-primary);
+  background: color-mix(in srgb, var(--clr-primary) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--clr-primary) 25%, transparent);
+  border-radius: 6px;
+  padding: 2px 8px;
+  flex-shrink: 0;
+}
+
 .mobile-report-empty {
   text-align: center;
   color: var(--clr-text-muted);
@@ -3179,6 +3190,12 @@ button:disabled {
 .mobile-back-btn:hover {
   color: #fff;
   background: transparent;
+}
+
+.mobile-editor-context-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .mobile-viewer-badge {
