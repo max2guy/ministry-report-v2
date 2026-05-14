@@ -19,19 +19,24 @@ type ReportViewerProps = {
 
 export function ReportViewer({ report, reports, activeTabIdx, tabs, onTabChange }: ReportViewerProps) {
   const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   function handleTouchStart(e: React.TouchEvent) {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   }
 
   function handleTouchEnd(e: React.TouchEvent) {
-    if (touchStartX.current === null) return;
+    if (touchStartX.current === null || touchStartY.current === null) return;
     const dx = e.changedTouches[0].clientX - touchStartX.current;
-    if (Math.abs(dx) > 50) {
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    // 수평 80px 이상 + 수직보다 수평이 더 큰 경우만 탭 전환
+    if (Math.abs(dx) >= 80 && Math.abs(dx) > Math.abs(dy) * 1.5) {
       if (dx < 0 && activeTabIdx < tabs.length - 1) onTabChange(activeTabIdx + 1);
       if (dx > 0 && activeTabIdx > 0) onTabChange(activeTabIdx - 1);
     }
     touchStartX.current = null;
+    touchStartY.current = null;
   }
 
   const activeKey = tabs[activeTabIdx]?.key ?? "summary";

@@ -74,8 +74,8 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
   function handleTouchEnd(e: React.TouchEvent) {
     const dx = e.changedTouches[0].clientX - touchStartX.current;
     const dy = e.changedTouches[0].clientY - touchStartY.current;
-    // 수평 스와이프만 처리 (수직 스크롤과 구분)
-    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+    // 수평 80px 이상 + 수직보다 수평이 더 큰 경우만 탭 전환
+    if (Math.abs(dx) < 80 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
     const keys = TABS.map((t) => t.key);
     const idx = keys.indexOf(activeTab);
     if (dx < 0 && idx < keys.length - 1) handleTabChange(keys[idx + 1]); // →
