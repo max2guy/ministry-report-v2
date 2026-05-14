@@ -432,9 +432,9 @@ button:disabled {
   font-size: 12px;
   font-weight: 500;
 }
-/* 장기 결석자 강조 */
+/* 장기 결석자 강조 — warning/danger 모두 빨간색으로 통일 */
 .dstats-absent-pill.streak-danger  { background: #fee2e2; border-color: #f87171; }
-.dstats-absent-pill.streak-warning { background: #fef3c7; border-color: #fbbf24; color: #92400e; }
+.dstats-absent-pill.streak-warning { background: #fee2e2; border-color: #f87171; color: #b91c1c; }
 
 /* 연속결석: 이름(outline) + 주수 배지(solid) */
 .dstats-streak-item {
@@ -458,7 +458,7 @@ button:disabled {
   line-height: 1.4;
 }
 .dstats-streak-badge.streak-normal  { background: var(--clr-muted); color: #fff; }
-.dstats-streak-badge.streak-warning { background: #f59e0b; color: #fff; }
+.dstats-streak-badge.streak-warning { background: #dc2626; color: #fff; }
 .dstats-streak-badge.streak-danger  { background: #dc2626; color: #fff; }
 
 /* 바 차트 */
