@@ -1847,17 +1847,17 @@ button:disabled {
 
 .phone-manager-item {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0;
   border-bottom: 1px solid var(--clr-border-soft);
-  flex-wrap: wrap;
 }
 
-/* 편집 중: input-row를 두 번째 줄 전체로 */
-.phone-manager-item.is-editing .phone-manager-input-row {
-  flex: 0 0 100%;
-  order: 3;
+/* 윗 줄: 구역명 + 구역장 이름 + 버튼 */
+.phone-manager-top-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .phone-manager-zone {
@@ -1886,7 +1886,7 @@ button:disabled {
 .phone-manager-input-row {
   display: flex;
   gap: 4px;
-  flex: 1;
+  width: 100%;
 }
 
 .phone-manager-input-row input {

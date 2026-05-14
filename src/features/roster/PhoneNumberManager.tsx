@@ -100,11 +100,24 @@ export function PhoneNumberManager({ roster, onChange }: Props) {
       <p className="phone-manager-desc">구역장 전화번호 (문자 발송에 사용)</p>
       <ul className="phone-manager-list">
         {zones.map((zone, i) => (
-          <li key={zone.id} className={`phone-manager-item${openIdx === i ? " is-editing" : ""}`}>
-            <span className="phone-manager-zone">{zone.name}장</span>
-            <span className="phone-manager-name">{leaders[i]?.name ?? "-"}</span>
-            {openIdx === i ? (
-              <span className="phone-manager-input-row">
+          <li key={zone.id} className="phone-manager-item">
+            {/* 윗 줄: 구역명 / 구역장 이름 / (비편집 시) 입력·수정 버튼 */}
+            <div className="phone-manager-top-row">
+              <span className="phone-manager-zone">{zone.name}장</span>
+              <span className="phone-manager-name">{leaders[i]?.name ?? "-"}</span>
+              {openIdx !== i && (
+                <button
+                  type="button"
+                  className="phone-manager-edit-btn"
+                  onClick={() => handleOpen(i)}
+                >
+                  {leaders[i]?.phone ? "수정" : "입력"}
+                </button>
+              )}
+            </div>
+            {/* 아랫 줄: 편집 시에만 표시되는 입력 행 */}
+            {openIdx === i && (
+              <div className="phone-manager-input-row">
                 <input
                   type="tel"
                   aria-label={`${zone.name}장 전화번호`}
@@ -130,15 +143,7 @@ export function PhoneNumberManager({ roster, onChange }: Props) {
                 )}
                 <button type="button" onClick={() => handleSave(i)}>저장</button>
                 <button type="button" className="btn-cancel" onClick={() => { setOpenIdx(null); setDraft(""); }}>취소</button>
-              </span>
-            ) : (
-              <button
-                type="button"
-                className="phone-manager-edit-btn"
-                onClick={() => handleOpen(i)}
-              >
-                {leaders[i]?.phone ? "수정" : "입력"}
-              </button>
+              </div>
             )}
           </li>
         ))}
