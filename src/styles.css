@@ -895,6 +895,72 @@ button:disabled {
   color: var(--clr-text-muted);
 }
 
+.zone-btn-move {
+  border: 1px solid #7c3aed;
+  color: #7c3aed;
+}
+
+.zone-btn-move.is-active {
+  background: #7c3aed;
+  color: #fff;
+}
+
+/* 구역 이동 피커 */
+.zone-move-picker {
+  background: var(--clr-card-bg);
+  border: 1px solid var(--clr-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.zone-move-label {
+  font-size: 12px;
+  color: var(--clr-text-secondary);
+  margin: 0;
+}
+
+.zone-move-empty {
+  font-size: 12px;
+  color: var(--clr-text-muted);
+  margin: 0;
+}
+
+.zone-move-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.zone-move-option {
+  background: transparent;
+  border: 1px solid #7c3aed;
+  color: #7c3aed;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
+.zone-move-option:active {
+  background: #7c3aed;
+  color: #fff;
+}
+
+.zone-move-cancel {
+  background: transparent;
+  border: none;
+  font-size: 11px;
+  color: var(--clr-text-muted);
+  padding: 0;
+  cursor: pointer;
+  align-self: flex-start;
+  text-decoration: underline;
+}
+
 .report-canvas {
   background: var(--clr-card-bg);
   border: 1.5px solid var(--clr-border);

@@ -194,6 +194,25 @@ export function deleteZoneMember(
   return { ...department, zones, attendance: deriveZoneAttendance(zones) };
 }
 
+/** 이동 버튼: memberId 기준으로 구역 간 이동 */
+export function moveZoneMemberToZone(
+  department: DepartmentReport,
+  fromZoneId: string,
+  memberId: string,
+  targetZoneId: string,
+): DepartmentReport {
+  if (!department.zones || fromZoneId === targetZoneId) return department;
+  const zones = cloneZones(department.zones);
+  const fromZone = zones.find((z) => z.id === fromZoneId);
+  const toZone   = zones.find((z) => z.id === targetZoneId);
+  if (!fromZone || !toZone) return department;
+  const idx = fromZone.members.findIndex((m) => m.id === memberId);
+  if (idx === -1) return department;
+  const [moved] = fromZone.members.splice(idx, 1);
+  toZone.members.push(moved);
+  return { ...department, zones, attendance: deriveZoneAttendance(zones) };
+}
+
 /** 구역 간(또는 구역 내) 멤버 이동 */
 export function moveZoneMember(
   department: DepartmentReport,

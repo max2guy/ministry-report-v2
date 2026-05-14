@@ -9,6 +9,7 @@ import {
   markZoneAllAbsent,
   markZoneAllPresent,
   moveZoneMember,
+  moveZoneMemberToZone,
   toggleZoneMember,
 } from "../../domain/reportMembers";
 import type { DepartmentKey, DepartmentReport, DepartmentZone } from "../../domain/reportTypes";
@@ -28,9 +29,15 @@ function roleLabel(role?: string) {
   return null;
 }
 
+type MoveStep =
+  | null
+  | { step: "pickZone" }
+  | { step: "pickMember"; targetZoneId: string };
+
 /** 구역 카드 그룹 */
 function ZoneGroup({
   zone,
+  allZones,
   isEditing,
   isDraggingAny,
   onToggle,
@@ -38,6 +45,7 @@ function ZoneGroup({
   onAllAbsent,
   onAdd,
   onDelete,
+  onMoveToZone,
   isDragging,
   isOver,
   mouseProps,
@@ -45,6 +53,7 @@ function ZoneGroup({
   sectionProps,
 }: {
   zone: DepartmentZone;
+  allZones: DepartmentZone[];
   isEditing: boolean;
   isDraggingAny: boolean;
   onToggle: (memberId: string) => void;
@@ -52,6 +61,7 @@ function ZoneGroup({
   onAllAbsent: () => void;
   onAdd: (name: string) => void;
   onDelete: (memberId: string) => void;
+  onMoveToZone: (memberId: string, targetZoneId: string) => void;
   isDragging: (group: GroupId, idx: number) => boolean;
   isOver: (group: GroupId, idx: number) => boolean;
   mouseProps: (group: GroupId, idx: number) => Record<string, unknown>;
@@ -60,6 +70,7 @@ function ZoneGroup({
 }) {
   const [draft, setDraft] = useState("");
   const [showAddRow, setShowAddRow] = useState(false);
+  const [moveStep, setMoveStep] = useState<MoveStep>(null);
   const present = zone.members.filter((m) => m.status === "present").length;
   const total = zone.members.length;
 
@@ -68,6 +79,26 @@ function ZoneGroup({
     setDraft("");
     setShowAddRow(false);
   }
+
+  function handleMoveBtn() {
+    setMoveStep(v => v ? null : { step: "pickZone" });
+    setShowAddRow(false);
+  }
+
+  function handlePickZone(targetZoneId: string) {
+    setMoveStep({ step: "pickMember", targetZoneId });
+  }
+
+  function handlePickMember(memberId: string) {
+    if (moveStep?.step !== "pickMember") return;
+    onMoveToZone(memberId, moveStep.targetZoneId);
+    setMoveStep(null);
+  }
+
+  const otherZones = allZones.filter((z) => z.id !== zone.id);
+  const targetZone = moveStep?.step === "pickMember"
+    ? allZones.find((z) => z.id === moveStep.targetZoneId)
+    : null;
 
   return (
     <div className="zone-group">
@@ -79,7 +110,7 @@ function ZoneGroup({
             <button
               type="button"
               className="zone-btn zone-btn-add"
-              onClick={() => { setShowAddRow(v => !v); setDraft(""); }}
+              onClick={() => { setShowAddRow(v => !v); setDraft(""); setMoveStep(null); }}
             >
               인원추가
             </button>
@@ -89,9 +120,62 @@ function ZoneGroup({
             <button type="button" className="zone-btn zone-btn-absent" onClick={onAllAbsent}>
               전원결석
             </button>
+            <button
+              type="button"
+              className={`zone-btn zone-btn-move${moveStep ? " is-active" : ""}`}
+              onClick={handleMoveBtn}
+            >
+              이동
+            </button>
           </>
         )}
       </div>
+
+      {/* 이동: 1단계 — 목적 구역 선택 */}
+      {moveStep?.step === "pickZone" && !isEditing && (
+        <div className="zone-move-picker">
+          <p className="zone-move-label">이동할 구역을 선택하세요</p>
+          <div className="zone-move-options">
+            {otherZones.map((z) => (
+              <button
+                key={z.id}
+                type="button"
+                className="zone-move-option"
+                onClick={() => handlePickZone(z.id)}
+              >
+                {z.name}
+              </button>
+            ))}
+          </div>
+          <button type="button" className="zone-move-cancel" onClick={() => setMoveStep(null)}>취소</button>
+        </div>
+      )}
+
+      {/* 이동: 2단계 — 이동할 구성원 선택 */}
+      {moveStep?.step === "pickMember" && !isEditing && (
+        <div className="zone-move-picker">
+          <p className="zone-move-label">
+            <strong>{targetZone?.name ?? "선택한 구역"}</strong>으로 이동할 인원을 선택하세요
+          </p>
+          {zone.members.length === 0 ? (
+            <p className="zone-move-empty">이 구역에 인원이 없습니다</p>
+          ) : (
+            <div className="zone-move-options">
+              {zone.members.map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  className="zone-move-option"
+                  onClick={() => handlePickMember(m.id)}
+                >
+                  {m.name}
+                </button>
+              ))}
+            </div>
+          )}
+          <button type="button" className="zone-move-cancel" onClick={() => setMoveStep({ step: "pickZone" })}>← 구역 다시 선택</button>
+        </div>
+      )}
 
       {showAddRow && !isEditing && (
         <div className="attendance-add-row">
@@ -171,6 +255,7 @@ function ZoneGroup({
 function DistrictSection({
   district,
   zones,
+  allZones,
   departmentKey,
   department,
   isEditing,
@@ -184,6 +269,7 @@ function DistrictSection({
 }: {
   district: number;
   zones: DepartmentZone[];
+  allZones: DepartmentZone[];
   departmentKey: DepartmentKey;
   department: DepartmentReport;
   isEditing: boolean;
@@ -208,6 +294,7 @@ function DistrictSection({
         <ZoneGroup
           key={zone.id}
           zone={zone}
+          allZones={allZones}
           isEditing={isEditing}
           isDraggingAny={isDraggingAny}
           onToggle={(memberId) =>
@@ -217,6 +304,9 @@ function DistrictSection({
           onAllAbsent={() => onChange(departmentKey, markZoneAllAbsent(department, zone.id))}
           onAdd={(name) => onChange(departmentKey, addZoneMember(department, zone.id, name))}
           onDelete={(memberId) => onChange(departmentKey, deleteZoneMember(department, zone.id, memberId))}
+          onMoveToZone={(memberId, targetZoneId) =>
+            onChange(departmentKey, moveZoneMemberToZone(department, zone.id, memberId, targetZoneId))
+          }
           isDragging={isDragging}
           isOver={isOver}
           mouseProps={mouseProps}
@@ -294,6 +384,7 @@ export function ZonedDepartmentAttendanceEditor({ department, reportDate, onChan
             key={district}
             district={district}
             zones={zones.filter((z) => z.district === district)}
+            allZones={zones}
             departmentKey={department.key}
             department={department}
             isEditing={isEditing}
