@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { MinistryReport } from "../../domain/reportTypes";
+import type { DepartmentKey, MinistryReport } from "../../domain/reportTypes";
 import { TabbedReportForm } from "./TabbedReportForm";
 
 type ReportEditorProps = {
@@ -16,6 +16,7 @@ type ReportEditorProps = {
   saveErrors: string[];
   saveStatus: string;
   saveDisabledReason?: string;
+  editableDepts: DepartmentKey[] | "all";
 };
 
 function downloadReport(report: MinistryReport) {
@@ -44,6 +45,7 @@ export function ReportEditor({
   saveErrors,
   saveStatus,
   saveDisabledReason,
+  editableDepts,
 }: ReportEditorProps) {
   return (
     <section className="report-mode">
@@ -82,7 +84,7 @@ export function ReportEditor({
         {saveStatus ? <p role="status">{saveStatus}</p> : null}
       </aside>
       <div className="editor-workspace">
-        <TabbedReportForm report={report} reports={reports} onChange={onChange} editableDepts="all" />
+        <TabbedReportForm report={report} reports={reports} onChange={onChange} editableDepts={editableDepts} />
       </div>
     </section>
   );
