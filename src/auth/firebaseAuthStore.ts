@@ -29,7 +29,7 @@ export async function getOrCreateUserDoc(user: User): Promise<Account> {
       id: user.uid,
       email: user.email ?? "",
       displayName: (data.displayName as string) || user.displayName || "",
-      role: (data.role as UserRole) ?? "reporter",
+      role: (data.role as UserRole) ?? "viewer",
       createdAt: data.createdAt as string,
       updatedAt: data.updatedAt as string,
     };
@@ -37,7 +37,7 @@ export async function getOrCreateUserDoc(user: User): Promise<Account> {
 
   // 첫 사용자인지 확인 (users 컬렉션이 비어있으면 admin)
   const allUsers = await getDocs(collection(db, "users"));
-  const role: UserRole = allUsers.empty ? "admin" : "reporter";
+  const role: UserRole = allUsers.empty ? "admin" : "viewer";
 
   const now = new Date().toISOString();
   const account: Account = {
