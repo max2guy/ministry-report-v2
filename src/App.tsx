@@ -428,8 +428,9 @@ export function App() {
       // GitHub Gist 백업 (PAT 있을 때만, 실패해도 무시)
       void uploadToGist({ reports: nextReports, roster });
     } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
       console.error("저장 실패:", err);
-      setSaveStatus("저장 실패. 네트워크를 확인해 주세요.");
+      setSaveStatus(`저장 실패: ${msg}`);
     }
   }
 
