@@ -82,7 +82,7 @@ export function ReportEditor({
         {saveStatus ? <p role="status">{saveStatus}</p> : null}
       </aside>
       <div className="editor-workspace">
-        <TabbedReportForm report={report} reports={reports} onChange={onChange} />
+        <TabbedReportForm report={report} reports={reports} onChange={onChange} editableDepts="all" />
       </div>
     </section>
   );
