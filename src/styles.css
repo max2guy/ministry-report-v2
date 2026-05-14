@@ -269,6 +269,11 @@ button:disabled {
   display: none;
 }
 
+/* Safe area 전용 spacer — 모바일에서 콘텐츠와 분리 */
+.top-bar-safe-spacer {
+  display: none; /* 데스크탑: 불필요 (헤더가 fixed가 아님) */
+}
+
 /* 헤더 내부 뷰어 탭바 — 고정 헤더(top-bar)에 통합, 모바일 전용 */
 .top-bar-viewer-tabs {
   display: none; /* 데스크탑에서 숨김; 모바일 미디어쿼리에서 flex 활성화 */
@@ -1498,7 +1503,8 @@ button:disabled {
     flex-direction: column;
     align-items: stretch;
     margin: 0;
-    padding: calc(env(safe-area-inset-top) + 6px) 12px 4px;
+    /* safe-area는 top-bar-safe-spacer가 전담; 콘텐츠 padding은 각 행에서 처리 */
+    padding: 0 0 6px;
     gap: 0;
     position: fixed;
     top: 0;
@@ -1507,6 +1513,13 @@ button:disabled {
     z-index: 100;
     /* 서브픽셀 갭을 primary 색으로 덮기 */
     box-shadow: 0 2px 0 var(--clr-primary);
+  }
+
+  /* Safe area spacer: 헤더 상단을 채우되 콘텐츠와 명확히 분리 */
+  .top-bar-safe-spacer {
+    display: block;
+    height: env(safe-area-inset-top, 0px);
+    flex-shrink: 0;
   }
 
   /* 알림바 영역 검은색 통일 - 로딩바/gap이 검은색에 묻힘 */
@@ -1528,8 +1541,9 @@ button:disabled {
     padding-top: var(--_bar);
   }
 
-  /* 헤더 타이틀 행 */
+  /* 헤더 타이틀 행 — safe-spacer 아래 고정된 padding으로 위치 일관성 확보 */
   .top-bar-title-row {
+    padding: 8px 12px 0;
     justify-content: space-between;
     margin-bottom: 0;
   }
@@ -1633,7 +1647,8 @@ button:disabled {
     display: flex;
     padding: 3px;
     gap: 1px;
-    margin-top: 4px;
+    /* top-bar의 horizontal padding 제거 → 탭바에 직접 margin 적용 */
+    margin: 4px 12px 0;
   }
   .viewer-dept-tabs--desktop {
     display: none;

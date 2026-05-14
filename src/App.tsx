@@ -615,6 +615,8 @@ export function App() {
         </div>
       )}
       <header className="top-bar" ref={topBarRef}>
+        {/* Safe area 전용 spacer — 콘텐츠와 분리해 타이틀 위치를 일정하게 유지 */}
+        <div className="top-bar-safe-spacer" aria-hidden="true" />
         <div className="top-bar-title-row">
           <div className="top-bar-title-group">
             <span className="top-bar-date">
