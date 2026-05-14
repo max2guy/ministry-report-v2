@@ -628,8 +628,8 @@ export function App() {
               aria-label="강제 새로고침"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <polyline points="23 4 23 10 17 10" />
-                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                <path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4" />
+                <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
               </svg>
             </button>
             {currentAccount && (
