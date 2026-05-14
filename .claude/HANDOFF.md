@@ -1,11 +1,15 @@
-# ministry-report-v2 — Codex Handoff (v2.4.21)
+# ministry-report-v2 — Codex Handoff (v2.4.22)
 
 ## 현재 상태
 - 브랜치: `main`
-- 최신 배포 기준: `v2.4.21`
-- 최신 커밋: `f7d4252 fix(layout): compact mobile viewer header by default (v2.4.21)`
+- 최신 배포 기준: `v2.4.22`
+- 최신 커밋: 작업 중
 
 ## 최근 버전 흐름
+- `v2.4.22`
+  - 헤더 상단 글씨 블록을 조금 아래로 내려 균형 조정
+  - 모바일 부서 섹션 스크롤 시 헤더 높이가 꿀렁이던 현상 완화
+  - `ResizeObserver` 기반 실시간 높이 추적을 제거하고, 헤더 구조가 바뀌는 시점에만 `--top-bar-height` 재계산
 - `v2.4.21` `f7d4252`
   - 모바일 뷰어 헤더를 처음부터 컴팩트 상태로 고정
   - 모바일 `.top-bar` 패딩, 액션 간격, 아바타 크기, 뷰어 탭 간격 축소
@@ -23,12 +27,12 @@
   - 구버전 보고서 로드 시 `summary` 등 누락 필드 정규화
 
 ## 이번 작업에서 실제 수정한 파일
-- `package.json`
-  - 버전 `2.4.20 -> 2.4.21`
+- `src/App.tsx`
+  - 모바일 헤더 높이 계산을 상태 전환형으로 변경
 - `src/styles.css`
-  - 모바일 헤더 compact 기본값 조정
-  - 모바일 뷰어 탭바 간격 축소
-  - 초기 헤더 fallback 높이 조정
+  - 헤더 상단 글씨 블록 하향 조정
+- `package.json`
+  - 버전 `2.4.21 -> 2.4.22`
 
 ## 프로젝트 개요
 - **프레임워크**: React 19 + TypeScript + Vite PWA
