@@ -257,12 +257,15 @@ button:disabled {
   margin-bottom: 0;
 }
 
-/* 헤더 통합 탭 바 — 모바일 전용 (데스크탑에서는 숨김) */
-.viewer-dept-tabs--in-header {
-  display: none;
-  background: rgba(0, 0, 0, 0.18);
-  border-radius: 10px;
-  margin: 6px 0 0;
+/* 모바일 sticky 탭 바 — 헤더 바로 아래에 고정 */
+.viewer-dept-tabs--mobile-sticky {
+  display: none; /* 데스크탑에서는 숨김 */
+  position: sticky;
+  top: var(--top-bar-height, calc(env(safe-area-inset-top, 0px) + 70px));
+  z-index: 50;
+  border-radius: 0;
+  padding: 6px 12px;
+  margin: 0 0 8px;
 }
 
 /* 데스크탑 전용 뷰어 탭 바 (뷰어 콘텐츠 상단) */
@@ -1558,8 +1561,8 @@ button:disabled {
     padding: 12px;
   }
 
-  /* 모바일에서 헤더 탭 바 표시, 데스크탑 탭 바 숨김 */
-  .viewer-dept-tabs--in-header {
+  /* 모바일에서 sticky 탭 바 표시, 데스크탑 탭 바 숨김 */
+  .viewer-dept-tabs--mobile-sticky {
     display: flex;
   }
   .viewer-dept-tabs--desktop {

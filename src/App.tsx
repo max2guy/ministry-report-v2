@@ -187,19 +187,6 @@ export function App() {
     MemberRoster | undefined
   >();
 
-  // 뷰어 탭 바가 헤더에 추가/제거될 때 높이 재계산 (한 프레임 뒤)
-  useEffect(() => {
-    const el = topBarRef.current;
-    if (!el) return;
-    const id = requestAnimationFrame(() => {
-      document.documentElement.style.setProperty(
-        "--top-bar-height",
-        `${el.offsetHeight}px`,
-      );
-    });
-    return () => cancelAnimationFrame(id);
-  }, [appMode, mobileScreen]);
-
   // Firebase Auth 상태 구독
   useEffect(() => {
     const unsubscribe = onAuthChange((account) => {
@@ -668,21 +655,6 @@ export function App() {
           </button>
         </div>
         <p className="app-version-label desktop-only">v{__APP_VERSION__}</p>
-        {/* 뷰어 모드 탭 바: 헤더 하단에 통합 */}
-        {appMode === "viewer" && mobileScreen === "editor" && (
-          <div className="viewer-dept-tabs viewer-dept-tabs--in-header">
-            {viewerTabs.map((tab, i) => (
-              <button
-                key={tab.key}
-                type="button"
-                className={`viewer-dept-tab-btn${i === safeTabIdx ? " is-active" : ""}`}
-                onClick={() => setViewerTabIdx(i)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        )}
       </header>
       {/* Mobile-only: MobileReportList home OR editor screen */}
       <div className="mobile-only">
@@ -778,13 +750,29 @@ export function App() {
                 </div>
               </>
             ) : (
-              <ReportViewer
-                report={report}
-                reports={reports}
-                activeTabIdx={safeTabIdx}
-                tabs={viewerTabs}
-                onTabChange={setViewerTabIdx}
-              />
+              <>
+                {viewerTabs.length > 1 && (
+                  <div className="viewer-dept-tabs viewer-dept-tabs--mobile-sticky">
+                    {viewerTabs.map((tab, i) => (
+                      <button
+                        key={tab.key}
+                        type="button"
+                        className={`viewer-dept-tab-btn${i === safeTabIdx ? " is-active" : ""}`}
+                        onClick={() => setViewerTabIdx(i)}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <ReportViewer
+                  report={report}
+                  reports={reports}
+                  activeTabIdx={safeTabIdx}
+                  tabs={viewerTabs}
+                  onTabChange={setViewerTabIdx}
+                />
+              </>
             )}
           </div>
         )}
