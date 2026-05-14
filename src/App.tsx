@@ -674,6 +674,21 @@ export function App() {
           </button>
         </div>
         <p className="app-version-label desktop-only">v{__APP_VERSION__}</p>
+        {/* 모바일 뷰어 탭바 — 고정 헤더 안에 통합 (스크롤 콘텐츠 비침 방지) */}
+        {mobileTab === "edit" && mobileScreen === "editor" && appMode === "viewer" && viewerTabs.length > 1 && (
+          <div className="viewer-dept-tabs top-bar-viewer-tabs">
+            {viewerTabs.map((tab, i) => (
+              <button
+                key={tab.key}
+                type="button"
+                className={`viewer-dept-tab-btn${i === safeTabIdx ? " is-active" : ""}`}
+                onClick={() => setViewerTabIdx(i)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        )}
       </header>
       {/* Mobile-only: MobileReportList home OR editor screen */}
       <div className="mobile-only">
@@ -782,20 +797,6 @@ export function App() {
               </>
             ) : (
               <>
-                {viewerTabs.length > 1 && (
-                  <div className="viewer-dept-tabs viewer-dept-tabs--mobile-sticky">
-                    {viewerTabs.map((tab, i) => (
-                      <button
-                        key={tab.key}
-                        type="button"
-                        className={`viewer-dept-tab-btn${i === safeTabIdx ? " is-active" : ""}`}
-                        onClick={() => setViewerTabIdx(i)}
-                      >
-                        {tab.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
                 <ReportViewer
                   report={report}
                   reports={reports}

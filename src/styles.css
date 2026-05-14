@@ -264,15 +264,18 @@ button:disabled {
   margin-bottom: 0;
 }
 
-/* 모바일 sticky 탭 바 — 헤더 바로 아래에 고정 */
+/* 모바일 sticky 탭 바 — 더 이상 사용하지 않음 (헤더 내 통합으로 대체) */
 .viewer-dept-tabs--mobile-sticky {
-  display: none; /* 데스크탑에서는 숨김 */
-  position: sticky;
-  top: var(--top-bar-height, calc(env(safe-area-inset-top, 0px) + 70px));
-  z-index: 50;
-  border-radius: 0;
-  padding: 6px 12px;
-  margin: 0 0 8px;
+  display: none;
+}
+
+/* 헤더 내부 뷰어 탭바 — 고정 헤더(top-bar)에 통합, 모바일 전용 */
+.top-bar-viewer-tabs {
+  display: none; /* 데스크탑에서 숨김; 모바일 미디어쿼리에서 flex 활성화 */
+  border-radius: 8px;
+  padding: 4px;
+  gap: 2px;
+  margin: 6px 0 0;
 }
 
 /* 데스크탑 전용 뷰어 탭 바 (뷰어 콘텐츠 상단) */
@@ -1495,7 +1498,7 @@ button:disabled {
     flex-direction: column;
     align-items: stretch;
     margin: 0;
-    padding: calc(env(safe-area-inset-top) + 10px) 16px 8px;
+    padding: calc(env(safe-area-inset-top) + 8px) 14px 8px;
     gap: 0;
     position: fixed;
     top: 0;
@@ -1604,8 +1607,8 @@ button:disabled {
     padding: 12px;
   }
 
-  /* 모바일에서 sticky 탭 바 표시, 데스크탑 탭 바 숨김 */
-  .viewer-dept-tabs--mobile-sticky {
+  /* 모바일에서 헤더 내 뷰어 탭바 표시, 데스크탑 탭 바 숨김 */
+  .top-bar-viewer-tabs {
     display: flex;
   }
   .viewer-dept-tabs--desktop {
