@@ -936,10 +936,9 @@ button:disabled {
 }
 
 .department-section h3 {
-  color: var(--clr-primary);
-  font-size: 14px;
+  color: var(--clr-text-secondary);
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.3px;
   margin: 0;
 }
 
@@ -1257,6 +1256,41 @@ button:disabled {
   display: grid;
   gap: 2px;
   padding-top: 10px;
+}
+
+.account-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-edit-name {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--clr-surface);
+  color: var(--clr-text-muted);
+  border: 1px solid var(--clr-border-soft);
+  cursor: pointer;
+}
+
+.account-name-edit {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.account-name-edit input {
+  flex: 1;
+  min-width: 120px;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1.5px solid var(--clr-primary);
+  background: var(--clr-card-bg);
+  color: var(--clr-text);
 }
 
 .password-change-panel {

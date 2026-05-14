@@ -11,6 +11,7 @@ type Props = {
   dept: DepartmentReport;
   reportDate: string;
   reports: MinistryReport[];
+  label?: string; // 표시 이름 오버라이드 (Firestore 저장값 무시)
 };
 
 function rateBadgeClass(rate: number): string {
@@ -34,7 +35,7 @@ function MiniBar({
   );
 }
 
-export function AdultStatsPanel({ dept, reportDate, reports }: Props) {
+export function AdultStatsPanel({ dept, reportDate, reports, label }: Props) {
   const zones = dept.zones ?? [];
   const total = getTotalCount(dept);
   const present = dept.attendance;
@@ -53,7 +54,7 @@ export function AdultStatsPanel({ dept, reportDate, reports }: Props) {
   return (
     <div className="dstats-panel">
       <div className="dstats-header">
-        <span className="dstats-name">{dept.name}</span>
+        <span className="dstats-name">{label ?? dept.name}</span>
         <span className={`dstats-rate-badge ${rateBadgeClass(rate)}`}>출석률 {rate}%</span>
       </div>
       <div className="dstats-date">📅 {reportDate}</div>

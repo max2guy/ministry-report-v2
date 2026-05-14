@@ -276,6 +276,16 @@ export function App() {
     setSaveStatus(`${account.displayName}으로 로그인되었습니다.`);
   }
 
+  function handleDisplayNameChange(newName: string) {
+    setCurrentAccount((prev) => prev ? { ...prev, displayName: newName } : prev);
+    // 현재 보고서 보고자 이름도 동기화
+    setReport((prev) => {
+      const next = { ...prev, pastorName: newName, updatedAt: new Date().toISOString() };
+      saveReportDraft(next);
+      return next;
+    });
+  }
+
   async function handleSignOut() {
     await firebaseSignOut();
     setCurrentAccount(undefined);
@@ -663,6 +673,7 @@ export function App() {
             <ReporterAccountPanel
               currentAccount={currentAccount}
               onSignOut={() => void handleSignOut()}
+              onDisplayNameChange={handleDisplayNameChange}
             />
             <ThemeSelector />
             <AppModeToggle appMode={appMode} onAppModeChange={setAppMode} />

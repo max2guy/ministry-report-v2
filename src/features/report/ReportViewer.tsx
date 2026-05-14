@@ -64,6 +64,7 @@ export function ReportViewer({ report, reports, activeTabIdx, tabs, onTabChange 
           dept={report.departments.adult}
           reportDate={report.reportDate}
           reports={reports}
+          label="교구"
         />
       ) : (
         <DeptStatsPanel

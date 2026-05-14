@@ -208,7 +208,7 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
                 />
               )}
               <label>
-                요약
+                종합의견 및 특이사항
                 <textarea
                   rows={3}
                   value={department.summary}

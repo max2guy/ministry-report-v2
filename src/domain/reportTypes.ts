@@ -265,7 +265,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
   const elementaryMembers = (() => {
     if (roster?.departments.elementary.kind === "flat") {
       return roster.departments.elementary.members.map(m => ({
-        id: m.id, name: m.name, status: "absent" as const, role: m.role, phone: m.phone,
+        id: m.id, name: m.name, status: "absent" as const, role: m.role, phone: m.phone, group: m.group,
       }));
     }
     return createDepartmentMembers(["권상우", "천주아"]);
@@ -274,7 +274,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
   const middleHighMembers = (() => {
     if (roster?.departments.middleHigh.kind === "flat") {
       return roster.departments.middleHigh.members.map(m => ({
-        id: m.id, name: m.name, status: "absent" as const, role: m.role, phone: m.phone,
+        id: m.id, name: m.name, status: "absent" as const, role: m.role, phone: m.phone, group: m.group,
       }));
     }
     return createDepartmentMembers([
@@ -287,7 +287,7 @@ export function createEmptyReport(now = new Date(), roster?: MemberRoster): Mini
   const youngAdultMembers = (() => {
     if (roster?.departments.youngAdult.kind === "flat") {
       return roster.departments.youngAdult.members.map(m => ({
-        id: m.id, name: m.name, status: "absent" as const, role: m.role, phone: m.phone,
+        id: m.id, name: m.name, status: "absent" as const, role: m.role, phone: m.phone, group: m.group,
       }));
     }
     return createDepartmentMembers([
