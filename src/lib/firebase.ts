@@ -1,6 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { initializeFirestore, persistentLocalCache } from "firebase/firestore";
+import {
+  getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
@@ -15,7 +19,13 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 
-// Firestore with offline persistence enabled
-export const db = initializeFirestore(app, {
-  localCache: persistentLocalCache(),
-});
+// Firestore with offline persistence — falls back to in-memory cache on
+// environments that don't support IndexedDB (some iOS WebViews, private mode).
+export const db = (() => {
+  try {
+    return initializeFirestore(app, { localCache: persistentLocalCache() });
+  } catch {
+    console.warn("Firestore persistentLocalCache unavailable; using default cache.");
+    return getFirestore(app);
+  }
+})();

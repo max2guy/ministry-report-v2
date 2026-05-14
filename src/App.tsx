@@ -177,6 +177,8 @@ export function App() {
   const [reports, setReports] = useState<MinistryReport[]>([]);
   const [currentAccount, setCurrentAccount] = useState<Account | undefined>();
   const [isHydrated, setIsHydrated] = useState(false);
+  // Firebase Auth가 2초 내에 응답하지 않으면 AuthGate를 표시해 빈 화면 방지
+  const [authTimedOut, setAuthTimedOut] = useState(false);
   const [importWarnings, setImportWarnings] = useState<string[]>([]);
   const [saveErrors, setSaveErrors] = useState<string[]>([]);
   const [saveStatus, setSaveStatus] = useState("");
@@ -200,6 +202,12 @@ export function App() {
       void loadCloudData(account);
     });
     return unsubscribe;
+  }, []);
+
+  // Auth 응답 타임아웃: 2초 후에도 isHydrated가 false면 AuthGate를 표시
+  useEffect(() => {
+    const timer = setTimeout(() => setAuthTimedOut(true), 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   async function loadCloudData(account: Account) {
@@ -547,6 +555,14 @@ export function App() {
   }
 
   if (!isHydrated) {
+    // Auth 타임아웃 후에는 빈 화면 대신 로그인 화면을 표시
+    if (authTimedOut) {
+      return (
+        <main className="app-shell auth-shell">
+          <AuthGate onSignedIn={handleSignedIn} />
+        </main>
+      );
+    }
     return <main className="app-shell" />;
   }
 
