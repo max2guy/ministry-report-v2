@@ -42,7 +42,7 @@ function IconSettings() {
 const TABS: { id: MobileTab; label: string; icon: ReactNode }[] = [
   { id: "edit", label: "보고서", icon: <IconReport /> },
   { id: "roster", label: "명단", icon: <IconPeople /> },
-  { id: "account", label: "계정", icon: <IconSettings /> },
+  { id: "account", label: "설정", icon: <IconSettings /> },
 ];
 
 export function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {

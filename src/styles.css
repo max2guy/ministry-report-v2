@@ -3187,6 +3187,40 @@ button:disabled {
   gap: 12px;
 }
 
+/* ── 설정 카드 (테마 등) ── */
+.settings-card {
+  background: var(--clr-card-bg);
+  border: 1.5px solid var(--clr-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-card-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--clr-text-secondary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* 설정 카드 안 ThemeSelector — 배경이 카드이므로 어두운 색으로 */
+.settings-card .theme-selector {
+  padding: 0;
+}
+
+.settings-card .theme-selector-label {
+  color: var(--clr-text);
+}
+
+.settings-card .theme-dot.is-active {
+  border-color: var(--clr-text);
+  outline-color: var(--dot-color);
+}
+
 /* ── 앱 버전 표시 ── */
 .app-version-label {
   font-size: 11px;

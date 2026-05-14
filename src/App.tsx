@@ -675,7 +675,10 @@ export function App() {
               onSignOut={() => void handleSignOut()}
               onDisplayNameChange={handleDisplayNameChange}
             />
-            <ThemeSelector />
+            <div className="settings-card">
+              <p className="settings-card-label">테마</p>
+              <ThemeSelector />
+            </div>
             <AppModeToggle appMode={appMode} onAppModeChange={setAppMode} />
             <div className="mobile-data-panel">
               <p className="mobile-data-panel-label">데이터</p>
