@@ -1884,10 +1884,27 @@ button:disabled {
 
 .phone-manager-input-row input {
   flex: 1;
+  min-width: 0;
   padding: 4px 8px;
   border: 1px solid var(--clr-primary-light);
   border-radius: 4px;
   font-size: 13px;
+}
+
+.phone-manager-contact-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid #7c3aed;
+  color: #7c3aed;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.phone-manager-contact-btn:disabled {
+  opacity: 0.5;
 }
 
 .btn-cancel {

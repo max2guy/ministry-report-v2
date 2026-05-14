@@ -1,6 +1,20 @@
 import { useState } from "react";
 import type { MemberRoster, RosterZone } from "../../domain/memberRoster";
 
+// Contact Picker API — 표준 TS lib에 미포함이므로 최소 선언
+interface ContactAddress { tel: string[] }
+interface ContactsManager {
+  select(properties: string[], options?: { multiple?: boolean }): Promise<ContactAddress[]>;
+}
+declare global {
+  interface Navigator { contacts?: ContactsManager; }
+}
+
+/** Contact Picker API 지원 여부 */
+function canPickContact(): boolean {
+  return typeof navigator !== "undefined" && "contacts" in navigator;
+}
+
 type Props = {
   roster: MemberRoster;
   onChange: (roster: MemberRoster) => void;
@@ -15,6 +29,29 @@ export function PhoneNumberManager({ roster, onChange }: Props) {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [draft, setDraft] = useState("");
   const [expanded, setExpanded] = useState(false);
+  const [picking, setPicking] = useState(false);
+
+  async function handlePickContact() {
+    if (!canPickContact()) return;
+    try {
+      setPicking(true);
+      const contacts = await navigator.contacts!.select(["tel"], { multiple: false });
+      if (contacts.length > 0 && contacts[0].tel.length > 0) {
+        const raw = contacts[0].tel[0].replace(/[^0-9]/g, "");
+        // 010-XXXX-XXXX 형식으로 포맷
+        const formatted = raw.length === 11
+          ? `${raw.slice(0, 3)}-${raw.slice(3, 7)}-${raw.slice(7)}`
+          : raw.length === 10
+            ? `${raw.slice(0, 3)}-${raw.slice(3, 6)}-${raw.slice(6)}`
+            : raw;
+        setDraft(formatted);
+      }
+    } catch {
+      // 사용자 취소 등 — 무시
+    } finally {
+      setPicking(false);
+    }
+  }
 
   const zones = getZones(roster);
   const leaders = zones.map(z => z.members.find(m => m.role === "leader"));
@@ -80,6 +117,17 @@ export function PhoneNumberManager({ roster, onChange }: Props) {
                   }}
                   autoFocus
                 />
+                {canPickContact() && (
+                  <button
+                    type="button"
+                    className="phone-manager-contact-btn"
+                    disabled={picking}
+                    aria-label="주소록에서 불러오기"
+                    onClick={handlePickContact}
+                  >
+                    {picking ? "…" : "주소록"}
+                  </button>
+                )}
                 <button type="button" onClick={() => handleSave(i)}>저장</button>
                 <button type="button" className="btn-cancel" onClick={() => { setOpenIdx(null); setDraft(""); }}>취소</button>
               </span>
