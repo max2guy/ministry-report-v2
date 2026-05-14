@@ -432,9 +432,7 @@ button:disabled {
   font-size: 12px;
   font-weight: 500;
 }
-/* 장기 결석자 강조 — warning/danger 모두 빨간색으로 통일 */
-.dstats-absent-pill.streak-danger  { background: #fee2e2; border-color: #f87171; }
-.dstats-absent-pill.streak-warning { background: #fee2e2; border-color: #f87171; color: #b91c1c; }
+/* 결석자 이름 알약은 streak 여부와 무관하게 기본 스타일로 통일 */
 
 /* 연속결석: 이름(outline) + 주수 배지(solid) */
 .dstats-streak-item {
