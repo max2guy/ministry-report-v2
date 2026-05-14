@@ -768,6 +768,7 @@ export function App() {
               }
             }}
             onNewReport={handleNewReport}
+            canCreateReport={true}
           />
         ) : (
           <div className="mobile-editor-screen">
