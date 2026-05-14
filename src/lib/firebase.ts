@@ -1,10 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import {
-  getFirestore,
-  initializeFirestore,
-  persistentLocalCache,
-} from "firebase/firestore";
+import { initializeFirestore, persistentLocalCache } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
@@ -19,15 +15,7 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 
-// 일부 모바일/PWA 환경에서는 persistentLocalCache 초기화가 실패할 수 있으므로
-// 실패 시 일반 Firestore 인스턴스로 폴백한다.
-export const db = (() => {
-  try {
-    return initializeFirestore(app, {
-      localCache: persistentLocalCache(),
-    });
-  } catch (error) {
-    console.warn("Firestore local cache unavailable, falling back:", error);
-    return getFirestore(app);
-  }
-})();
+// Firestore with offline persistence enabled
+export const db = initializeFirestore(app, {
+  localCache: persistentLocalCache(),
+});

@@ -1534,10 +1534,6 @@ button:disabled {
     margin-bottom: 0;
   }
 
-  .top-bar-title-group {
-    padding-top: 6px;
-  }
-
   .top-bar h1 {
     font-size: 16px;
     font-weight: 800;
@@ -1548,7 +1544,7 @@ button:disabled {
   .top-bar-date {
     font-size: 9px;
     line-height: 1.1;
-    margin-bottom: 1px;
+    margin-bottom: 0;
   }
 
   .top-bar-actions {

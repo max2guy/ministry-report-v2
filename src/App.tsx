@@ -147,7 +147,23 @@ export function App() {
     applyTheme(getStoredTheme());
   }, []);
 
+  // fixed 헤더 높이를 CSS 변수로 동기화 (모바일 콘텐츠 padding-top 용)
+  // useLayoutEffect: 페인트 전에 실행 → 뷰어 탭바 포함 시에도 겹침 없음
   const topBarRef = useRef<HTMLElement | null>(null);
+  useLayoutEffect(() => {
+    const el = topBarRef.current;
+    if (!el) return;
+    const update = () =>
+      document.documentElement.style.setProperty(
+        "--top-bar-height",
+        `${el.offsetHeight}px`,
+      );
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
 
   const { state: installState, triggerInstall } = useInstallPrompt();
 
@@ -171,15 +187,6 @@ export function App() {
   const [pendingMigrationRoster, setPendingMigrationRoster] = useState<
     MemberRoster | undefined
   >();
-  const [authFallbackReady, setAuthFallbackReady] = useState(false);
-
-  useEffect(() => {
-    if (isHydrated || currentAccount) return;
-    const timer = window.setTimeout(() => {
-      setAuthFallbackReady(true);
-    }, 1800);
-    return () => window.clearTimeout(timer);
-  }, [isHydrated, currentAccount]);
 
   // Firebase Auth 상태 구독
   useEffect(() => {
@@ -540,33 +547,7 @@ export function App() {
   }
 
   if (!isHydrated) {
-    if (authFallbackReady && !currentAccount) {
-      return (
-        <main className="app-shell auth-shell">
-          <AuthGate onSignedIn={handleSignedIn} />
-        </main>
-      );
-    }
-
-    return (
-      <main className="app-shell auth-shell">
-        <div className="auth-gate-v2">
-          <div className="auth-gate-banner">
-            <div className="auth-gate-banner-icon">⛪</div>
-            <h1 className="auth-gate-title">사역보고서</h1>
-            <p className="auth-gate-subtitle">초기 화면을 불러오는 중입니다</p>
-          </div>
-          <div className="auth-gate-card-wrapper">
-            <div className="auth-gate-card">
-              <p className="auth-gate-card-heading">잠시만 기다려 주세요</p>
-              <p className="auth-gate-card-desc">
-                로그인 화면을 준비하고 있습니다.
-              </p>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
+    return <main className="app-shell" />;
   }
 
   if (!currentAccount) {
@@ -591,25 +572,6 @@ export function App() {
   }
   if ((report.departments.adult.zones?.length ?? 0) > 0) viewerTabs.push({ key: "adult", label: "교구" });
   const safeTabIdx = Math.min(viewerTabIdx, viewerTabs.length - 1);
-  const hasMobileViewerTabs =
-    mobileTab === "edit" &&
-    mobileScreen === "editor" &&
-    appMode === "viewer" &&
-    viewerTabs.length > 1;
-
-  // 모바일 브라우저 스크롤 중 viewport 변화에 반응해 헤더 높이가 흔들리지 않도록,
-  // 헤더 구조가 바뀌는 시점에만 padding-top 기준값을 다시 잡는다.
-  useLayoutEffect(() => {
-    const el = topBarRef.current;
-    if (!el) return;
-    const frame = requestAnimationFrame(() => {
-      document.documentElement.style.setProperty(
-        "--top-bar-height",
-        `${el.offsetHeight}px`,
-      );
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [hasMobileViewerTabs, installState, currentAccount?.displayName]);
 
   return (
     <main className="app-shell">
@@ -714,7 +676,7 @@ export function App() {
         </div>
         <p className="app-version-label desktop-only">v{__APP_VERSION__}</p>
         {/* 모바일 뷰어 탭바 — 고정 헤더 안에 통합 (스크롤 콘텐츠 비침 방지) */}
-        {hasMobileViewerTabs && (
+        {mobileTab === "edit" && mobileScreen === "editor" && appMode === "viewer" && viewerTabs.length > 1 && (
           <div className="viewer-dept-tabs top-bar-viewer-tabs">
             {viewerTabs.map((tab, i) => (
               <button

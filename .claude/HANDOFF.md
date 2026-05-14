@@ -1,22 +1,15 @@
-# ministry-report-v2 — Codex Handoff (v2.4.24)
+# ministry-report-v2 — Codex Handoff (v2.4.21 rollback)
 
 ## 현재 상태
 - 브랜치: `main`
-- 최신 배포 기준: `v2.4.24`
-- 최신 커밋: 작업 중
+- 최신 배포 기준: `v2.4.21`로 롤백 진행
+- 롤백 기준 커밋: `f7d4252 fix(layout): compact mobile viewer header by default (v2.4.21)`
+- 롤백 이유: `v2.4.22 ~ v2.4.24` 구간에서 모바일/PWA 환경 블랙 스크린 제보가 반복됨
 
 ## 최근 버전 흐름
-- `v2.4.24`
-  - `isHydrated`를 시간으로 강제 해제하지 않도록 조정
-  - 로그인 정보는 있으나 클라우드 데이터가 아직 준비되지 않은 상태에서 본문이 먼저 렌더되어 블랙 스크린으로 가는 경로 차단
-  - auth 응답이 느릴 때만 로그인 진입 화면으로 우회
-- `v2.4.23`
-  - 모바일/PWA 환경에서 Firestore `persistentLocalCache()` 초기화가 실패해도 기본 Firestore로 폴백
-  - auth hydration이 지연되더라도 검은 빈 화면 대신 로딩/로그인 화면이 보이도록 fallback 추가
-- `v2.4.22`
-  - 헤더 상단 글씨 블록을 조금 아래로 내려 균형 조정
-  - 모바일 부서 섹션 스크롤 시 헤더 높이가 꿀렁이던 현상 완화
-  - `ResizeObserver` 기반 실시간 높이 추적을 제거하고, 헤더 구조가 바뀌는 시점에만 `--top-bar-height` 재계산
+- `rollback -> v2.4.21`
+  - `package.json`, `src/App.tsx`, `src/lib/firebase.ts`, `src/styles.css`를 `f7d4252` 기준으로 복구
+  - 이후 블랙 스크린 원인은 별도 분기에서 다시 조사 필요
 - `v2.4.21` `f7d4252`
   - 모바일 뷰어 헤더를 처음부터 컴팩트 상태로 고정
   - 모바일 `.top-bar` 패딩, 액션 간격, 아바타 크기, 뷰어 탭 간격 축소
@@ -34,16 +27,14 @@
   - 구버전 보고서 로드 시 `summary` 등 누락 필드 정규화
 
 ## 이번 작업에서 실제 수정한 파일
-- `src/App.tsx`
-  - 모바일 헤더 높이 계산을 상태 전환형으로 변경
-  - hydration fallback UI 추가
-  - hydration 타이밍을 auth/data 준비 상태에 맞게 조정
-- `src/lib/firebase.ts`
-  - Firestore local cache 실패 시 기본 Firestore로 fallback
-- `src/styles.css`
-  - 헤더 상단 글씨 블록 하향 조정
 - `package.json`
-  - 버전 `2.4.23 -> 2.4.24`
+  - 버전 `2.4.24 -> 2.4.21` 복구
+- `src/App.tsx`
+  - `v2.4.21` 기준 상태로 복구
+- `src/lib/firebase.ts`
+  - `v2.4.21` 기준 상태로 복구
+- `src/styles.css`
+  - `v2.4.21` 기준 상태로 복구
 
 ## 프로젝트 개요
 - **프레임워크**: React 19 + TypeScript + Vite PWA
@@ -77,9 +68,10 @@ src/
 ```
 
 ## 현재 주의사항
-- `npm run build`는 통과함
-- `npm run smoke` / `npm run verify`는 현재 실패함
-- 실패 원인은 이번 `v2.4.21` 헤더 수정 자체보다는, **현재 앱 UI와 Playwright smoke 기대치가 어긋난 상태**로 보임
+- `npm run build`는 확인 필요
+- `npm run smoke` / `npm run verify`는 여전히 별도 정비 필요
+- 블랙 스크린 재현 원인은 아직 확정되지 않았음
+- `v2.4.22 ~ v2.4.24`에서 시도한 초기화/폴백 수정은 롤백됨
 
 ### 확인된 smoke 불일치 예시
 - 인증 진입 테스트:
@@ -92,9 +84,9 @@ src/
   - 초반 auth gate 기대치가 어긋나면서 연쇄 timeout 발생
 
 ## 다음 작업 추천
-1. 실제 `v2.4.21` UI 기준으로 smoke 테스트 기대치 갱신
-2. auth gate / PWA metadata / 뷰어 인쇄 흐름부터 순차 복구
-3. 그 다음 `npm run verify` 다시 녹색화
+1. `v2.4.21` 배포 반영 후 실제 단말에서 블랙 스크린이 사라졌는지 먼저 확인
+2. 계속 재현되면 서비스워커/캐시/런타임 예외를 화면에 드러내는 에러 바운더리부터 추가
+3. 앱 안정화 후 smoke 테스트 기준선을 현재 UI에 맞게 다시 정리
 
 ## 빌드 & 배포
 ```bash
