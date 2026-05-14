@@ -413,19 +413,24 @@ export function App() {
     }
 
     setSaveStatus("저장 중...");
-    await firestoreSaveReport(reportToSave);
-    await localSaveReport(reportToSave); // 로컬 캐시
+    try {
+      await firestoreSaveReport(reportToSave);
+      await localSaveReport(reportToSave); // 로컬 캐시
 
-    setSaveErrors([]);
-    const upgradedReport = upgradeReportForEditor(reportToSave);
-    setReport(upgradedReport);
-    saveReportDraft(upgradedReport);
-    const nextReports = mergeReports(reports, [upgradedReport]);
-    setReports(nextReports);
-    setSaveStatus(`${currentAccount.displayName}으로 저장되었습니다.`);
+      setSaveErrors([]);
+      const upgradedReport = upgradeReportForEditor(reportToSave);
+      setReport(upgradedReport);
+      saveReportDraft(upgradedReport);
+      const nextReports = mergeReports(reports, [upgradedReport]);
+      setReports(nextReports);
+      setSaveStatus(`저장되었습니다.`);
 
-    // GitHub Gist 백업 (PAT 있을 때만, 실패해도 무시)
-    void uploadToGist({ reports: nextReports, roster });
+      // GitHub Gist 백업 (PAT 있을 때만, 실패해도 무시)
+      void uploadToGist({ reports: nextReports, roster });
+    } catch (err) {
+      console.error("저장 실패:", err);
+      setSaveStatus("저장 실패. 네트워크를 확인해 주세요.");
+    }
   }
 
   function handleNewReport() {
@@ -755,14 +760,19 @@ export function App() {
                   saveDisabledReason="로그인 후 저장할 수 있습니다."
                 />
                 <div className="mobile-save-bar">
+                  {(saveStatus || saveErrors.length > 0) && (
+                    <p className={`mobile-save-status${saveErrors.length ? " is-error" : saveStatus === "저장되었습니다." ? " is-success" : ""}`}>
+                      {saveErrors.length > 0 ? saveErrors[0] : saveStatus}
+                    </p>
+                  )}
                   <button
                     type="button"
                     className="mobile-save-bar-btn"
-                    disabled={!currentAccount}
+                    disabled={!currentAccount || saveStatus === "저장 중..."}
                     onClick={handleSave}
                     title={!currentAccount ? "로그인 후 저장할 수 있습니다." : undefined}
                   >
-                    저장하기
+                    {saveStatus === "저장 중..." ? "저장 중…" : "저장하기"}
                   </button>
                 </div>
               </>

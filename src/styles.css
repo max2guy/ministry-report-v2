@@ -3398,6 +3398,22 @@ button:disabled {
     cursor: not-allowed;
   }
 
+  .mobile-save-status {
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 6px;
+    color: var(--clr-text-muted);
+  }
+
+  .mobile-save-status.is-error {
+    color: #dc2626;
+  }
+
+  .mobile-save-status.is-success {
+    color: #16a34a;
+  }
+
   /* 저장바 공간 확보: 편집 폼 하단 패딩 */
   .mobile-editor-screen .tabbed-report-form {
     padding-bottom: calc(72px + env(safe-area-inset-bottom));
