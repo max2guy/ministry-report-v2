@@ -751,7 +751,7 @@ export function App() {
         ) : mobileTab === "roster" ? (
           <main className="roster-shell">
             {roster && (
-              <MemberRosterTab roster={roster} onChange={handleRosterChange} />
+              <MemberRosterTab roster={roster} onChange={handleRosterChange} visibleDepts="all" />
             )}
           </main>
         ) : mobileScreen === "list" ? (
@@ -878,7 +878,7 @@ export function App() {
         ) : mode === "roster" ? (
           <main className="roster-shell">
             {roster && (
-              <MemberRosterTab roster={roster} onChange={handleRosterChange} />
+              <MemberRosterTab roster={roster} onChange={handleRosterChange} visibleDepts="all" />
             )}
           </main>
         ) : (
