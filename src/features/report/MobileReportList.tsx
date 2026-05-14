@@ -6,6 +6,7 @@ type MobileReportListProps = {
   appMode: AppMode;
   onSelectReport: (report: MinistryReport) => void;
   onNewReport: () => void;
+  canCreateReport: boolean;
 };
 
 function formatDate(dateStr: string): string {
@@ -35,13 +36,14 @@ export function MobileReportList({
   appMode,
   onSelectReport,
   onNewReport,
+  canCreateReport,
 }: MobileReportListProps) {
   const today = new Date();
   const todayStr = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
 
   return (
     <div className="mobile-report-list">
-      {appMode === "reporter" && (
+      {canCreateReport && (
         <button
           type="button"
           className="mobile-report-new-btn"
@@ -63,7 +65,7 @@ export function MobileReportList({
       {reports.length > 0 && (
         <>
           <p className="mobile-report-section-label">
-            {appMode === "reporter" ? "저장된 보고서 — 탭하여 수정" : "이전 보고서"}
+            {canCreateReport ? "저장된 보고서 — 탭하여 수정" : "이전 보고서"}
           </p>
           <div className="mobile-report-card-list">
             {reports.map((r) => (
@@ -77,7 +79,7 @@ export function MobileReportList({
                   <span className="mobile-report-card-date">{formatDate(r.reportDate)}</span>
                   <span className="mobile-report-card-summary">{deptSummary(r)}</span>
                 </div>
-                {appMode === "reporter" ? (
+                {canCreateReport ? (
                   <span className="mobile-report-card-edit-badge" aria-hidden="true">수정</span>
                 ) : (
                   <span className="mobile-report-card-chevron" aria-hidden="true">›</span>

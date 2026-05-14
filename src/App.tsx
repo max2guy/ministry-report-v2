@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Account } from "./auth/authTypes";
+import { isSuperAdmin } from "./auth/authTypes";
 import { onAuthChange, signOut as firebaseSignOut } from "./auth/firebaseAuthStore";
+import { usePermissions } from "./auth/usePermissions";
 import { ThemeSelector } from "./features/theme/ThemeSelector";
 import { applyTheme, getStoredTheme } from "./features/theme/useTheme";
 import { useAppMode } from "./features/mode/useAppMode";
@@ -182,6 +184,7 @@ export function App() {
   const [reports, setReports] = useState<MinistryReport[]>([]);
   const [currentAccount, setCurrentAccount] = useState<Account | undefined>();
   const [isHydrated, setIsHydrated] = useState(false);
+  const permissions = usePermissions(currentAccount);
   // Firebase Auth가 2초 내에 응답하지 않으면 AuthGate를 표시해 빈 화면 방지
   const [authTimedOut, setAuthTimedOut] = useState(false);
   const [importWarnings, setImportWarnings] = useState<string[]>([]);
@@ -214,6 +217,13 @@ export function App() {
     const timer = setTimeout(() => setAuthTimedOut(true), 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  // viewer 역할은 edit 모드에 진입할 수 없도록 강제로 view로 전환
+  useEffect(() => {
+    if (mode === "edit" && !permissions.canEditReport && currentAccount) {
+      setMode("view");
+    }
+  }, [mode, permissions.canEditReport, currentAccount]);
 
   async function loadCloudData(account: Account) {
     try {
@@ -745,13 +755,13 @@ export function App() {
                 />
               </div>
             </div>
-            {currentAccount?.role === "admin" && <GithubSettingsPanel />}
+            {(currentAccount?.role === "admin" || isSuperAdmin(currentAccount)) && <GithubSettingsPanel />}
             <p className="app-version-label">v{__APP_VERSION__}</p>
           </div>
         ) : mobileTab === "roster" ? (
           <main className="roster-shell">
             {roster && (
-              <MemberRosterTab roster={roster} onChange={handleRosterChange} />
+              <MemberRosterTab roster={roster} onChange={handleRosterChange} visibleDepts={permissions.visibleDepts} />
             )}
           </main>
         ) : mobileScreen === "list" ? (
@@ -768,6 +778,7 @@ export function App() {
               }
             }}
             onNewReport={handleNewReport}
+            canCreateReport={permissions.canCreateReport}
           />
         ) : (
           <div className="mobile-editor-screen">
@@ -801,6 +812,7 @@ export function App() {
                   saveErrors={saveErrors}
                   saveStatus={saveStatus}
                   saveDisabledReason="로그인 후 저장할 수 있습니다."
+                  editableDepts={permissions.editableDepts}
                 />
                 <div className="mobile-save-bar">
                   {(saveStatus || saveErrors.length > 0) && (
@@ -864,7 +876,7 @@ export function App() {
               />
             }
             githubPanel={
-              currentAccount.role === "admin" ? (
+              (currentAccount.role === "admin" || isSuperAdmin(currentAccount)) ? (
                 <GithubSettingsPanel />
               ) : undefined
             }
@@ -874,11 +886,12 @@ export function App() {
             saveErrors={saveErrors}
             saveStatus={saveStatus}
             saveDisabledReason="로그인 후 저장할 수 있습니다."
+            editableDepts={permissions.editableDepts}
           />
         ) : mode === "roster" ? (
           <main className="roster-shell">
             {roster && (
-              <MemberRosterTab roster={roster} onChange={handleRosterChange} />
+              <MemberRosterTab roster={roster} onChange={handleRosterChange} visibleDepts={permissions.visibleDepts} />
             )}
           </main>
         ) : (
@@ -905,6 +918,7 @@ export function App() {
             setMobileScreen("list");
           }
         }}
+        canAccessRoster={permissions.canAccessRoster}
       />
     </main>
   );

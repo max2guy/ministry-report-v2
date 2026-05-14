@@ -5,6 +5,7 @@ export type MobileTab = "edit" | "roster" | "account";
 type BottomTabBarProps = {
   activeTab: MobileTab;
   onTabChange: (tab: MobileTab) => void;
+  canAccessRoster: boolean;
 };
 
 function IconReport() {
@@ -45,10 +46,15 @@ const TABS: { id: MobileTab; label: string; icon: ReactNode }[] = [
   { id: "account", label: "설정", icon: <IconSettings /> },
 ];
 
-export function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
+export function BottomTabBar({ activeTab, onTabChange, canAccessRoster }: BottomTabBarProps) {
+  const visibleTabs = TABS.filter((tab) => {
+    if (tab.id === "roster") return canAccessRoster;
+    return true;
+  });
+
   return (
     <nav className="bottom-tab-bar" aria-label="하단 탭 메뉴">
-      {TABS.map((tab) => (
+      {visibleTabs.map((tab) => (
         <button
           key={tab.id}
           type="button"

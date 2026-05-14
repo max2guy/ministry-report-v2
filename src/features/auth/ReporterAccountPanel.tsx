@@ -1,6 +1,8 @@
 import { useState } from "react";
 import type { Account } from "../../auth/authTypes";
 import { updateDisplayName } from "../../auth/firebaseAuthStore";
+import { isSuperAdmin } from "../../auth/authTypes";
+import { UserManagementPanel } from "./UserManagementPanel";
 
 type ReporterAccountPanelProps = {
   currentAccount?: Account;
@@ -70,6 +72,10 @@ export function ReporterAccountPanel({
           로그아웃
         </button>
       </div>
+      {/* 최고관리자에게만 사용자 관리 패널 표시 */}
+      {isSuperAdmin(currentAccount) && (
+        <UserManagementPanel currentAccount={currentAccount} />
+      )}
     </section>
   );
 }

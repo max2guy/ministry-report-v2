@@ -43,6 +43,7 @@ type Props = {
   report: MinistryReport;
   reports: MinistryReport[];
   onChange: (report: MinistryReport) => void;
+  editableDepts: DepartmentKey[] | "all";
 };
 
 function textAreaToList(value: string): string[] {
@@ -53,9 +54,16 @@ function listToText(value: string[]): string {
   return value.join("\n");
 }
 
-export function TabbedReportForm({ report, reports, onChange }: Props) {
+export function TabbedReportForm({ report, reports, onChange, editableDepts }: Props) {
   const currentYear = new Date().getFullYear();
   const [activeTab, setActiveTab] = useState<TabKey>("info");
+
+  // 부서 탭 필터링: info·prayer는 항상 표시, 부서 탭은 editableDepts 기준
+  const visibleTabs = TABS.filter((tab) => {
+    if (tab.key === "info" || tab.key === "prayer") return true;
+    if (editableDepts === "all") return true;
+    return editableDepts.includes(tab.key as DepartmentKey);
+  });
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const touchStartX = useRef<number>(0);
   const touchStartY = useRef<number>(0);
@@ -80,7 +88,7 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
     // 롱프레스(500ms) 도중/이후 터치는 카드 드래그로 간주 → 탭 전환 무시
     // 빠른 스와이프(450ms 미만) + 수평 80px 이상 + 수직보다 수평이 큰 경우만 탭 전환
     if (duration > 450 || Math.abs(dx) < 80 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
-    const keys = TABS.map((t) => t.key);
+    const keys = visibleTabs.map((t) => t.key);
     const idx = keys.indexOf(activeTab);
     if (dx < 0 && idx < keys.length - 1) handleTabChange(keys[idx + 1]); // →
     if (dx > 0 && idx > 0) handleTabChange(keys[idx - 1]);               // ←
@@ -106,7 +114,7 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
   return (
     <div className="tabbed-report-form">
       <div className="report-tab-bar" role="tablist" aria-label="보고서 섹션">
-        {TABS.map((tab) => (
+        {visibleTabs.map((tab) => (
           <button
             key={tab.key}
             ref={(el) => { tabRefs.current[tab.key] = el; }}
@@ -167,7 +175,9 @@ export function TabbedReportForm({ report, reports, onChange }: Props) {
       </div>
 
       {/* 부서 탭 (유초등부·중고등부·청년부·교구) */}
-      {DEPT_TABS.map(({ key }) => {
+      {DEPT_TABS.filter(({ key }) =>
+        editableDepts === "all" || editableDepts.includes(key)
+      ).map(({ key }) => {
         const department = report.departments[key];
         return (
           <div

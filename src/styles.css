@@ -3653,3 +3653,111 @@ button:disabled {
     margin-bottom: 0;
   }
 }
+
+/* ── UserManagementPanel ── */
+.user-mgmt-panel {
+  margin-top: 16px;
+  border-top: 1px solid var(--clr-border);
+  padding-top: 16px;
+}
+
+.user-mgmt-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--clr-text-secondary);
+  margin: 0 0 12px;
+}
+
+.user-mgmt-loading,
+.user-mgmt-error {
+  font-size: 13px;
+  padding: 6px 0;
+}
+
+.user-mgmt-error {
+  color: #dc2626;
+}
+
+.user-mgmt-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.user-mgmt-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--clr-border-soft);
+}
+
+.user-mgmt-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-mgmt-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--clr-text-primary, var(--clr-text-secondary));
+}
+
+.user-mgmt-email {
+  font-size: 12px;
+  color: var(--clr-text-muted);
+}
+
+.user-mgmt-role-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--clr-primary);
+  background: var(--clr-present-bg);
+  border: 1px solid var(--clr-primary-light);
+  border-radius: 20px;
+  padding: 2px 10px;
+  align-self: flex-start;
+}
+
+.user-mgmt-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.user-mgmt-role-select {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 8px;
+  border: 1px solid var(--clr-border);
+  border-radius: 6px;
+  background: var(--clr-card-bg);
+  color: var(--clr-text-secondary);
+  width: 100%;
+}
+
+.user-mgmt-depts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.user-mgmt-dept-check {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+}
+
+.user-mgmt-dept-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--clr-primary);
+  cursor: pointer;
+}
