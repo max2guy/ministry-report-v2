@@ -1851,6 +1851,13 @@ button:disabled {
   gap: 8px;
   padding: 6px 0;
   border-bottom: 1px solid var(--clr-border-soft);
+  flex-wrap: wrap;
+}
+
+/* 편집 중: input-row를 두 번째 줄 전체로 */
+.phone-manager-item.is-editing .phone-manager-input-row {
+  flex: 0 0 100%;
+  order: 3;
 }
 
 .phone-manager-zone {

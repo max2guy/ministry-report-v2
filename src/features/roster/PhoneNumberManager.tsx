@@ -100,7 +100,7 @@ export function PhoneNumberManager({ roster, onChange }: Props) {
       <p className="phone-manager-desc">구역장 전화번호 (문자 발송에 사용)</p>
       <ul className="phone-manager-list">
         {zones.map((zone, i) => (
-          <li key={zone.id} className="phone-manager-item">
+          <li key={zone.id} className={`phone-manager-item${openIdx === i ? " is-editing" : ""}`}>
             <span className="phone-manager-zone">{zone.name}장</span>
             <span className="phone-manager-name">{leaders[i]?.name ?? "-"}</span>
             {openIdx === i ? (
