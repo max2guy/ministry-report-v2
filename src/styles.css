@@ -161,30 +161,22 @@ button:disabled {
 }
 
 .btn-force-refresh {
-  background: rgb(255 255 255 / 14%);
-  border: 1.5px solid rgb(255 255 255 / 22%);
-  border-radius: 50%;
-  color: #ffffff;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  width: 36px;
-  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background 0.15s, transform 0.4s ease;
+  padding: 4px;
+  transition: color 0.15s, transform 0.4s ease;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: none;
 }
 
 .btn-force-refresh:hover {
-  background: rgb(255 255 255 / 24%);
-}
-
-.btn-force-refresh:focus-visible {
-  outline: 2px solid rgb(255 255 255 / 50%);
-  outline-offset: 2px;
+  color: #ffffff;
 }
 
 .btn-force-refresh:active {
