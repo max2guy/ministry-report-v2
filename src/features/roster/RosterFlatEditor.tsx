@@ -81,13 +81,12 @@ export function RosterFlatEditor({ deptKey, roster, onChange }: Props) {
       <div className="roster-group-section">
         <button
           type="button"
-          className="roster-zone-header roster-zone-toggle"
+          className="roster-group-title"
           onClick={onToggle}
           aria-expanded={isOpen}
         >
-          <span>{label}</span>
-          <span className="roster-zone-count">{sectionMembers.length}명</span>
-          <span className="roster-zone-chevron">{isOpen ? "▲" : "▼"}</span>
+          <span>{label} <span className="roster-group-count">({sectionMembers.length}명)</span></span>
+          <span className="roster-group-chevron">{isOpen ? "▲" : "▼"}</span>
         </button>
         {isOpen && (
           <>
@@ -142,13 +141,12 @@ export function RosterFlatEditor({ deptKey, roster, onChange }: Props) {
       <div className="roster-group-section">
         <button
           type="button"
-          className="roster-zone-header roster-zone-toggle"
+          className="roster-group-title"
           onClick={() => setOpenList(o => !o)}
           aria-expanded={openList}
         >
-          <span>명단</span>
-          <span className="roster-zone-count">{members.length}명</span>
-          <span className="roster-zone-chevron">{openList ? "▲" : "▼"}</span>
+          <span>명단 <span className="roster-group-count">({members.length}명)</span></span>
+          <span className="roster-group-chevron">{openList ? "▲" : "▼"}</span>
         </button>
         {openList && (
           <>

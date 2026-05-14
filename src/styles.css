@@ -2588,19 +2588,36 @@ button:disabled {
 }
 
 .roster-group-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* button reset */
+  background: var(--clr-present-bg);
+  border: none;
+  border-bottom: 1px solid var(--clr-border);
+  border-radius: 0;
+  cursor: pointer;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  /* typography */
   font-size: 13px;
   font-weight: 700;
   color: var(--clr-primary);
   margin: 0;
   padding: 8px 12px;
-  background: var(--clr-present-bg);
-  border-bottom: 1px solid var(--clr-border);
 }
 
 .roster-group-count {
   font-weight: 400;
   color: var(--clr-text-secondary);
   font-size: 12px;
+}
+
+.roster-group-chevron {
+  font-size: 10px;
+  color: var(--clr-text-muted);
+  flex-shrink: 0;
 }
 
 .roster-group-section .roster-member-list {
