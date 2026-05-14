@@ -1,11 +1,14 @@
-# ministry-report-v2 — Codex Handoff (v2.4.22)
+# ministry-report-v2 — Codex Handoff (v2.4.23)
 
 ## 현재 상태
 - 브랜치: `main`
-- 최신 배포 기준: `v2.4.22`
+- 최신 배포 기준: `v2.4.23`
 - 최신 커밋: 작업 중
 
 ## 최근 버전 흐름
+- `v2.4.23`
+  - 모바일/PWA 환경에서 Firestore `persistentLocalCache()` 초기화가 실패해도 기본 Firestore로 폴백
+  - auth hydration이 지연되더라도 검은 빈 화면 대신 로딩/로그인 화면이 보이도록 fallback 추가
 - `v2.4.22`
   - 헤더 상단 글씨 블록을 조금 아래로 내려 균형 조정
   - 모바일 부서 섹션 스크롤 시 헤더 높이가 꿀렁이던 현상 완화
@@ -29,10 +32,13 @@
 ## 이번 작업에서 실제 수정한 파일
 - `src/App.tsx`
   - 모바일 헤더 높이 계산을 상태 전환형으로 변경
+  - hydration fallback UI 추가
+- `src/lib/firebase.ts`
+  - Firestore local cache 실패 시 기본 Firestore로 fallback
 - `src/styles.css`
   - 헤더 상단 글씨 블록 하향 조정
 - `package.json`
-  - 버전 `2.4.21 -> 2.4.22`
+  - 버전 `2.4.22 -> 2.4.23`
 
 ## 프로젝트 개요
 - **프레임워크**: React 19 + TypeScript + Vite PWA

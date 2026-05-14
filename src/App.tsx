@@ -172,6 +172,14 @@ export function App() {
     MemberRoster | undefined
   >();
 
+  useEffect(() => {
+    if (isHydrated) return;
+    const timer = window.setTimeout(() => {
+      setIsHydrated(true);
+    }, 1500);
+    return () => window.clearTimeout(timer);
+  }, [isHydrated]);
+
   // Firebase Auth 상태 구독
   useEffect(() => {
     const unsubscribe = onAuthChange((account) => {
@@ -531,7 +539,25 @@ export function App() {
   }
 
   if (!isHydrated) {
-    return <main className="app-shell" />;
+    return (
+      <main className="app-shell auth-shell">
+        <div className="auth-gate-v2">
+          <div className="auth-gate-banner">
+            <div className="auth-gate-banner-icon">⛪</div>
+            <h1 className="auth-gate-title">사역보고서</h1>
+            <p className="auth-gate-subtitle">초기 화면을 불러오는 중입니다</p>
+          </div>
+          <div className="auth-gate-card-wrapper">
+            <div className="auth-gate-card">
+              <p className="auth-gate-card-heading">잠시만 기다려 주세요</p>
+              <p className="auth-gate-card-desc">
+                로그인 화면을 준비하고 있습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
   }
 
   if (!currentAccount) {
