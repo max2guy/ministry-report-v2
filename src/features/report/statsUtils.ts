@@ -34,20 +34,26 @@ export function computeConsecutiveAbsences(
   const currentDept = sorted[0].departments[deptKey];
   const absentNow = getAbsentMembers(currentDept);
 
-  return absentNow.map((member) => {
-    let streak = 1;
-    for (let i = 1; i < sorted.length; i++) {
-      const prevMembers = getAllMembers(sorted[i].departments[deptKey]);
-      const found = prevMembers.find((m) => m.id === member.id);
-      if (!found) continue; // not in roster for this report — skip
-      if (found.status === "absent") {
-        streak++;
-      } else {
-        break;
+  return absentNow
+    .map((member) => {
+      let streak = 1;
+      for (let i = 1; i < sorted.length; i++) {
+        const prevMembers = getAllMembers(sorted[i].departments[deptKey]);
+        const found = prevMembers.find((m) => m.id === member.id);
+        if (!found) continue; // not in roster for this report — skip
+        if (found.status === "absent") {
+          streak++;
+        } else {
+          break;
+        }
       }
-    }
-    return { id: member.id, name: member.name, streak };
-  });
+      return { id: member.id, name: member.name, streak };
+    })
+    // 주차 내림차순 → 같은 주차면 가나다순
+    .sort((a, b) => {
+      if (b.streak !== a.streak) return b.streak - a.streak;
+      return a.name.localeCompare(b.name, "ko");
+    });
 }
 
 export function absenceStreakColorClass(streak: number): string {

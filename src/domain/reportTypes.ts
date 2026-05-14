@@ -202,7 +202,7 @@ function createAdultZones(): DepartmentZone[] {
       { name: "정민시", role: "member" }, { name: "이사라", role: "member" },
       { name: "천성현", role: "member" }, { name: "최주희", role: "member" },
       { name: "정수미", role: "member" }, { name: "민건우", role: "member" },
-      { name: "한상미", role: "member" }, { name: "윤승희", role: "member" },
+      { name: "한상미", role: "member" }, { name: "윤승휘", role: "member" },
     ]),
   ];
 }
