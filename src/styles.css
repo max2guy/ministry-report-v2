@@ -161,27 +161,35 @@ button:disabled {
 }
 
 .btn-force-refresh {
-  background: rgb(255 255 255 / 12%);
-  border: 1px solid rgb(255 255 255 / 18%);
+  background: rgb(255 255 255 / 14%);
+  border: 1.5px solid rgb(255 255 255 / 22%);
   border-radius: 50%;
   color: #ffffff;
   cursor: pointer;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background 0.15s, transform 0.3s;
+  transition: background 0.15s, transform 0.4s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
 }
 
 .btn-force-refresh:hover {
-  background: rgb(255 255 255 / 22%);
+  background: rgb(255 255 255 / 24%);
+}
+
+.btn-force-refresh:focus-visible {
+  outline: 2px solid rgb(255 255 255 / 50%);
+  outline-offset: 2px;
 }
 
 .btn-force-refresh:active {
   transform: rotate(180deg);
-  transition: transform 0.3s;
+  transition: transform 0.4s ease;
 }
 
 .btn-pwa-install {
