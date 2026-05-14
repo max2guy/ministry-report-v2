@@ -905,6 +905,7 @@ export function App() {
             setMobileScreen("list");
           }
         }}
+        canAccessRoster={true}
       />
     </main>
   );
