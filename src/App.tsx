@@ -573,18 +573,6 @@ export function App() {
     window.location.reload();
   }
 
-  function downloadReport(targetReport: MinistryReport) {
-    const blob = new Blob([JSON.stringify(targetReport, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `${targetReport.reportDate}-ministry-report-v2.json`;
-    anchor.click();
-    URL.revokeObjectURL(url);
-  }
-
   if (!isHydrated) {
     // Auth 타임아웃 후에는 빈 화면 대신 로그인 화면을 표시
     if (authTimedOut) {
@@ -869,7 +857,7 @@ export function App() {
           onNewReport={handleNewReport}
           canSave={!!currentAccount}
           onSave={() => void handleSave()}
-          onExport={() => downloadReport(report)}
+          onExport={() => downloadCurrentReport(report)}
           installState={installState}
           onInstall={() => void triggerInstall()}
           onForceRefresh={() => void handleForceRefresh()}
