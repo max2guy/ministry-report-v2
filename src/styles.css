@@ -1681,20 +1681,12 @@ button:disabled {
     padding: 5px 2px;
   }
 
-  /* 제목: 전체너비, 보고일+보고자: 2열 */
+  /* 모바일: 제목·보고일·보고자 모두 1열 세로 스택 */
   .info-row {
-    grid-template-columns: 1fr 1fr;
-  }
-  .info-row label {
-    min-width: 0;
-  }
-  .info-row label input {
-    min-width: 0;
-    width: 100%;
-    box-sizing: border-box;
+    grid-template-columns: 1fr;
   }
   .info-row label:first-child {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
 
   /* 카드 스타일: 모바일에서 그림자 + 둥근 모서리 강조 */
