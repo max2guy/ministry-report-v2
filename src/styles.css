@@ -3793,6 +3793,7 @@ button:disabled {
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
+  padding-left: 8px;
 }
 
 .mobile-report-card-row .mobile-report-card {
