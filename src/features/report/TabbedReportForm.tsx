@@ -160,15 +160,6 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
               }
             />
           </label>
-          <label>
-            보고자
-            <input
-              value={report.pastorName}
-              onChange={(e) =>
-                updateReport({ pastorName: e.currentTarget.value })
-              }
-            />
-          </label>
         </div>
         <AttendanceSummaryStats reports={reports} currentYear={currentYear} />
         <ReportCanvas report={report} />
