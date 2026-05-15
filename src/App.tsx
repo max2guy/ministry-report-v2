@@ -225,6 +225,13 @@ export function App() {
     }
   }, [mode, permissions.canEditReport, currentAccount]);
 
+  // viewer 역할은 appMode를 항상 "viewer"로 고정 (reporter 모드로 보고서 편집기 진입 차단)
+  useEffect(() => {
+    if (appMode === "reporter" && !permissions.canCreateReport && currentAccount) {
+      setAppMode("viewer");
+    }
+  }, [appMode, permissions.canCreateReport, currentAccount, setAppMode]);
+
   async function loadCloudData(account: Account) {
     try {
       const [cloudReports, cloudRoster] = await Promise.all([
@@ -737,24 +744,28 @@ export function App() {
               <p className="settings-card-label">테마</p>
               <ThemeSelector />
             </div>
-            <AppModeToggle appMode={appMode} onAppModeChange={setAppMode} />
-            <div className="mobile-data-panel">
-              <p className="mobile-data-panel-label">데이터</p>
-              <div className="mobile-data-panel-actions">
-                <button
-                  type="button"
-                  className="mobile-data-btn"
-                  onClick={() => downloadCurrentReport(report)}
-                >
-                  내보내기
-                </button>
-                <LegacyImportPanel
-                  warnings={importWarnings}
-                  onImport={handleImport}
-                  onImportError={handleImportError}
-                />
-              </div>
-            </div>
+            {permissions.canCreateReport && (
+              <>
+                <AppModeToggle appMode={appMode} onAppModeChange={setAppMode} />
+                <div className="mobile-data-panel">
+                  <p className="mobile-data-panel-label">데이터</p>
+                  <div className="mobile-data-panel-actions">
+                    <button
+                      type="button"
+                      className="mobile-data-btn"
+                      onClick={() => downloadCurrentReport(report)}
+                    >
+                      내보내기
+                    </button>
+                    <LegacyImportPanel
+                      warnings={importWarnings}
+                      onImport={handleImport}
+                      onImportError={handleImportError}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
             {(currentAccount?.role === "admin" || isSuperAdmin(currentAccount)) && <GithubSettingsPanel />}
             <p className="app-version-label">v{__APP_VERSION__}</p>
           </div>
