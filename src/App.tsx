@@ -8,6 +8,8 @@ import { applyTheme, getStoredTheme } from "./features/theme/useTheme";
 import { useAppMode } from "./features/mode/useAppMode";
 import { AppModeToggle } from "./features/mode/AppModeToggle";
 import { BottomTabBar, type MobileTab } from "./features/nav/BottomTabBar";
+import { DesktopSidebar, type DesktopMode } from "./features/nav/DesktopSidebar";
+import { DesktopBottomPanel } from "./features/report/DesktopBottomPanel";
 import { MobileReportList } from "./features/report/MobileReportList";
 import {
   createDefaultRoster,
@@ -26,7 +28,6 @@ import { AuthGate } from "./features/auth/AuthGate";
 import { ReporterAccountPanel } from "./features/auth/ReporterAccountPanel";
 import { LegacyImportPanel } from "./features/import/LegacyImportPanel";
 import { ReportEditor } from "./features/report/ReportEditor";
-import { ReportHistoryPanel } from "./features/report/ReportHistoryPanel";
 import { ReportViewer } from "./features/report/ReportViewer";
 import { MemberRosterTab } from "./features/roster/MemberRosterTab";
 import { GithubSettingsPanel } from "./features/sync/GithubSettingsPanel";
@@ -174,7 +175,7 @@ export function App() {
 
   const { state: installState, triggerInstall } = useInstallPrompt();
 
-  const [mode, setMode] = useState<"edit" | "view" | "roster">("edit");
+  const [mode, setMode] = useState<DesktopMode>("edit");
   const [appMode, setAppMode] = useAppMode();
   const [mobileTab, setMobileTab] = useState<MobileTab>("edit");
   const [mobileScreen, setMobileScreen] = useState<"list" | "editor">("list");
@@ -572,6 +573,18 @@ export function App() {
     window.location.reload();
   }
 
+  function downloadReport(targetReport: MinistryReport) {
+    const blob = new Blob([JSON.stringify(targetReport, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${targetReport.reportDate}-ministry-report-v2.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+
   if (!isHydrated) {
     // Auth 타임아웃 후에는 빈 화면 대신 로그인 화면을 표시
     if (authTimedOut) {
@@ -810,17 +823,7 @@ export function App() {
                 <ReportEditor
                   report={report}
                   reports={reports}
-                  accountPanel={null}
-                  canSave={!!currentAccount}
-                  importPanel={null}
-                  historyPanel={null}
-                  githubPanel={undefined}
                   onChange={handleReportChange}
-                  onNewReport={handleNewReport}
-                  onSave={handleSave}
-                  saveErrors={saveErrors}
-                  saveStatus={saveStatus}
-                  saveDisabledReason="로그인 후 저장할 수 있습니다."
                   editableDepts={permissions.editableDepts}
                 />
                 <div className="mobile-save-bar">
@@ -855,63 +858,77 @@ export function App() {
         )}
       </div>
 
-      {/* Desktop-only: existing layout unchanged */}
-      <div className="desktop-only">
-        {mode === "edit" ? (
-          <ReportEditor
-            report={report}
-            reports={reports}
-            accountPanel={
+      {/* Desktop 3단 레이아웃 */}
+      <div className="desktop-layout desktop-only">
+        <DesktopSidebar
+          appVersion={__APP_VERSION__}
+          currentAccount={currentAccount}
+          mode={mode}
+          onModeChange={setMode}
+          onSignOut={() => void handleSignOut()}
+          onNewReport={handleNewReport}
+          canSave={!!currentAccount}
+          onSave={() => void handleSave()}
+          onExport={() => downloadReport(report)}
+          installState={installState}
+          onInstall={() => void triggerInstall()}
+          onForceRefresh={() => void handleForceRefresh()}
+        />
+        <div className="desktop-center">
+          {mode === "edit" && (
+            <ReportEditor
+              report={report}
+              reports={reports}
+              onChange={handleReportChange}
+              editableDepts={permissions.editableDepts}
+            />
+          )}
+          {mode === "view" && (
+            <ReportViewer
+              report={report}
+              reports={reports}
+              activeTabIdx={safeTabIdx}
+              tabs={viewerTabs}
+              onTabChange={setViewerTabIdx}
+            />
+          )}
+          {mode === "roster" && (
+            <main className="roster-shell">
+              {roster && (
+                <MemberRosterTab
+                  roster={roster}
+                  onChange={handleRosterChange}
+                  visibleDepts={permissions.visibleDepts}
+                />
+              )}
+            </main>
+          )}
+          {mode === "settings" && (
+            <div className="desktop-settings">
               <ReporterAccountPanel
                 currentAccount={currentAccount}
                 onSignOut={() => void handleSignOut()}
+                onDisplayNameChange={handleDisplayNameChange}
               />
-            }
-            canSave={!!currentAccount}
-            importPanel={
               <LegacyImportPanel
                 warnings={importWarnings}
                 onImport={handleImport}
                 onImportError={handleImportError}
               />
-            }
-            historyPanel={
-              <ReportHistoryPanel
-                reports={reports}
-                currentReportId={report.id}
-                onDelete={handleDeleteReport}
-                onDuplicate={handleDuplicateReport}
-                onLoad={handleLoadReport}
-              />
-            }
-            githubPanel={
-              (currentAccount.role === "admin" || isSuperAdmin(currentAccount)) ? (
+              {(currentAccount?.role === "admin" || isSuperAdmin(currentAccount)) && (
                 <GithubSettingsPanel />
-              ) : undefined
-            }
-            onChange={handleReportChange}
-            onNewReport={handleNewReport}
-            onSave={handleSave}
-            saveErrors={saveErrors}
-            saveStatus={saveStatus}
-            saveDisabledReason="로그인 후 저장할 수 있습니다."
-            editableDepts={permissions.editableDepts}
-          />
-        ) : mode === "roster" ? (
-          <main className="roster-shell">
-            {roster && (
-              <MemberRosterTab roster={roster} onChange={handleRosterChange} visibleDepts={permissions.visibleDepts} />
-            )}
-          </main>
-        ) : (
-          <ReportViewer
-            report={report}
-            reports={reports}
-            activeTabIdx={safeTabIdx}
-            tabs={viewerTabs}
-            onTabChange={setViewerTabIdx}
-          />
-        )}
+              )}
+            </div>
+          )}
+        </div>
+        <DesktopBottomPanel
+          reports={reports}
+          currentReportId={report.id}
+          currentYear={new Date().getFullYear()}
+          onDelete={handleDeleteReport}
+          onDuplicate={handleDuplicateReport}
+          onLoad={handleLoadReport}
+        />
       </div>
       <BottomTabBar
         activeTab={mobileTab}

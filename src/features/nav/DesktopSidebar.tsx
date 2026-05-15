@@ -14,7 +14,7 @@ type DesktopSidebarProps = {
   canSave: boolean;
   onSave: () => void;
   onExport: () => void;
-  installState: "idle" | "ready" | "installed";
+  installState: "unavailable" | "ready" | "installed";
   onInstall: () => void;
   onForceRefresh: () => void;
 };
