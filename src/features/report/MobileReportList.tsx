@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { AppMode } from "../mode/useAppMode";
 import type { MinistryReport } from "../../domain/reportTypes";
 
@@ -7,10 +8,11 @@ type MobileReportListProps = {
   onSelectReport: (report: MinistryReport) => void;
   onNewReport: () => void;
   canCreateReport: boolean;
+  canDelete?: boolean;
+  onDelete?: (report: MinistryReport) => void;
 };
 
 function formatDate(dateStr: string): string {
-  // dateStr format: "2026-05-10"
   const [year, month, day] = dateStr.split("-").map(Number);
   const date = new Date(year, month - 1, day);
   const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
@@ -37,9 +39,23 @@ export function MobileReportList({
   onSelectReport,
   onNewReport,
   canCreateReport,
+  canDelete = false,
+  onDelete,
 }: MobileReportListProps) {
+  const [isEditing, setIsEditing] = useState(false);
+
   const today = new Date();
   const todayStr = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+
+  function handleDeleteClick(report: MinistryReport) {
+    const [year, month, day] = report.reportDate.split("-").map(Number);
+    const confirmed = window.confirm(
+      `${year}년 ${month}월 ${day}일 보고서를 삭제할까요?\n이 작업은 되돌릴 수 없습니다.`
+    );
+    if (confirmed) {
+      onDelete?.(report);
+    }
+  }
 
   return (
     <div className="mobile-report-list">
@@ -64,27 +80,55 @@ export function MobileReportList({
 
       {reports.length > 0 && (
         <>
-          <p className="mobile-report-section-label">
-            {canCreateReport ? "저장된 보고서 — 탭하여 수정" : "이전 보고서"}
-          </p>
+          <div className="mobile-report-section-header">
+            <p className="mobile-report-section-label">
+              {canCreateReport ? "저장된 보고서 — 탭하여 수정" : "이전 보고서"}
+            </p>
+            {canDelete && (
+              <button
+                type="button"
+                className={`mobile-report-edit-toggle${isEditing ? " is-editing" : ""}`}
+                onClick={() => setIsEditing((v) => !v)}
+              >
+                {isEditing ? "완료" : "편집"}
+              </button>
+            )}
+          </div>
           <div className="mobile-report-card-list">
             {reports.map((r) => (
-              <button
-                key={r.id}
-                type="button"
-                className="mobile-report-card"
-                onClick={() => onSelectReport(r)}
-              >
-                <div className="mobile-report-card-body">
-                  <span className="mobile-report-card-date">{formatDate(r.reportDate)}</span>
-                  <span className="mobile-report-card-summary">{deptSummary(r)}</span>
-                </div>
-                {canCreateReport ? (
-                  <span className="mobile-report-card-edit-badge" aria-hidden="true">수정</span>
-                ) : (
-                  <span className="mobile-report-card-chevron" aria-hidden="true">›</span>
+              <div key={r.id} className={`mobile-report-card-row${isEditing ? " is-editing" : ""}`}>
+                {isEditing && (
+                  <button
+                    type="button"
+                    className="mobile-report-delete-btn"
+                    aria-label={`${r.reportDate} 보고서 삭제`}
+                    onClick={() => handleDeleteClick(r)}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                    </svg>
+                  </button>
                 )}
-              </button>
+                <button
+                  type="button"
+                  className="mobile-report-card"
+                  onClick={() => !isEditing && onSelectReport(r)}
+                  disabled={isEditing}
+                >
+                  <div className="mobile-report-card-body">
+                    <span className="mobile-report-card-date">{formatDate(r.reportDate)}</span>
+                    <span className="mobile-report-card-summary">{deptSummary(r)}</span>
+                  </div>
+                  {canCreateReport ? (
+                    <span className="mobile-report-card-edit-badge" aria-hidden="true">수정</span>
+                  ) : (
+                    <span className="mobile-report-card-chevron" aria-hidden="true">›</span>
+                  )}
+                </button>
+              </div>
             ))}
           </div>
         </>

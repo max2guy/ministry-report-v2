@@ -786,6 +786,8 @@ export function App() {
             }}
             onNewReport={handleNewReport}
             canCreateReport={permissions.canCreateReport && appMode !== "viewer"}
+            canDelete={isSuperAdmin(currentAccount)}
+            onDelete={(r) => void handleDeleteReport(r)}
           />
         ) : (
           <div className="mobile-editor-screen">

@@ -3758,3 +3758,69 @@ button:disabled {
   accent-color: var(--clr-primary);
   cursor: pointer;
 }
+
+/* ── 모바일 보고서 목록 편집 모드 ── */
+.mobile-report-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.mobile-report-section-header .mobile-report-section-label {
+  margin: 0;
+}
+
+.mobile-report-edit-toggle {
+  background: none;
+  border: 1.5px solid var(--clr-primary);
+  border-radius: 8px;
+  color: var(--clr-primary);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 14px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.mobile-report-edit-toggle.is-editing {
+  background: var(--clr-primary);
+  color: #fff;
+}
+
+.mobile-report-card-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.mobile-report-card-row .mobile-report-card {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.mobile-report-card-row.is-editing .mobile-report-card {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.mobile-report-delete-btn {
+  background: #e53e3e;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  transition: background 0.15s;
+}
+
+.mobile-report-delete-btn:active {
+  background: #c53030;
+}
