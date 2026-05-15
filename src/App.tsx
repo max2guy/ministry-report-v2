@@ -789,7 +789,7 @@ export function App() {
               }
             }}
             onNewReport={handleNewReport}
-            canCreateReport={permissions.canCreateReport}
+            canCreateReport={permissions.canCreateReport && appMode !== "viewer"}
           />
         ) : (
           <div className="mobile-editor-screen">
