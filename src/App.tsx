@@ -9,7 +9,7 @@ import { useAppMode } from "./features/mode/useAppMode";
 import { AppModeToggle } from "./features/mode/AppModeToggle";
 import { BottomTabBar, type MobileTab } from "./features/nav/BottomTabBar";
 import { DesktopSidebar, type DesktopMode } from "./features/nav/DesktopSidebar";
-import { DesktopBottomPanel } from "./features/report/DesktopBottomPanel";
+import { DesktopInlinePanel } from "./features/report/DesktopInlinePanel";
 import { MobileReportList } from "./features/report/MobileReportList";
 import {
   createDefaultRoster,
@@ -864,12 +864,24 @@ export function App() {
         />
         <div className="desktop-center">
           {mode === "edit" && (
-            <ReportEditor
-              report={report}
-              reports={reports}
-              onChange={handleReportChange}
-              editableDepts={permissions.editableDepts}
-            />
+            <>
+              <div className="desktop-edit-area">
+                <ReportEditor
+                  report={report}
+                  reports={reports}
+                  onChange={handleReportChange}
+                  editableDepts={permissions.editableDepts}
+                />
+              </div>
+              <DesktopInlinePanel
+                report={report}
+                reports={reports}
+                currentReportId={report.id}
+                onLoad={handleLoadReport}
+                onDelete={handleDeleteReport}
+                onDuplicate={handleDuplicateReport}
+              />
+            </>
           )}
           {mode === "view" && (
             <ReportViewer
@@ -909,14 +921,6 @@ export function App() {
             </div>
           )}
         </div>
-        <DesktopBottomPanel
-          reports={reports}
-          currentReportId={report.id}
-          currentYear={new Date().getFullYear()}
-          onDelete={handleDeleteReport}
-          onDuplicate={handleDuplicateReport}
-          onLoad={handleLoadReport}
-        />
       </div>
       <BottomTabBar
         activeTab={mobileTab}
