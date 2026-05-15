@@ -1554,7 +1554,7 @@ button:disabled {
   margin: 0;
 }
 
-@media (max-width: 820px) {
+@media (max-width: 820px), (pointer: coarse) {
   /* 앱 쉘 */
   .app-shell {
     padding: 0;
@@ -2094,7 +2094,7 @@ button:disabled {
 }
 
 /* 모바일에서 roster-shell 패딩 재정의 (전역 20px보다 나중에 선언해야 cascade 이김) */
-@media (max-width: 820px) {
+@media (max-width: 820px), (pointer: coarse) {
   .roster-shell {
     padding: 0 12px;
   }
@@ -2120,7 +2120,7 @@ button:disabled {
 }
 
 /* 모바일: 하단 탭바(56px) 위로 올라오도록 */
-@media (max-width: 820px) {
+@media (max-width: 820px), (pointer: coarse) {
   .sms-panel {
     bottom: calc(56px + env(safe-area-inset-bottom, 0px));
     border-radius: 16px 16px 0 0;
@@ -3062,7 +3062,7 @@ button:disabled {
   display: none; /* 데스크톱에서 숨김 */
 }
 
-@media (max-width: 820px) {
+@media (max-width: 820px), (pointer: coarse) {
   .bottom-tab-bar {
     display: flex;
     position: fixed;
@@ -3133,7 +3133,7 @@ button:disabled {
 }
 
 /* 모바일에서 버튼 하단 고정 (엄지 접근성) */
-@media (max-width: 820px) {
+@media (max-width: 820px), (pointer: coarse) {
   .mobile-report-new-btn {
     position: fixed;
     bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 10px);
@@ -3273,7 +3273,7 @@ button:disabled {
   display: block;
 }
 
-@media (max-width: 820px) {
+@media (max-width: 820px), (pointer: coarse) {
   .mobile-only {
     display: block;
   }
@@ -3338,7 +3338,7 @@ button:disabled {
   user-select: none;
 }
 
-@media (max-width: 820px) {
+@media (max-width: 820px), (pointer: coarse) {
   .top-bar-date {
     display: block;
   }
@@ -3453,7 +3453,7 @@ button:disabled {
 }
 
 /* ── 출결 통계 탭: 모바일 1행 ── */
-@media (max-width: 820px) {
+@media (max-width: 820px), (pointer: coarse) {
   .stat-tabs-row {
     gap: 6px;
   }
@@ -3471,7 +3471,7 @@ button:disabled {
 }
 
 /* ── 출결 통계 박스: 모바일 패딩 축소 ── */
-@media (max-width: 820px) {
+@media (max-width: 820px), (pointer: coarse) {
   .stat-section {
     padding: 16px 12px 20px;
   }
@@ -3567,7 +3567,7 @@ button:disabled {
   display: none;
 }
 
-@media (max-width: 820px) {
+@media (max-width: 820px), (pointer: coarse) {
   .mobile-save-bar {
     display: block;
     position: fixed;
