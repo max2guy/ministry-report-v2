@@ -649,7 +649,7 @@ export function App() {
                 weekday: "short",
               })}
             </span>
-            <h1>사역보고서 <span className="top-bar-version">v{__APP_VERSION__}</span>{appMode === "viewer" && mobileScreen === "editor" && <span className="top-bar-viewer-badge">뷰어</span>}</h1>
+            <h1>사역보고서 <span className="top-bar-version">v{__APP_VERSION__}</span>{appMode === "viewer" && <span className="top-bar-viewer-badge">뷰어</span>}</h1>
           </div>
           <div className="top-bar-actions">
             {installState === "ready" && (

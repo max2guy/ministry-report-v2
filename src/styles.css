@@ -3446,7 +3446,7 @@ button:disabled {
   display: none;
 }
 
-@media (min-width: 821px) {
+@media (min-width: 821px) and (pointer: fine) {
   .desktop-only {
     display: block;
   }
