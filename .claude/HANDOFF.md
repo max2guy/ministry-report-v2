@@ -1,90 +1,56 @@
-# ministry-report-v2 — Codex Handoff (v2.5.0)
+# ministry-report-v2 — Codex Handoff (v2.5.1)
 
 ## 현재 상태
-- 커밋: `eb0c44f` — feat(rbac): merge role-based access control (v2.5.0)
 - 브랜치: `main`
-- 배포: GitHub Pages (main push → Actions 자동 배포)
+- 최신 커밋: `82c4112` — "feat(ui): apply mobile layout to touch devices via pointer: coarse (v2.5.1)"
+- origin/main과 동기화 완료
 
----
+## 방금 수정한 내용
 
-## 이번 세션에서 수정한 내용 (v2.5.0 — RBAC)
+### v2.5.1 — iPad 모바일 레이아웃 (pointer: coarse)
+- **문제:** 아이패드 가로(1024px+) 및 iPad Pro 세로(834px)는 820px 초과로 데스크탑 UI가 표시됨
+- **해결:** `src/styles.css`의 모든 `@media (max-width: 820px)` (10곳)를 `@media (max-width: 820px), (pointer: coarse)`로 교체
+- 터치 기기(아이폰, 아이패드)는 화면 너비 무관하게 모바일 UI 표시
+- JS 변경 없음. `@media (max-width: 500px)`, `@media (max-width: 380px)` 소형 폰 쿼리는 그대로 유지
 
-### RBAC (Role-Based Access Control) 구현
-프론트엔드 전용 권한 제어 시스템 추가.
-
-**역할 체계:**
-- `superAdmin` — 런타임: `email === "max2guy@gmail.com"` (Firestore 미저장)
-- `admin` — Firestore `users/{uid}.role = "admin"`
-- `deptManager` — Firestore `users/{uid}.role = "deptManager"` + `departments[]`
-- `viewer` — Firestore `users/{uid}.role = "viewer"` (기본값, 레거시 "reporter" 포함)
-
-**수정 파일:**
-- `src/auth/authTypes.ts`: UserRole 확장 (`viewer|deptManager|admin`), `departments?`, `isSuperAdmin()`
-- `src/auth/firebaseAuthStore.ts`: `listAllUsers()`, `updateUserRole()`, 기본값 viewer, reporter→viewer 정규화
-- `src/auth/usePermissions.ts` (신규): 권한 계산 훅 — `Permissions` 타입, 역할별 권한 반환
-- `src/features/auth/UserManagementPanel.tsx` (신규): 사용자 목록, 역할 드롭다운, 부서 체크박스
-- `src/features/auth/ReporterAccountPanel.tsx`: superAdmin일 때 UserManagementPanel 표시
-- `src/features/report/TabbedReportForm.tsx`: `editableDepts` prop으로 부서 탭 필터링
-- `src/features/report/ReportEditor.tsx`: `editableDepts` prop 추가 및 전달
-- `src/features/roster/MemberRosterTab.tsx`: `visibleDepts` prop으로 부서 탭 필터링
-- `src/features/nav/BottomTabBar.tsx`: `canAccessRoster` prop으로 명단 탭 제어
-- `src/features/report/MobileReportList.tsx`: `canCreateReport` prop으로 새 보고서 버튼 제어
-- `src/App.tsx`: `usePermissions()` 연결, 모든 permission props 전달, viewer→view 모드 강제
-- `src/styles.css`: `.user-mgmt-*` 클래스 추가
-
----
+### v2.5.0 — RBAC (Role-Based Access Control)
+- `UserRole = "viewer" | "deptManager" | "admin"` 추가 (`src/auth/authTypes.ts`)
+- `isSuperAdmin(account)` — `max2guy@gmail.com` 전용 최고 권한
+- `usePermissions()` 훅 — 역할 기반 권한 계산 (`src/auth/usePermissions.ts`)
+- `UserManagementPanel` — 슈퍼어드민 전용 유저 역할/부서 관리 UI (`src/features/auth/UserManagementPanel.tsx`)
+- `listAllUsers()`, `updateUserRole()` Firestore 함수 추가 (`src/auth/firebaseAuthStore.ts`)
+- App.tsx에서 `usePermissions()` 결과를 각 컴포넌트에 주입
 
 ## 프로젝트 개요
+- **프레임워크:** React 19 + TypeScript + Vite PWA
+- **스타일:** CSS Modules / 전역 `src/styles.css`
+- **인증/DB:** Firebase Auth + Firestore
+- **빌드:** `npm run build`
+- **테스트:** `npm test` (Vitest, 31개 통과)
+- **배포:** Firebase Hosting (`firebase deploy`)
 
-| 항목 | 내용 |
+## 주요 파일
+| 파일 | 역할 |
 |------|------|
-| 프레임워크 | React 19 + TypeScript + Vite 6 |
-| PWA | vite-plugin-pwa (Service Worker, 오프라인 지원) |
-| 스타일 | 단일 파일 `src/styles.css`, CSS 변수 기반 테마 |
-| 인증 | Firebase Auth (Google 로그인) |
-| DB | Firestore (persistentLocalCache + try/catch fallback) |
-| 배포 | GitHub Pages (`.github/workflows/deploy.yml`) |
+| `src/App.tsx` | 최상위 컴포넌트, 권한 주입 |
+| `src/auth/authTypes.ts` | Account, UserRole, isSuperAdmin 타입 |
+| `src/auth/usePermissions.ts` | 권한 계산 훅 |
+| `src/auth/firebaseAuthStore.ts` | Firestore 유저 CRUD |
+| `src/features/auth/UserManagementPanel.tsx` | 유저 관리 UI |
+| `src/features/report/TabbedReportForm.tsx` | 부서별 탭 보고서 폼 |
+| `src/features/roster/MemberRosterTab.tsx` | 대원 명부 탭 |
+| `src/features/nav/BottomTabBar.tsx` | 하단 내비게이션 |
+| `src/styles.css` | 전역 스타일 + 모바일 미디어쿼리 |
 
-### 빌드 & 개발
+## 다음으로 할 수 있는 작업
+- Firestore Security Rules에 RBAC 반영 (현재 프론트엔드 전용)
+- 아이패드 전용 레이아웃 세부 최적화 (필요 시)
+- 푸시 알림(FCM) 개선
+- 오프라인 지원 강화 (Service Worker 캐시 전략)
+
+## 빌드 & 배포
 ```bash
-npm run dev         # 개발 서버 http://localhost:5173
-npm run build       # tsc --noEmit && vite build → dist/
-npm test            # vitest (unit)
-npm run smoke       # playwright e2e (빌드 선행 필요)
-npm run verify      # npm test && npm run smoke
+npm run build        # Vite 빌드
+npm test             # 테스트 (31개)
+firebase deploy      # Firebase Hosting 배포
 ```
-
----
-
-## 주요 파일 구조
-
-```
-src/
-├── App.tsx                          # 루트: 상태·라우팅·usePermissions 연결
-├── auth/
-│   ├── authTypes.ts                 # UserRole, Account, isSuperAdmin()
-│   ├── firebaseAuthStore.ts         # Google 로그인, listAllUsers, updateUserRole
-│   └── usePermissions.ts            # Permissions 훅 (역할 → 권한 계산)
-├── features/
-│   ├── auth/
-│   │   ├── AuthGate.tsx             # 로그인 화면
-│   │   ├── ReporterAccountPanel.tsx # 계정 설정 패널 (superAdmin: UserManagementPanel 포함)
-│   │   └── UserManagementPanel.tsx  # 사용자 역할·부서 관리 UI (superAdmin 전용)
-│   ├── report/
-│   │   ├── TabbedReportForm.tsx     # 보고서 폼 (editableDepts 기반 탭 필터링)
-│   │   ├── ReportEditor.tsx         # 보고서 편집기 래퍼
-│   │   └── MobileReportList.tsx     # 보고서 목록 (canCreateReport 기반 버튼 제어)
-│   ├── roster/
-│   │   └── MemberRosterTab.tsx      # 명단 탭 (visibleDepts 기반 부서 필터링)
-│   └── nav/
-│       └── BottomTabBar.tsx         # 하단 탭바 (canAccessRoster 기반 명단 탭 제어)
-└── styles.css                       # 전체 스타일 (~3760줄)
-```
-
----
-
-## 알려진 이슈 / 후속 작업 후보
-- Firestore 보안 규칙 강화 (현재 프론트엔드 전용 권한 제어)
-- viewer가 roster 탭에 접근 시 강제로 report 탭으로 이동시키는 UX
-- 구역 이동 후 목적지 구역으로 자동 스크롤
-- 보고서 이미지/PDF 내보내기
