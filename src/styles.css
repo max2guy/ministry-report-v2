@@ -3882,9 +3882,8 @@ button:disabled {
     gap: 20px;
     max-width: 640px;
   }
-}
 
-/* ── 데스크탑 사이드바 ── */
+  /* ── 데스크탑 사이드바 ── */
 .desktop-sidebar {
   grid-area: sidebar;
   background: var(--clr-primary);
@@ -4044,6 +4043,11 @@ button:disabled {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.desktop-action-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
 .desktop-sidebar-utils {
   margin-top: auto;
   display: flex;
@@ -4070,4 +4074,14 @@ button:disabled {
 .desktop-util-btn:hover {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
+}
+
+/* Focus visible for keyboard accessibility */
+.desktop-nav-item:focus-visible,
+.desktop-action-btn:focus-visible,
+.desktop-sidebar-signout:focus-visible,
+.desktop-util-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
 }
