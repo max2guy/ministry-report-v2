@@ -1681,12 +1681,21 @@ button:disabled {
     padding: 5px 2px;
   }
 
-  /* 모바일: 제목·보고일·보고자 모두 1열 세로 스택 */
+  /* 제목: 전체너비, 보고일+보고자: 2열 */
   .info-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .info-row label {
+    min-width: 0;
+    overflow: hidden;
+  }
+  .info-row label input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .info-row label:first-child {
-    grid-column: auto;
+    grid-column: 1 / -1;
   }
 
   /* 카드 스타일: 모바일에서 그림자 + 둥근 모서리 강조 */
