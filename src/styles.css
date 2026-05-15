@@ -3884,204 +3884,204 @@ button:disabled {
   }
 
   /* ── 데스크탑 사이드바 ── */
-.desktop-sidebar {
-  grid-area: sidebar;
-  background: var(--clr-primary);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  overflow-y: auto;
-  padding: 20px 14px 16px;
-}
+  .desktop-sidebar {
+    grid-area: sidebar;
+    background: var(--clr-primary);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    padding: 20px 14px 16px;
+  }
 
-.desktop-sidebar-header {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  padding-bottom: 14px;
-}
+  .desktop-sidebar-header {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding-bottom: 14px;
+  }
 
-.desktop-sidebar-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-}
+  .desktop-sidebar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
 
-.desktop-sidebar-version {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
-}
+  .desktop-sidebar-version {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+  }
 
-.desktop-sidebar-account {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 12px;
-  margin-bottom: 8px;
-  text-align: center;
-}
+  .desktop-sidebar-account {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
 
-.desktop-sidebar-avatar {
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 50%;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 700;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .desktop-sidebar-avatar {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.desktop-sidebar-account-name {
-  display: block;
-  font-size: 14px;
-  color: #fff;
-}
+  .desktop-sidebar-account-name {
+    display: block;
+    font-size: 14px;
+    color: #fff;
+  }
 
-.desktop-sidebar-account-email {
-  display: block;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.6);
-  word-break: break-all;
-}
+  .desktop-sidebar-account-email {
+    display: block;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    word-break: break-all;
+  }
 
-.desktop-sidebar-signout {
-  background: rgba(255, 255, 255, 0.12);
-  border: none;
-  border-radius: 6px;
-  color: rgba(255, 255, 255, 0.75);
-  cursor: pointer;
-  font-size: 12px;
-  padding: 4px 12px;
-  margin-top: 2px;
-  transition: background 0.15s;
-}
+  .desktop-sidebar-signout {
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px 12px;
+    margin-top: 2px;
+    transition: background 0.15s;
+  }
 
-.desktop-sidebar-signout:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
+  .desktop-sidebar-signout:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
 
-.desktop-sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-bottom: 8px;
-}
+  .desktop-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 8px;
+  }
 
-.desktop-nav-item {
-  background: none;
-  border: none;
-  border-radius: 8px;
-  color: rgba(255, 255, 255, 0.75);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 10px 12px;
-  text-align: left;
-  transition: background 0.15s, color 0.15s;
-}
+  .desktop-nav-item {
+    background: none;
+    border: none;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 12px;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+  }
 
-.desktop-nav-item:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-}
+  .desktop-nav-item:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
 
-.desktop-nav-item.is-active {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  font-weight: 600;
-}
+  .desktop-nav-item.is-active {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-weight: 600;
+  }
 
-.desktop-sidebar-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 8px;
-}
+  .desktop-sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
 
-.desktop-action-btn {
-  background: rgba(255, 255, 255, 0.12);
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 9px 12px;
-  text-align: left;
-  transition: background 0.15s;
-  width: 100%;
-}
+  .desktop-action-btn {
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 12px;
+    text-align: left;
+    transition: background 0.15s;
+    width: 100%;
+  }
 
-.desktop-action-btn:hover {
-  background: rgba(255, 255, 255, 0.22);
-}
+  .desktop-action-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
 
-.desktop-action-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+  .desktop-action-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 
-.desktop-action-btn-primary {
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--clr-primary);
-  font-weight: 700;
-}
+  .desktop-action-btn-primary {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--clr-primary);
+    font-weight: 700;
+  }
 
-.desktop-action-btn-primary:hover:not(:disabled) {
-  background: #fff;
-}
+  .desktop-action-btn-primary:hover:not(:disabled) {
+    background: #fff;
+  }
 
-.desktop-action-btn-secondary {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
+  .desktop-action-btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
 
-.desktop-action-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.5);
-}
+  .desktop-action-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
 
-.desktop-sidebar-utils {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-}
+  .desktop-sidebar-utils {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
 
-.desktop-util-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-radius: 7px;
-  color: rgba(255, 255, 255, 0.75);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 8px;
-  transition: background 0.15s;
-}
+  .desktop-util-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 7px;
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 8px;
+    transition: background 0.15s;
+  }
 
-.desktop-util-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-}
+  .desktop-util-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
 
-/* Focus visible for keyboard accessibility */
-.desktop-nav-item:focus-visible,
-.desktop-action-btn:focus-visible,
-.desktop-sidebar-signout:focus-visible,
-.desktop-util-btn:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.8);
-  outline-offset: 2px;
-}
+  /* Focus visible for keyboard accessibility */
+  .desktop-nav-item:focus-visible,
+  .desktop-action-btn:focus-visible,
+  .desktop-sidebar-signout:focus-visible,
+  .desktop-util-btn:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+  }
 }
