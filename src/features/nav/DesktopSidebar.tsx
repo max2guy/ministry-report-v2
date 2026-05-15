@@ -52,7 +52,7 @@ export function DesktopSidebar({
       {currentAccount && (
         <div className="desktop-sidebar-account">
           <div className="desktop-sidebar-avatar">
-            {currentAccount.displayName.charAt(0).toUpperCase()}
+            {(currentAccount.displayName.charAt(0) || currentAccount.email.charAt(0)).toUpperCase()}
           </div>
           <div className="desktop-sidebar-account-info">
             <strong className="desktop-sidebar-account-name">
@@ -73,13 +73,12 @@ export function DesktopSidebar({
       )}
 
       {/* 네비게이션 */}
-      <div className="desktop-sidebar-nav" role="tablist">
+      <div className="desktop-sidebar-nav">
         {NAV_ITEMS.map(({ key, label }) => (
           <button
             key={key}
             type="button"
-            role="tab"
-            aria-selected={mode === key}
+            aria-current={mode === key ? "page" : undefined}
             className={`desktop-nav-item${mode === key ? " is-active" : ""}`}
             onClick={() => onModeChange(key)}
           >
