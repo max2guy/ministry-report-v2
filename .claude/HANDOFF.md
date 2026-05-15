@@ -1,24 +1,25 @@
 # ministry-report-v2 — Codex Handoff (v2.5.3)
 
 ## 현재 상태
-- 최신 커밋: `e99dbda chore: bump version to 2.5.3`
-- 브랜치: `main` (origin/main 동기화 완료)
+- 최신 커밋: `c98a305 feat(desktop): replace bottom panel with inline stat cards + wider report list`
+- 브랜치: `main`
 - 버전: 2.5.3
 
 ## 방금 수정한 내용
 
-### v2.5.3 — 데스크탑 UI 3단 레이아웃 재구성
+### 최신 — 데스크탑 하단 패널 → 인라인 패널 교체
 
-**문제**: 데스크탑 레이아웃이 헤더 + 200px 사이드바 구조로 공간 낭비 및 역할 혼재.
+**문제**: 고정 220px 하단 Grid 행(`DesktopBottomPanel`)이 CSS Grid area를 차지해 레이아웃 유연성 저하.
 
-**해결**: CSS Grid 3단 레이아웃으로 전면 재구성.
+**해결**: 하단 Grid row 제거, 센터 컬럼 내부 하단에 `DesktopInlinePanel` 인라인 배치.
 
 #### 변경 파일
-- **`src/features/nav/DesktopSidebar.tsx`** (신규): 좌측 220px 사이드바 — 앱 타이틀/버전, 계정(아바타+이름+이메일+로그아웃), 네비게이션(보고서/뷰어/명단/설정), 액션 버튼(새 보고서/저장/내보내기, 편집 모드만), 하단 유틸(ThemeSelector, 강제새로고침, PWA 설치)
-- **`src/features/report/DesktopBottomPanel.tsx`** (신규): 하단 고정 220px 패널 — 좌측 50% ReportHistoryPanel, 우측 50% AttendanceSummaryStats
-- **`src/features/report/ReportEditor.tsx`** (수정): 사이드바 JSX 제거, TabbedReportForm만 래핑하는 얇은 컴포넌트로 단순화
-- **`src/App.tsx`** (수정): `DesktopMode = "edit"|"view"|"roster"|"settings"` 타입 도입, 데스크탑 레이아웃을 `.desktop-layout` CSS Grid 래퍼로 교체, settings 모드 추가
-- **`src/styles.css`** (수정): `@media (min-width: 821px) and (pointer: fine)` 내 Grid CSS, 사이드바/하단 패널 스타일, `.top-bar` 데스크탑 숨김, `:focus-visible` 접근성 스타일
+- **`src/features/report/DesktopInlinePanel.tsx`** (신규): 좌측 300px 보고서 목록 + 우측 flex:1 4부서 통계 카드. edit 모드에서만 렌더링.
+- **`src/App.tsx`** (수정): `DesktopBottomPanel` import → `DesktopInlinePanel`으로 교체. edit 모드 JSX를 `<>` Fragment로 래핑, `<div className="desktop-edit-area">` + `<DesktopInlinePanel>` 추가.
+- **`src/styles.css`** (수정): Grid template에서 bottom row(220px) 제거. `.desktop-center`를 flex column으로 변경. `.desktop-edit-area`(flex:1 스크롤) + `.desktop-inline-panel` 및 `.dip-*` 스타일 추가. 기존 `.desktop-bottom-panel` 스타일 제거.
+
+### v2.5.3 — 데스크탑 UI 3단 레이아웃 재구성
+- CSS Grid 3단 레이아웃 (sidebar + center + bottom panel)
 
 ### v2.5.2 이전 세션 — 모바일 보고서 삭제 기능
 - 최고관리자 전용 모바일 삭제 UI (편집/완료 토글 + 쓰레기통 아이콘)
@@ -48,16 +49,17 @@
 ```
 ┌──────────┬──────────────────────────────┐
 │          │                              │
-│ SIDEBAR  │   CENTER — 보고서 편집폼      │
-│  220px   │   (세로 스크롤)               │
+│ SIDEBAR  │   desktop-edit-area          │
+│  220px   │   (flex:1, 세로 스크롤)       │
 │          │                              │
 │          ├───────────────┬──────────────┤
-│          │  보고서 목록   │    통계       │
-│          │    (50%)      │    (50%)     │
+│          │  보고서 목록   │  4부서 통계  │
+│          │    300px      │   (flex:1)   │
 └──────────┴───────────────┴──────────────┘
-           └──── 하단 패널 220px ──────────┘
+           └── desktop-inline-panel 172px ┘
 ```
-CSS Grid: `grid-template: "sidebar center" 1fr "sidebar bottom" 220px / 220px 1fr`
+CSS Grid: `grid-template: "sidebar center" 1fr / 220px 1fr`
+`.desktop-center`: `display:flex; flex-direction:column` — edit-area + inline-panel 수직 배치
 
 ## 다음으로 할 수 있는 작업
 - 삭제 후 토스트 알림 (현재는 window.confirm만)
