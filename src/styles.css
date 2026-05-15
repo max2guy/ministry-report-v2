@@ -1685,6 +1685,14 @@ button:disabled {
   .info-row {
     grid-template-columns: 1fr 1fr;
   }
+  .info-row label {
+    min-width: 0;
+  }
+  .info-row label input {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
   .info-row label:first-child {
     grid-column: 1 / -1;
   }

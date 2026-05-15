@@ -269,11 +269,7 @@ export function App() {
       setRoster(storedRoster);
       if (initialReport) {
         const upgraded = upgradeReportForEditor(initialReport);
-        setReport(
-          !upgraded.pastorName
-            ? reportWithAccount(upgraded, account)
-            : upgraded,
-        );
+        setReport(reportWithAccount(upgraded, account));
       }
       setIsHydrated(true);
     } catch (err) {
