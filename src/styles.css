@@ -3915,7 +3915,7 @@ button:disabled {
   }
 
   .dip-list-item.is-current {
-    background: rgba(33, 72, 192, 0.08);
+    background: rgba(var(--clr-primary-rgb), 0.08);
   }
 
   .dip-list-load {
@@ -3940,7 +3940,7 @@ button:disabled {
   }
 
   .dip-list-item.is-current .dip-list-date {
-    color: #2148c0;
+    color: var(--clr-primary);
   }
 
   .dip-list-title {
@@ -3953,13 +3953,13 @@ button:disabled {
   }
 
   .dip-list-item.is-current .dip-list-title {
-    color: #2148c0;
+    color: var(--clr-primary);
     font-weight: 600;
   }
 
   .dip-list-badge {
     font-size: 10px;
-    background: #2148c0;
+    background: var(--clr-primary);
     color: #fff;
     padding: 1px 6px;
     border-radius: 20px;
@@ -3985,9 +3985,9 @@ button:disabled {
   }
 
   .dip-list-dup:hover {
-    background: #e8edfa;
-    color: #2148c0;
-    border-color: #2148c0;
+    background: rgba(var(--clr-primary-rgb), 0.1);
+    color: var(--clr-primary);
+    border-color: var(--clr-primary);
   }
 
   .dip-list-del:hover {

@@ -51,6 +51,8 @@ export function DesktopInlinePanel({
                 type="button"
                 className="dip-list-load"
                 onClick={() => onLoad(r)}
+                aria-label={`${r.reportDate} ${r.title || `${r.reportDate} 보고서`} 불러오기`}
+                aria-current={r.id === currentReportId ? true : undefined}
               >
                 <span className="dip-list-date">{r.reportDate}</span>
                 <span className="dip-list-title">{r.title || `${r.reportDate} 보고서`}</span>
