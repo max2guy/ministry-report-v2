@@ -4060,13 +4060,22 @@ button:disabled {
     background: none;
     border: none;
     border-radius: 8px;
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.65);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
-    padding: 10px 12px;
+    padding: 9px 12px;
     text-align: left;
     transition: background 0.15s, color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .desktop-nav-icon {
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 0.15s;
   }
 
   .desktop-nav-item:hover {
@@ -4074,10 +4083,18 @@ button:disabled {
     color: #fff;
   }
 
+  .desktop-nav-item:hover .desktop-nav-icon {
+    opacity: 1;
+  }
+
   .desktop-nav-item.is-active {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.18);
     color: #fff;
     font-weight: 600;
+  }
+
+  .desktop-nav-item.is-active .desktop-nav-icon {
+    opacity: 1;
   }
 
   /* ── 사이드바 보고서 목록 ── */
@@ -4091,13 +4108,27 @@ button:disabled {
   }
 
   .dsb-reports-header {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
-    padding: 10px 14px 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px 6px;
     flex-shrink: 0;
+  }
+
+  .dsb-reports-header span {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    white-space: nowrap;
+  }
+
+  .dsb-reports-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
   }
 
   .dsb-reports-list {
@@ -4224,47 +4255,57 @@ button:disabled {
     margin-bottom: 8px;
   }
 
+  /* 새 보고서 — outlined (2순위) */
   .desktop-action-btn {
-    background: rgba(255, 255, 255, 0.12);
-    border: none;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
-    color: #fff;
+    color: rgba(255, 255, 255, 0.85);
     cursor: pointer;
     font-size: 13px;
     font-weight: 500;
     padding: 9px 12px;
-    text-align: left;
-    transition: background 0.15s;
+    text-align: center;
+    transition: background 0.15s, border-color 0.15s;
     width: 100%;
   }
 
   .desktop-action-btn:hover {
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.55);
   }
 
   .desktop-action-btn:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
   }
 
+  /* 저장 — solid white (1순위 CTA) */
   .desktop-action-btn-primary {
-    background: rgba(255, 255, 255, 0.9);
+    background: #fff;
+    border-color: #fff;
     color: var(--clr-primary);
     font-weight: 700;
   }
 
   .desktop-action-btn-primary:hover:not(:disabled) {
-    background: #fff;
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(255, 255, 255, 0.92);
   }
 
+  /* 내보내기 — 텍스트 (3순위) */
   .desktop-action-btn-secondary {
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-color: transparent;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 12px;
+    font-weight: 400;
   }
 
   .desktop-action-btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: transparent;
+    color: rgba(255, 255, 255, 0.7);
   }
 
   .desktop-sidebar-utils {
