@@ -3969,7 +3969,91 @@ button:disabled {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    max-width: 640px;
+    max-width: 680px;
+  }
+
+  /* ── 뷰어/명단: desktop-edit-area 안에서 레이아웃 통일 ── */
+
+  /* viewer: report-mode 그리드 해제 */
+  .desktop-edit-area .report-mode {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    gap: 16px;
+  }
+
+  /* viewer 탭바 → edit 탭바와 동일한 언더라인 스타일 */
+  .desktop-edit-area .viewer-dept-tabs--desktop {
+    background: var(--clr-card-bg);
+    border-radius: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.05);
+    padding: 0 16px;
+    gap: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+  }
+
+  .desktop-edit-area .viewer-dept-tab-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2.5px solid transparent;
+    border-radius: 0;
+    color: var(--clr-text-secondary);
+    flex: unset;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.75;
+    padding: 12px 16px;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s, opacity 0.15s;
+  }
+
+  .desktop-edit-area .viewer-dept-tab-btn.is-active {
+    background: transparent;
+    border-bottom-color: var(--clr-primary);
+    color: var(--clr-primary);
+    font-weight: 700;
+    opacity: 1;
+  }
+
+  /* 명단: roster-tab max-width 해제 */
+  .desktop-edit-area .roster-tab {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 명단 탭바 → 언더라인 스타일 카드 */
+  .desktop-edit-area .roster-dept-tabs {
+    background: var(--clr-card-bg);
+    border-radius: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.05);
+    padding: 0 16px;
+    gap: 0;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .desktop-edit-area .roster-dept-tabs.segmented-control button {
+    background: transparent;
+    border-bottom: 2.5px solid transparent;
+    border-radius: 0;
+    color: var(--clr-text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.75;
+    padding: 12px 16px;
+    flex: unset;
+    min-width: unset;
+    transition: color 0.15s, border-color 0.15s, opacity 0.15s;
+  }
+
+  .desktop-edit-area .roster-dept-tabs.segmented-control button[aria-pressed="true"] {
+    background: transparent;
+    border-bottom-color: var(--clr-primary);
+    color: var(--clr-primary);
+    font-weight: 700;
+    opacity: 1;
   }
 
   /* ── 데스크탑 사이드바 ── */

@@ -878,16 +878,18 @@ export function App() {
             </div>
           )}
           {mode === "view" && (
-            <ReportViewer
-              report={report}
-              reports={reports}
-              activeTabIdx={safeTabIdx}
-              tabs={viewerTabs}
-              onTabChange={setViewerTabIdx}
-            />
+            <div className="desktop-edit-area">
+              <ReportViewer
+                report={report}
+                reports={reports}
+                activeTabIdx={safeTabIdx}
+                tabs={viewerTabs}
+                onTabChange={setViewerTabIdx}
+              />
+            </div>
           )}
           {mode === "roster" && (
-            <main className="roster-shell">
+            <div className="desktop-edit-area">
               {roster && (
                 <MemberRosterTab
                   roster={roster}
@@ -895,23 +897,25 @@ export function App() {
                   visibleDepts={permissions.visibleDepts}
                 />
               )}
-            </main>
+            </div>
           )}
           {mode === "settings" && (
-            <div className="desktop-settings">
-              <ReporterAccountPanel
-                currentAccount={currentAccount}
-                onSignOut={() => void handleSignOut()}
-                onDisplayNameChange={handleDisplayNameChange}
-              />
-              <LegacyImportPanel
-                warnings={importWarnings}
-                onImport={handleImport}
-                onImportError={handleImportError}
-              />
-              {(currentAccount?.role === "admin" || isSuperAdmin(currentAccount)) && (
-                <GithubSettingsPanel />
-              )}
+            <div className="desktop-edit-area">
+              <div className="desktop-settings">
+                <ReporterAccountPanel
+                  currentAccount={currentAccount}
+                  onSignOut={() => void handleSignOut()}
+                  onDisplayNameChange={handleDisplayNameChange}
+                />
+                <LegacyImportPanel
+                  warnings={importWarnings}
+                  onImport={handleImport}
+                  onImportError={handleImportError}
+                />
+                {(currentAccount?.role === "admin" || isSuperAdmin(currentAccount)) && (
+                  <GithubSettingsPanel />
+                )}
+              </div>
             </div>
           )}
         </div>
