@@ -3976,6 +3976,7 @@ button:disabled {
   .desktop-sidebar {
     grid-area: sidebar;
     background: var(--clr-primary);
+    border-radius: 0 20px 20px 0;
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -4043,7 +4044,7 @@ button:disabled {
   .desktop-sidebar-signout {
     background: rgba(255, 255, 255, 0.12);
     border: none;
-    border-radius: 6px;
+    border-radius: 99px;
     color: rgba(255, 255, 255, 0.75);
     cursor: pointer;
     font-size: 12px;
@@ -4270,7 +4271,7 @@ button:disabled {
   .desktop-action-btn {
     background: transparent;
     border: 1.5px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
+    border-radius: 99px;
     color: rgba(255, 255, 255, 0.85);
     cursor: pointer;
     font-size: 13px;
@@ -4332,7 +4333,7 @@ button:disabled {
   .desktop-util-btn {
     background: rgba(255, 255, 255, 0.1);
     border: none;
-    border-radius: 7px;
+    border-radius: 99px;
     color: rgba(255, 255, 255, 0.75);
     cursor: pointer;
     display: flex;
