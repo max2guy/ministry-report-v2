@@ -5,7 +5,6 @@ import type {
   DepartmentReport,
   MinistryReport,
 } from "../../domain/reportTypes";
-import { AttendanceSummaryStats } from "./AttendanceSummaryStats";
 import { DepartmentAttendanceEditor } from "./DepartmentAttendanceEditor";
 import { LegacyDepartmentAttendanceEditor } from "./LegacyDepartmentAttendanceEditor";
 import { ReportCanvas } from "./ReportCanvas";
@@ -55,7 +54,6 @@ function listToText(value: string[]): string {
 }
 
 export function TabbedReportForm({ report, reports, onChange, editableDepts }: Props) {
-  const currentYear = new Date().getFullYear();
   const [activeTab, setActiveTab] = useState<TabKey>("info");
 
   // 부서 탭 필터링: info·prayer는 항상 표시, 부서 탭은 editableDepts 기준
@@ -161,7 +159,6 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
             />
           </label>
         </div>
-        <AttendanceSummaryStats reports={reports} currentYear={currentYear} />
         <ReportCanvas report={report} />
       </div>
 
