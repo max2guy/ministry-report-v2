@@ -155,27 +155,6 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
         hidden={activeTab !== "info"}
       >
         <div className="info-tab-content">
-          <div className="info-fields-card">
-            <div className="info-row">
-              <label>
-                제목
-                <input
-                  value={report.title}
-                  onChange={(e) => updateReport({ title: e.currentTarget.value })}
-                />
-              </label>
-              <label>
-                보고일
-                <input
-                  type="date"
-                  value={report.reportDate}
-                  onChange={(e) =>
-                    updateReport({ reportDate: e.currentTarget.value })
-                  }
-                />
-              </label>
-            </div>
-          </div>
           {/* 출결 통계 카드 (데스크탑 전용) */}
           <div className="info-stats-section">
             <div className="info-stats-header">
