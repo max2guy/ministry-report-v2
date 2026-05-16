@@ -6,7 +6,7 @@
   --clr-primary-light: #9ecfc2;
   --clr-present-bg: #e5f1ed;
   --clr-present-border: #24564a;
-  --clr-bg: #f0f0f0;
+  --clr-bg: #f4f5f7;
   --clr-card-bg: #ffffff;
   --clr-surface: #e8eae9;
   --clr-border: #dde3e0;
@@ -29,7 +29,7 @@
   --clr-primary-light: #8ab4e0;
   --clr-present-bg: #daeaf8;
   --clr-present-border: #1a4a8a;
-  --clr-bg: #f0f0f0;
+  --clr-bg: #f4f5f7;
   --clr-card-bg: #ffffff;
   --clr-surface: #e8eaef;
   --clr-border: #dde2ee;
@@ -52,7 +52,7 @@
   --clr-primary-light: #e8a070;
   --clr-present-bg: #fde5d0;
   --clr-present-border: #b84a10;
-  --clr-bg: #f0f0f0;
+  --clr-bg: #f4f5f7;
   --clr-card-bg: #ffffff;
   --clr-surface: #eae8e6;
   --clr-border: #e0d8d2;
@@ -2340,20 +2340,21 @@ button:disabled {
 /* ── TabbedReportForm ── */
 .tabbed-report-form {
   background: var(--clr-card-bg);
-  border: 1.5px solid var(--clr-border);
-  border-radius: 8px;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 16px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
 }
 
 .report-tab-bar {
-  background: rgba(var(--clr-primary-rgb), 0.05);  /* 탭바 은은한 주색 배경 */
+  background: var(--clr-card-bg);
   border-bottom: 1px solid var(--clr-border);
   display: flex;
-  gap: 4px;
+  gap: 0;
   overflow-x: auto;
-  padding: 6px 8px;
+  padding: 0 16px;
   scrollbar-width: none;
 }
 
@@ -2364,19 +2365,22 @@ button:disabled {
 .report-tab-btn {
   background: transparent;
   border: none;
-  border-radius: 8px;
+  border-bottom: 2.5px solid transparent;
+  border-radius: 0;
   color: var(--clr-text-secondary);
   flex-shrink: 0;
   font-size: 14px;
-  opacity: 0.5;
-  padding: 8px 14px;
+  font-weight: 500;
+  opacity: 0.75;
+  padding: 12px 16px;
   white-space: nowrap;
-  transition: background 0.15s, color 0.15s, opacity 0.15s;
+  transition: color 0.15s, border-color 0.15s, opacity 0.15s;
 }
 
 .report-tab-btn.is-active {
-  background: var(--clr-primary);
-  color: #fff;
+  background: transparent;
+  border-bottom-color: var(--clr-primary);
+  color: var(--clr-primary);
   font-weight: 700;
   opacity: 1;
 }
@@ -3402,8 +3406,8 @@ button:disabled {
 /* ── 설정 카드 (테마 등) ── */
 .settings-card {
   background: var(--clr-card-bg);
-  border: 1.5px solid var(--clr-border);
-  border-radius: 12px;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
@@ -3494,6 +3498,7 @@ button:disabled {
   padding: 7px 2px;
   text-align: center;
   border-radius: 20px;
+  border-bottom: none;
   background: var(--clr-surface);
   color: var(--clr-text-secondary);
   opacity: 1;
@@ -3503,6 +3508,7 @@ button:disabled {
 
 .mobile-editor-screen .report-tab-btn.is-active {
   background: var(--clr-primary);
+  border-bottom-color: transparent;
   color: #fff;
   font-weight: 700;
   opacity: 1;
@@ -3875,8 +3881,8 @@ button:disabled {
   /* 제목/보고일 카드 (데스크탑 전용) */
   .info-fields-card {
     background: var(--clr-card-bg);
-    border: 1px solid var(--clr-border);
-    border-radius: 12px;
+    border-radius: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
     padding: 18px 20px;
   }
 
@@ -3886,8 +3892,8 @@ button:disabled {
     flex-direction: column;
     gap: 12px;
     background: var(--clr-card-bg);
-    border: 1px solid var(--clr-border);
-    border-radius: 12px;
+    border-radius: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
     padding: 18px 20px;
   }
 
@@ -3954,7 +3960,8 @@ button:disabled {
 
   /* 부서별 보고 카드 - report-canvas 스타일 유지하되 border-radius 통일 */
   .desktop-edit-area .report-canvas {
-    border-radius: 12px;
+    border-radius: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
   }
 
   /* 설정 화면 */
