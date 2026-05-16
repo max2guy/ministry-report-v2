@@ -3860,7 +3860,7 @@ button:disabled {
 
   /* ── 데스크탑 편집 영역 ── */
   .desktop-edit-area {
-    flex: 0 1 auto;
+    flex: 1;
     overflow-y: auto;
     padding: 20px 24px;
   }
@@ -4292,6 +4292,143 @@ button:disabled {
     background: rgba(255, 255, 255, 0.2);
     color: #fff;
     font-weight: 600;
+  }
+
+  /* ── 사이드바 보고서 목록 ── */
+  .desktop-sidebar-reports {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 4px;
+  }
+
+  .dsb-reports-header {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    padding: 10px 14px 6px;
+    flex-shrink: 0;
+  }
+
+  .dsb-reports-list {
+    list-style: none;
+    overflow-y: auto;
+    flex: 1;
+    padding: 2px 8px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
+  }
+
+  .dsb-report-item {
+    display: flex;
+    align-items: center;
+    border-radius: 7px;
+    padding: 2px 2px;
+    transition: background 0.1s;
+  }
+
+  .dsb-report-item:hover {
+    background: rgba(255,255,255,0.08);
+  }
+
+  .dsb-report-item.is-current {
+    background: rgba(255,255,255,0.15);
+  }
+
+  .dsb-report-load {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    align-items: flex-start;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 6px;
+    border-radius: 5px;
+    text-align: left;
+  }
+
+  .dsb-report-date {
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1;
+  }
+
+  .dsb-report-item.is-current .dsb-report-date {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .dsb-report-title {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 130px;
+  }
+
+  .dsb-report-item.is-current .dsb-report-title {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .dsb-report-badge {
+    font-size: 9px;
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+    padding: 1px 5px;
+    border-radius: 10px;
+    margin-top: 2px;
+  }
+
+  .dsb-report-actions {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .dsb-report-item:hover .dsb-report-actions {
+    opacity: 1;
+  }
+
+  .dsb-report-dup,
+  .dsb-report-del {
+    font-size: 9px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  .dsb-report-dup:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+  }
+
+  .dsb-report-del:hover {
+    background: rgba(220,38,38,0.4);
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .dsb-report-empty {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    padding: 8px 6px;
   }
 
   .desktop-sidebar-actions {

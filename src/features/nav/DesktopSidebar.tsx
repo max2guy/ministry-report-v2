@@ -1,5 +1,6 @@
 // src/features/nav/DesktopSidebar.tsx
 import type { Account } from "../../auth/authTypes";
+import type { MinistryReport } from "../../domain/reportTypes";
 import { ThemeSelector } from "../theme/ThemeSelector";
 
 export type DesktopMode = "edit" | "view" | "roster" | "settings";
@@ -17,6 +18,12 @@ type DesktopSidebarProps = {
   installState: "unavailable" | "ready" | "installed";
   onInstall: () => void;
   onForceRefresh: () => void;
+  // 보고서 목록
+  reports: MinistryReport[];
+  currentReportId: string;
+  onLoadReport: (report: MinistryReport) => void;
+  onDeleteReport: (report: MinistryReport) => void;
+  onDuplicateReport: (report: MinistryReport) => void;
 };
 
 const NAV_ITEMS: { key: DesktopMode; label: string }[] = [
@@ -39,6 +46,11 @@ export function DesktopSidebar({
   installState,
   onInstall,
   onForceRefresh,
+  reports,
+  currentReportId,
+  onLoadReport,
+  onDeleteReport,
+  onDuplicateReport,
 }: DesktopSidebarProps) {
   return (
     <nav className="desktop-sidebar" aria-label="사이드바 네비게이션">
@@ -86,6 +98,51 @@ export function DesktopSidebar({
           </button>
         ))}
       </div>
+
+      {/* 저장된 보고서 목록 */}
+      {mode === "edit" && (
+        <div className="desktop-sidebar-reports">
+          <div className="dsb-reports-header">저장된 보고서</div>
+          <ul className="dsb-reports-list">
+            {reports.slice().reverse().map((r) => (
+              <li key={r.id} className={`dsb-report-item${r.id === currentReportId ? " is-current" : ""}`}>
+                <button
+                  type="button"
+                  className="dsb-report-load"
+                  onClick={() => onLoadReport(r)}
+                  aria-label={`${r.reportDate} ${r.title || `${r.reportDate} 보고서`} 불러오기`}
+                  aria-current={r.id === currentReportId ? true : undefined}
+                >
+                  <span className="dsb-report-date">{r.reportDate}</span>
+                  <span className="dsb-report-title">{r.title || `${r.reportDate} 보고서`}</span>
+                  {r.id === currentReportId && <span className="dsb-report-badge">현재</span>}
+                </button>
+                <div className="dsb-report-actions">
+                  <button
+                    type="button"
+                    className="dsb-report-dup"
+                    onClick={() => onDuplicateReport(r)}
+                    title="복사"
+                  >복사</button>
+                  <button
+                    type="button"
+                    className="dsb-report-del"
+                    onClick={() => {
+                      if (window.confirm(`${r.reportDate} 보고서를 삭제할까요?`)) {
+                        onDeleteReport(r);
+                      }
+                    }}
+                    title="삭제"
+                  >삭제</button>
+                </div>
+              </li>
+            ))}
+            {reports.length === 0 && (
+              <li className="dsb-report-empty">저장된 보고서 없음</li>
+            )}
+          </ul>
+        </div>
+      )}
 
       {/* 액션 버튼 (편집 모드일 때만) */}
       {mode === "edit" && (

@@ -9,7 +9,6 @@ import { useAppMode } from "./features/mode/useAppMode";
 import { AppModeToggle } from "./features/mode/AppModeToggle";
 import { BottomTabBar, type MobileTab } from "./features/nav/BottomTabBar";
 import { DesktopSidebar, type DesktopMode } from "./features/nav/DesktopSidebar";
-import { DesktopInlinePanel } from "./features/report/DesktopInlinePanel";
 import { MobileReportList } from "./features/report/MobileReportList";
 import {
   createDefaultRoster,
@@ -861,26 +860,22 @@ export function App() {
           installState={installState}
           onInstall={() => void triggerInstall()}
           onForceRefresh={() => void handleForceRefresh()}
+          reports={reports}
+          currentReportId={report.id}
+          onLoadReport={handleLoadReport}
+          onDeleteReport={handleDeleteReport}
+          onDuplicateReport={handleDuplicateReport}
         />
         <div className="desktop-center">
           {mode === "edit" && (
-            <>
-              <div className="desktop-edit-area">
-                <ReportEditor
-                  report={report}
-                  reports={reports}
-                  onChange={handleReportChange}
-                  editableDepts={permissions.editableDepts}
-                />
-              </div>
-              <DesktopInlinePanel
+            <div className="desktop-edit-area">
+              <ReportEditor
+                report={report}
                 reports={reports}
-                currentReportId={report.id}
-                onLoad={handleLoadReport}
-                onDelete={handleDeleteReport}
-                onDuplicate={handleDuplicateReport}
+                onChange={handleReportChange}
+                editableDepts={permissions.editableDepts}
               />
-            </>
+            </div>
           )}
           {mode === "view" && (
             <ReportViewer
