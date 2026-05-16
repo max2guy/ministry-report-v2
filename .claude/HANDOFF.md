@@ -1,8 +1,8 @@
-# ministry-report-v2 — Codex Handoff (v2.5.5)
+# ministry-report-v2 — Codex Handoff (v2.5.6)
 
 ## 현재 상태
 - 브랜치: `main`
-- 최신 커밋: `89115b4 style: Kakao/Naver 스타일 UI 적용 — 언더라인 탭, 카드 그림자`
+- 최신 커밋: `8b4f664 fix(sidebar): 비편집 모드 빈 공간 제거, nav 아이템 pill 형태로 변경`
 
 ## 방금 수정한 내용
 ### Kakao/Naver 스타일 UI 적용 (`src/styles.css` 단일 파일)
