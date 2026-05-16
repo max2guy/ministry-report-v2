@@ -131,6 +131,9 @@ export function DesktopSidebar({
         ))}
       </div>
 
+      {/* 비편집 모드: 빈 공간 채우기 */}
+      {mode !== "edit" && <div className="desktop-sidebar-spacer" />}
+
       {/* 저장된 보고서 목록 */}
       {mode === "edit" && (
         <div className="desktop-sidebar-reports">

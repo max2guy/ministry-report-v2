@@ -4063,15 +4063,19 @@ button:disabled {
     margin-bottom: 8px;
   }
 
+  .desktop-sidebar-spacer {
+    flex: 1;
+  }
+
   .desktop-nav-item {
     background: none;
     border: none;
-    border-radius: 8px;
+    border-radius: 99px;
     color: rgba(255, 255, 255, 0.65);
     cursor: pointer;
     font-size: 13px;
     font-weight: 500;
-    padding: 9px 12px;
+    padding: 9px 14px;
     text-align: left;
     transition: background 0.15s, color 0.15s;
     display: flex;
