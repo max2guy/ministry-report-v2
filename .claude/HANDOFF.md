@@ -1,12 +1,17 @@
-# ministry-report-v2 — Codex Handoff (v2.5.4)
+# ministry-report-v2 — Codex Handoff (v2.5.5)
 
 ## 현재 상태
 - 브랜치: `main`
-- 최신 커밋: `4b7954f feat(desktop): 보고서 목록을 사이드바로 이동, 하단 패널 제거`
-- 후속 정리: dead code 제거 (DesktopInlinePanel.tsx, layout-viz.html, dip-* CSS)
+- 최신 커밋: `89115b4 style: Kakao/Naver 스타일 UI 적용 — 언더라인 탭, 카드 그림자`
 
 ## 방금 수정한 내용
-### 데스크탑 레이아웃 재설계 + 사이드바 통합
+### Kakao/Naver 스타일 UI 적용 (`src/styles.css` 단일 파일)
+- **탭바 언더라인 스타일**: `.report-tab-bar` 배경 흰색, `padding: 0 16px; gap: 0` / `.report-tab-btn` 에 `border-bottom: 2.5px solid transparent; border-radius: 0; padding: 12px 16px` / `.report-tab-btn.is-active` 에 `border-bottom-color: var(--clr-primary); color: var(--clr-primary); background: transparent` 적용
+- **모바일 pill 스타일 보호**: `.mobile-editor-screen .report-tab-btn` 에 `border-bottom: none` override 추가
+- **카드 그림자**: `.tabbed-report-form`, `.info-fields-card`, `.info-stats-section`, `.settings-card`, `.desktop-edit-area .report-canvas` 에서 `border` 제거 → `box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04)` + `border-radius: 14px`
+- **배경색 조정**: `--clr-bg: #f0f0f0` → `#f4f5f7` (green/blue/orange 3개 테마 모두 적용)
+
+### 이전 작업 (v2.5.4): 데스크탑 레이아웃 재설계 + 사이드바 통합
 - **출결 통계 카드를 기본정보 탭 안으로 이동**: `TabbedReportForm.tsx`의 info 탭 내부에 `DEPT_STATS` 4카드(`info-stats-section`) 추가
 - **저장된 보고서 목록을 좌측 사이드바로 이동**: `DesktopSidebar.tsx`에 `desktop-sidebar-reports` 섹션 추가, 5개 새 props
 - **하단 인라인 패널(`DesktopInlinePanel`) 완전 제거**: App.tsx에서 import·JSX 제거, 파일 삭제
