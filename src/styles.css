@@ -2348,13 +2348,6 @@ button:disabled {
   overflow: hidden;
 }
 
-@media (min-width: 821px) and (pointer: fine) {
-  /* 데스크탑: 탭바가 콘텐츠 영역 상단에 붙으므로 상단 radius 제거 */
-  .desktop-edit-area .tabbed-report-form {
-    border-radius: 0 0 14px 14px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
-  }
-}
 
 .report-tab-bar {
   background: var(--clr-card-bg);
@@ -2968,10 +2961,11 @@ button:disabled {
 
 /* ── GitHub Settings Panel ───────────────────── */
 .github-settings-panel {
-  margin-top: 16px;
-  padding: 12px;
-  border: 1px solid var(--clr-border, #e0e0e0);
-  border-radius: 8px;
+  margin-top: 0;
+  padding: 14px 16px;
+  background: var(--clr-card-bg);
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
 }
 
 .github-settings-panel h2 {
@@ -3883,8 +3877,7 @@ button:disabled {
     padding: 0 20px 20px;
   }
 
-  /* 설정·명단: 탭바 없으므로 top padding 복원 */
-  .desktop-edit-area .desktop-settings,
+  /* 명단: 탭바 없으므로 top padding 복원 */
   .desktop-edit-area .roster-tab {
     padding-top: 20px;
   }
