@@ -4048,9 +4048,9 @@ button:disabled {
     opacity: 1;
   }
 
-  /* 명단: roster-tab max-width 해제 */
+  /* 명단: 적정 너비 제한 */
   .desktop-edit-area .roster-tab {
-    max-width: none;
+    max-width: 860px;
     margin: 0;
     padding: 0;
   }
