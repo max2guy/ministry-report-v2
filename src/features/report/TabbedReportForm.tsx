@@ -154,53 +154,54 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
         role="tabpanel"
         hidden={activeTab !== "info"}
       >
-        <div className="info-fields-card">
-          <div className="info-row">
-            <label>
-              제목
-              <input
-                value={report.title}
-                onChange={(e) => updateReport({ title: e.currentTarget.value })}
-              />
-            </label>
-            <label>
-              보고일
-              <input
-                type="date"
-                value={report.reportDate}
-                onChange={(e) =>
-                  updateReport({ reportDate: e.currentTarget.value })
-                }
-              />
-            </label>
+        <div className="info-tab-content">
+          <div className="info-fields-card">
+            <div className="info-row">
+              <label>
+                제목
+                <input
+                  value={report.title}
+                  onChange={(e) => updateReport({ title: e.currentTarget.value })}
+                />
+              </label>
+              <label>
+                보고일
+                <input
+                  type="date"
+                  value={report.reportDate}
+                  onChange={(e) =>
+                    updateReport({ reportDate: e.currentTarget.value })
+                  }
+                />
+              </label>
+            </div>
           </div>
-        </div>
-        {/* 출결 통계 카드 (데스크탑 전용) */}
-        <div className="info-stats-section">
-          <div className="info-stats-header">
-            출결 통계
-            <span className="info-stats-month">{report.reportDate.slice(0, 7)}</span>
-          </div>
-          <div className="info-stats-cards">
-            {DEPT_STATS.map(({ key, label, color }) => {
-              const total   = getDeptTotal(report, key);
-              const present = report.departments[key].attendance;
-              const pct     = total > 0 ? Math.round((present / total) * 100) : 0;
-              return (
-                <div key={key} className="info-stat-card">
-                  <div className="info-stat-label">{label}</div>
-                  <div className="info-stat-pct" style={{ color }}>{pct}%</div>
-                  <div className="info-stat-count">{present}/{total}명</div>
-                  <div className="info-stat-bar">
-                    <div className="info-stat-bar-fill" style={{ width: `${pct}%`, background: color }} />
+          {/* 출결 통계 카드 (데스크탑 전용) */}
+          <div className="info-stats-section">
+            <div className="info-stats-header">
+              출결 통계
+              <span className="info-stats-month">{report.reportDate.slice(0, 7)}</span>
+            </div>
+            <div className="info-stats-cards">
+              {DEPT_STATS.map(({ key, label, color }) => {
+                const total   = getDeptTotal(report, key);
+                const present = report.departments[key].attendance;
+                const pct     = total > 0 ? Math.round((present / total) * 100) : 0;
+                return (
+                  <div key={key} className="info-stat-card">
+                    <div className="info-stat-label">{label}</div>
+                    <div className="info-stat-pct" style={{ color }}>{pct}%</div>
+                    <div className="info-stat-count">{present}/{total}명</div>
+                    <div className="info-stat-bar">
+                      <div className="info-stat-bar-fill" style={{ width: `${pct}%`, background: color }} />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
+          <ReportCanvas report={report} />
         </div>
-
-        <ReportCanvas report={report} />
       </div>
 
       {/* 부서 탭 (유초등부·중고등부·청년부·교구) */}

@@ -3863,36 +3863,16 @@ button:disabled {
     flex: 0 1 auto;
     overflow-y: auto;
     padding: 20px 24px;
+  }
+
+  /* 기본정보 탭 내부만 카드 간격 처리 */
+  .info-tab-content {
     display: flex;
     flex-direction: column;
     gap: 14px;
   }
 
-  /* 탭폼 외곽 카드 제거 → 섹션 카드들이 직접 나열 */
-  .desktop-edit-area .tabbed-report-form {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
-  }
-
-  /* 탭바 독립 카드 */
-  .desktop-edit-area .report-tab-bar {
-    background: var(--clr-card-bg);
-    border: 1px solid var(--clr-border);
-    border-radius: 10px;
-    margin-bottom: 0;
-  }
-
-  /* 탭 패널: 섹션 카드 세로 나열 */
-  .desktop-edit-area .report-tab-panel {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  /* 제목/보고일 카드 (데스크탑) */
+  /* 제목/보고일 카드 (데스크탑 전용) */
   .info-fields-card {
     background: var(--clr-card-bg);
     border: 1px solid var(--clr-border);
