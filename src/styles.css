@@ -2499,6 +2499,9 @@ button:disabled {
   align-items: end;
 }
 
+/* 기본정보 탭 출결 통계 카드 — 모바일 숨김, 데스크탑 표시 */
+.info-stats-section { display: none; }
+
 /* ── Attendance Summary Stats ── */
 /* ── 출결 통계 (bar-chart / report-canvas 스타일) ─────────── */
 .stat-section {
@@ -3859,6 +3862,78 @@ button:disabled {
     flex: 0 1 auto;
     overflow-y: auto;
     padding: 24px 28px;
+  }
+
+  /* 기본정보 탭 출결 통계 카드 (데스크탑) */
+  .info-stats-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--clr-card-bg);
+    border: 1px solid var(--clr-border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+
+  .info-stats-header {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--clr-text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .info-stats-month {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--clr-text-secondary, #9ca3af);
+  }
+
+  .info-stats-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .info-stat-card {
+    background: var(--clr-bg);
+    border: 1px solid var(--clr-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .info-stat-label {
+    font-size: 11px;
+    color: var(--clr-text-secondary, #9ca3af);
+  }
+
+  .info-stat-pct {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  .info-stat-count {
+    font-size: 11px;
+    color: var(--clr-text-secondary, #9ca3af);
+  }
+
+  .info-stat-bar {
+    height: 3px;
+    background: var(--clr-border);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+
+  .info-stat-bar-fill {
+    height: 100%;
+    border-radius: 99px;
   }
 
   /* ── 인라인 패널 ── */

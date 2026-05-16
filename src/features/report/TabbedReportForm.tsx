@@ -9,6 +9,20 @@ import { DepartmentAttendanceEditor } from "./DepartmentAttendanceEditor";
 import { LegacyDepartmentAttendanceEditor } from "./LegacyDepartmentAttendanceEditor";
 import { ReportCanvas } from "./ReportCanvas";
 
+const DEPT_STATS: { key: DepartmentKey; label: string; color: string }[] = [
+  { key: "elementary", label: "유초등부", color: "#2148c0" },
+  { key: "middleHigh", label: "중고등부", color: "#0f766e" },
+  { key: "youngAdult", label: "청년부",   color: "#7c3aed" },
+  { key: "adult",      label: "교구",     color: "#d97706" },
+];
+
+function getDeptTotal(report: MinistryReport, key: DepartmentKey): number {
+  const dept = report.departments[key];
+  if (dept.zones)   return dept.zones.reduce((s, z) => s + z.members.length, 0);
+  if (dept.members) return dept.members.length;
+  return 0;
+}
+
 type TabKey =
   | "info"
   | "elementary"
@@ -159,6 +173,31 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
             />
           </label>
         </div>
+        {/* 출결 통계 카드 (데스크탑 전용) */}
+        <div className="info-stats-section">
+          <div className="info-stats-header">
+            출결 통계
+            <span className="info-stats-month">{report.reportDate.slice(0, 7)}</span>
+          </div>
+          <div className="info-stats-cards">
+            {DEPT_STATS.map(({ key, label, color }) => {
+              const total   = getDeptTotal(report, key);
+              const present = report.departments[key].attendance;
+              const pct     = total > 0 ? Math.round((present / total) * 100) : 0;
+              return (
+                <div key={key} className="info-stat-card">
+                  <div className="info-stat-label">{label}</div>
+                  <div className="info-stat-pct" style={{ color }}>{pct}%</div>
+                  <div className="info-stat-count">{present}/{total}명</div>
+                  <div className="info-stat-bar">
+                    <div className="info-stat-bar-fill" style={{ width: `${pct}%`, background: color }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
         <ReportCanvas report={report} />
       </div>
 
