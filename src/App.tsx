@@ -874,7 +874,6 @@ export function App() {
                 />
               </div>
               <DesktopInlinePanel
-                report={report}
                 reports={reports}
                 currentReportId={report.id}
                 onLoad={handleLoadReport}

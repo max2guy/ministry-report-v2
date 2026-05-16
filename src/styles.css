@@ -3858,22 +3858,57 @@ button:disabled {
     background: var(--clr-bg);
   }
 
+  /* ── 데스크탑 편집 영역 ── */
   .desktop-edit-area {
     flex: 0 1 auto;
     overflow-y: auto;
-    padding: 24px 28px;
-  }
-
-  /* 기본정보 탭 출결 통계 카드 (데스크탑) */
-  .info-stats-section {
+    padding: 20px 24px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
+  }
+
+  /* 탭폼 외곽 카드 제거 → 섹션 카드들이 직접 나열 */
+  .desktop-edit-area .tabbed-report-form {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  /* 탭바 독립 카드 */
+  .desktop-edit-area .report-tab-bar {
+    background: var(--clr-card-bg);
+    border: 1px solid var(--clr-border);
+    border-radius: 10px;
+    margin-bottom: 0;
+  }
+
+  /* 탭 패널: 섹션 카드 세로 나열 */
+  .desktop-edit-area .report-tab-panel {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* 제목/보고일 카드 (데스크탑) */
+  .info-fields-card {
     background: var(--clr-card-bg);
     border: 1px solid var(--clr-border);
     border-radius: 12px;
-    padding: 16px 18px;
-    margin-bottom: 16px;
+    padding: 18px 20px;
+  }
+
+  /* 출결 통계 섹션 카드 (데스크탑) */
+  .info-stats-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--clr-card-bg);
+    border: 1px solid var(--clr-border);
+    border-radius: 12px;
+    padding: 18px 20px;
   }
 
   .info-stats-header {
@@ -3894,17 +3929,17 @@ button:disabled {
   .info-stats-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 12px;
   }
 
   .info-stat-card {
     background: var(--clr-bg);
     border: 1px solid var(--clr-border);
     border-radius: 10px;
-    padding: 12px 14px;
+    padding: 14px 16px;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
   }
 
   .info-stat-label {
@@ -3913,9 +3948,10 @@ button:disabled {
   }
 
   .info-stat-pct {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 900;
     line-height: 1.1;
+    margin: 2px 0;
   }
 
   .info-stat-count {
@@ -3928,7 +3964,7 @@ button:disabled {
     background: var(--clr-border);
     border-radius: 99px;
     overflow: hidden;
-    margin-top: 6px;
+    margin-top: 8px;
   }
 
   .info-stat-bar-fill {
@@ -3936,22 +3972,26 @@ button:disabled {
     border-radius: 99px;
   }
 
-  /* ── 인라인 패널 ── */
+  /* 부서별 보고 카드 - report-canvas 스타일 유지하되 border-radius 통일 */
+  .desktop-edit-area .report-canvas {
+    border-radius: 12px;
+  }
+
+  /* ── 하단 인라인 패널 (보고서 목록) ── */
   .desktop-inline-panel {
     display: flex;
-    flex: 1 0 200px;
-    min-height: 200px;
+    flex: 1 0 180px;
+    min-height: 180px;
     border-top: 1px solid var(--clr-border);
     background: var(--clr-card-bg);
     overflow: hidden;
   }
 
-  /* 보고서 목록 */
+  /* 보고서 목록 — 전체 너비 */
   .dip-list {
-    flex: 0 0 300px;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid var(--clr-border);
     overflow: hidden;
   }
 
@@ -3971,17 +4011,17 @@ button:disabled {
     list-style: none;
     overflow-y: auto;
     flex: 1;
-    padding: 4px 8px;
+    padding: 6px 12px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
   }
 
   .dip-list-item {
     display: flex;
     align-items: center;
-    border-radius: 7px;
-    padding: 3px 4px;
+    border-radius: 8px;
+    padding: 5px 6px;
     transition: background 0.1s;
   }
 

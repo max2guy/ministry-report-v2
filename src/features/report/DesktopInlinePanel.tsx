@@ -1,8 +1,7 @@
 // src/features/report/DesktopInlinePanel.tsx
-import type { DepartmentKey, MinistryReport } from "../../domain/reportTypes";
+import type { MinistryReport } from "../../domain/reportTypes";
 
 type DesktopInlinePanelProps = {
-  report: MinistryReport;
   reports: MinistryReport[];
   currentReportId: string;
   onLoad: (report: MinistryReport) => void;
@@ -10,29 +9,7 @@ type DesktopInlinePanelProps = {
   onDuplicate: (report: MinistryReport) => void;
 };
 
-type DeptInfo = {
-  key: DepartmentKey;
-  label: string;
-  color: string;
-  barColor: string;
-};
-
-const DEPTS: DeptInfo[] = [
-  { key: "elementary", label: "유초등부", color: "#2148c0", barColor: "#2148c0" },
-  { key: "middleHigh", label: "중고등부", color: "#0f766e", barColor: "#0f766e" },
-  { key: "youngAdult", label: "청년부",   color: "#7c3aed", barColor: "#7c3aed" },
-  { key: "adult",      label: "교구",     color: "#d97706", barColor: "#d97706" },
-];
-
-function getDeptTotal(report: MinistryReport, key: DepartmentKey): number {
-  const dept = report.departments[key];
-  if (dept.zones)   return dept.zones.reduce((s, z) => s + z.members.length, 0);
-  if (dept.members) return dept.members.length;
-  return 0;
-}
-
 export function DesktopInlinePanel({
-  report,
   reports,
   currentReportId,
   onLoad,
@@ -88,34 +65,6 @@ export function DesktopInlinePanel({
             <li className="dip-list-empty">저장된 보고서가 없습니다.</li>
           )}
         </ul>
-      </div>
-
-      {/* ── 우측: 4부서 통계 카드 ── */}
-      <div className="dip-stats">
-        <div className="dip-stats-header">
-          출결 통계
-          <span className="dip-stats-month">{report.reportDate.slice(0, 7)}</span>
-        </div>
-        <div className="dip-stats-cards">
-          {DEPTS.map(({ key, label, color, barColor }) => {
-            const total   = getDeptTotal(report, key);
-            const present = report.departments[key].attendance;
-            const pct     = total > 0 ? Math.round((present / total) * 100) : 0;
-            return (
-              <div key={key} className="dip-stat-card">
-                <div className="dip-stat-label">{label}</div>
-                <div className="dip-stat-pct" style={{ color }}>{pct}%</div>
-                <div className="dip-stat-count">{present}/{total}명</div>
-                <div className="dip-stat-bar">
-                  <div
-                    className="dip-stat-bar-fill"
-                    style={{ width: `${pct}%`, background: barColor }}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
       </div>
     </div>
   );
