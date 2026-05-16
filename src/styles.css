@@ -3975,6 +3975,14 @@ button:disabled {
     box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
   }
 
+  /* 뷰어 부서 패널: 모든 탭에서 동일한 너비로 통일 */
+  .desktop-edit-area .dstats-panel {
+    max-width: 860px;
+    border: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
+    border-radius: 14px;
+  }
+
   /* 설정 화면 */
   .desktop-settings {
     display: flex;
