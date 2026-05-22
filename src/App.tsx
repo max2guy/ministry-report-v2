@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Account } from "./auth/authTypes";
 import { isSuperAdmin } from "./auth/authTypes";
 import { onAuthChange, signOut as firebaseSignOut } from "./auth/firebaseAuthStore";
@@ -153,24 +153,6 @@ export function App() {
   useEffect(() => {
     applyTheme(getStoredTheme());
   }, []);
-
-  // fixed 헤더 높이를 CSS 변수로 동기화 (모바일 콘텐츠 padding-top 용)
-  // useLayoutEffect: 페인트 전에 실행 → 뷰어 탭바 포함 시에도 겹침 없음
-  const topBarRef = useRef<HTMLElement | null>(null);
-  useLayoutEffect(() => {
-    const el = topBarRef.current;
-    if (!el) return;
-    const update = () =>
-      document.documentElement.style.setProperty(
-        "--top-bar-height",
-        `${el.offsetHeight}px`,
-      );
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
 
   const { state: installState, triggerInstall } = useInstallPrompt();
 
@@ -617,9 +599,14 @@ export function App() {
   }
   if ((report.departments.adult.zones?.length ?? 0) > 0) viewerTabs.push({ key: "adult", label: "교구" });
   const safeTabIdx = Math.min(viewerTabIdx, viewerTabs.length - 1);
+  const showViewerTabs =
+    viewerTabs.length > 1 &&
+    appMode === "viewer" &&
+    mobileTab === "edit" &&
+    mobileScreen === "editor";
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell${showViewerTabs ? " has-viewer-tabs" : ""}`}>
       {showMigrationDialog && (
         <div className="migration-dialog-overlay">
           <div className="migration-dialog">
@@ -643,7 +630,7 @@ export function App() {
           </div>
         </div>
       )}
-      <header className="top-bar" ref={topBarRef}>
+      <header className="top-bar">
         {/* Safe area 전용 spacer — 콘텐츠와 분리해 타이틀 위치를 일정하게 유지 */}
         <div className="top-bar-safe-spacer" aria-hidden="true" />
         <div className="top-bar-title-row">
@@ -722,30 +709,23 @@ export function App() {
           </button>
         </div>
         <p className="app-version-label desktop-only">v{__APP_VERSION__}</p>
-        {/* 모바일 뷰어 탭바 — 뷰어 모드에서만 렌더링, visibility:hidden으로 높이 고정 */}
-        {viewerTabs.length > 1 && appMode === "viewer" && (
-          <div
-            className="viewer-dept-tabs top-bar-viewer-tabs"
-            style={{
-              visibility: (mobileTab === "edit" && mobileScreen === "editor" && appMode === "viewer")
-                ? "visible"
-                : "hidden",
-            }}
-            aria-hidden={!(mobileTab === "edit" && mobileScreen === "editor" && appMode === "viewer")}
-          >
-            {viewerTabs.map((tab, i) => (
-              <button
-                key={tab.key}
-                type="button"
-                className={`viewer-dept-tab-btn${i === safeTabIdx ? " is-active" : ""}`}
-                onClick={() => setViewerTabIdx(i)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        )}
       </header>
+      {showViewerTabs && (
+        <div className="viewer-tab-bar" role="tablist" aria-label="부서 탭">
+          {viewerTabs.map((tab, i) => (
+            <button
+              key={tab.key}
+              type="button"
+              role="tab"
+              aria-selected={i === safeTabIdx}
+              className={`viewer-dept-tab-btn${i === safeTabIdx ? " is-active" : ""}`}
+              onClick={() => setViewerTabIdx(i)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      )}
       {/* Mobile-only: MobileReportList home OR editor screen */}
       <div className="mobile-only">
         {mobileTab === "account" ? (
