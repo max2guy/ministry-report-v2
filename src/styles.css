@@ -3870,6 +3870,11 @@ button:disabled {
    ════════════════════════════════════════════════ */
 
 @media (min-width: 821px) and (pointer: fine) {
+  /* app-shell 패딩 리셋 — desktop-layout이 자체 패딩 담당 */
+  .app-shell {
+    padding: 0;
+  }
+
   /* 헤더 숨김 */
   .top-bar {
     display: none;
@@ -3883,7 +3888,7 @@ button:disabled {
       / 220px 1fr;
     height: 100vh;
     overflow: hidden;
-    padding: 4px 12px 28px 12px;
+    padding: 8px 12px 8px 12px;
     gap: 0 10px;
     box-sizing: border-box;
   }
