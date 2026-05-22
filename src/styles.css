@@ -3883,7 +3883,7 @@ button:disabled {
       / 220px 1fr;
     height: 100vh;
     overflow: hidden;
-    padding: 12px 12px 12px 12px;
+    padding: 4px 12px 12px 12px;
     gap: 0 10px;
     box-sizing: border-box;
   }
