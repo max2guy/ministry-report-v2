@@ -3894,8 +3894,6 @@ button:disabled {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: var(--clr-bg);
-    border-radius: 16px;
   }
 
   /* ── 데스크탑 편집 영역 ── */
