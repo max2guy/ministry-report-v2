@@ -1554,13 +1554,8 @@ button:disabled {
 @media (max-width: 820px), (pointer: coarse) {
   /* 모바일 헤더 레이아웃 상수 */
   :root {
-    --layer1-h: calc(env(safe-area-inset-top, 0px) + 48px);
+    --layer1-h: calc(env(safe-area-inset-top, 0px) + 48px); /* 48px = .top-bar-title-row min-height; 두 값 동기화 필요 */
     --layer2-h: 36px;
-  }
-
-  /* 앱 쉘 */
-  .app-shell {
-    padding: 0;
   }
 
   /* 상단바: fixed + viewport-fit=cover로 WebView가 status bar 뒤까지 확장 */
@@ -1597,6 +1592,7 @@ button:disabled {
   /* fixed 헤더 높이만큼 콘텐츠 밀어내기; 헤더 영역은 primary 색, 그 아래부터 --clr-bg */
   /* 그라디언트: 서브픽셀 렌더링 차이로 생기는 틈을 primary 색으로 완전히 덮음 */
   .app-shell {
+    padding: 0; /* 데스크탑 padding 리셋 */
     --_bar: var(--layer1-h);
     background:
       linear-gradient(
