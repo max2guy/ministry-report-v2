@@ -1569,7 +1569,7 @@ button:disabled {
     align-items: stretch;
     margin: 0;
     /* safe-area는 top-bar-safe-spacer가 전담; 콘텐츠 padding은 각 행에서 처리 */
-    padding: 0 0 6px;
+    padding: 0 0 3px;
     gap: 0;
     position: fixed;
     top: 0;
@@ -1608,7 +1608,7 @@ button:disabled {
 
   /* 헤더 타이틀 행 — safe-spacer 아래 고정된 padding으로 위치 일관성 확보 */
   .top-bar-title-row {
-    padding: 8px 12px 0;
+    padding: 4px 12px 0;
     justify-content: space-between;
     margin-bottom: 0;
   }
@@ -3388,7 +3388,7 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px 6px;
+  padding: 6px 16px 4px;
   background: var(--clr-primary);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
