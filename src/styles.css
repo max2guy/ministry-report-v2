@@ -274,13 +274,9 @@ button:disabled {
   display: none; /* 데스크탑: 불필요 (헤더가 fixed가 아님) */
 }
 
-/* 헤더 내부 뷰어 탭바 — 고정 헤더(top-bar)에 통합, 모바일 전용 */
-.top-bar-viewer-tabs {
-  display: none; /* 데스크탑에서 숨김; 모바일 미디어쿼리에서 flex 활성화 */
-  border-radius: 8px;
-  padding: 4px;
-  gap: 2px;
-  margin: 6px 0 0;
+/* 독립 뷰어 탭바 — 헤더 Layer 2 (모바일 전용) */
+.viewer-tab-bar {
+  display: none;
 }
 
 /* 데스크탑 전용 뷰어 탭 바 (뷰어 콘텐츠 상단) */
@@ -1556,6 +1552,12 @@ button:disabled {
 }
 
 @media (max-width: 820px), (pointer: coarse) {
+  /* 모바일 헤더 레이아웃 상수 */
+  :root {
+    --layer1-h: calc(env(safe-area-inset-top, 0px) + 48px);
+    --layer2-h: 36px;
+  }
+
   /* 앱 쉘 */
   .app-shell {
     padding: 0;
@@ -1569,7 +1571,7 @@ button:disabled {
     align-items: stretch;
     margin: 0;
     /* safe-area는 top-bar-safe-spacer가 전담; 콘텐츠 padding은 각 행에서 처리 */
-    padding: 0 0 3px;
+    padding: 0;
     gap: 0;
     position: fixed;
     top: 0;
@@ -1595,7 +1597,7 @@ button:disabled {
   /* fixed 헤더 높이만큼 콘텐츠 밀어내기; 헤더 영역은 primary 색, 그 아래부터 --clr-bg */
   /* 그라디언트: 서브픽셀 렌더링 차이로 생기는 틈을 primary 색으로 완전히 덮음 */
   .app-shell {
-    --_bar: var(--top-bar-height, calc(env(safe-area-inset-top, 0px) + 92px));
+    --_bar: var(--layer1-h);
     background:
       linear-gradient(
         to bottom,
@@ -1603,11 +1605,16 @@ button:disabled {
         var(--clr-primary) calc(var(--_bar) + 4px),
         var(--clr-bg)      calc(var(--_bar) + 4px)
       );
-    padding-top: var(--_bar);
+    padding-top: var(--layer1-h);
+  }
+  .app-shell.has-viewer-tabs {
+    --_bar: calc(var(--layer1-h) + var(--layer2-h));
+    padding-top: calc(var(--layer1-h) + var(--layer2-h));
   }
 
   /* 헤더 타이틀 행 — safe-spacer 아래 고정된 padding으로 위치 일관성 확보 */
   .top-bar-title-row {
+    min-height: 48px;
     padding: 4px 12px 0;
     justify-content: space-between;
     margin-bottom: 0;
@@ -1705,12 +1712,18 @@ button:disabled {
   }
 
   /* 모바일에서 헤더 내 뷰어 탭바 표시, 데스크탑 탭 바 숨김 */
-  .top-bar-viewer-tabs {
+  .viewer-tab-bar {
     display: flex;
-    padding: 3px;
+    position: fixed;
+    top: var(--layer1-h);
+    left: 0;
+    right: 0;
+    z-index: 99;
+    height: var(--layer2-h);
+    background: var(--clr-primary);
+    padding: 3px 12px;
     gap: 1px;
-    /* top-bar의 horizontal padding 제거 → 탭바에 직접 margin 적용 */
-    margin: 4px 12px 0;
+    box-shadow: 0 2px 0 var(--clr-primary);
   }
   .viewer-dept-tabs--desktop {
     display: none;
