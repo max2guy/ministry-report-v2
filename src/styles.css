@@ -3239,7 +3239,7 @@ button:disabled {
   background: transparent;
   color: inherit;
   font-weight: inherit;
-  border-radius: 0;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3836,12 +3836,11 @@ button:disabled {
   background: var(--clr-card-bg);
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  overflow: hidden;
 }
 
 .mobile-report-card-row.is-editing {
   gap: 8px;
-  padding-left: 12px;
+  padding: 6px 0 6px 12px;
 }
 
 .mobile-report-card-row .mobile-report-card {
