@@ -3883,8 +3883,8 @@ button:disabled {
       / 220px 1fr;
     height: 100vh;
     overflow: hidden;
-    padding: 8px 16px 16px 16px;
-    gap: 0 12px;
+    padding: 0 12px 12px 12px;
+    gap: 0 10px;
     box-sizing: border-box;
   }
 
@@ -4165,7 +4165,7 @@ button:disabled {
     flex-direction: column;
     gap: 4px;
     overflow-y: auto;
-    padding: 20px 14px 16px;
+    padding: 12px 14px 12px;
   }
 
   .desktop-sidebar-header {
