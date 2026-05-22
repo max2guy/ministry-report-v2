@@ -155,6 +155,26 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
         hidden={activeTab !== "info"}
       >
         <div className="info-tab-content">
+          {/* 보고일 / 제목 */}
+          <div className="info-fields-row">
+            <label className="info-field-label">
+              보고일
+              <input
+                type="date"
+                value={report.reportDate}
+                onChange={(e) => updateReport({ reportDate: e.currentTarget.value })}
+              />
+            </label>
+            <label className="info-field-label">
+              제목
+              <input
+                type="text"
+                value={report.title}
+                placeholder="주일 사역보고서"
+                onChange={(e) => updateReport({ title: e.currentTarget.value })}
+              />
+            </label>
+          </div>
           {/* 출결 통계 카드 (데스크탑 전용) */}
           <div className="info-stats-section">
             <div className="info-stats-header">
@@ -166,8 +186,17 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
                 const total   = getDeptTotal(report, key);
                 const present = report.departments[key].attendance;
                 const pct     = total > 0 ? Math.round((present / total) * 100) : 0;
+                const isDeptVisible = visibleTabs.some(t => t.key === key);
                 return (
-                  <div key={key} className="info-stat-card">
+                  <div
+                    key={key}
+                    className={`info-stat-card${isDeptVisible ? " is-clickable" : ""}`}
+                    onClick={isDeptVisible ? () => handleTabChange(key as TabKey) : undefined}
+                    role={isDeptVisible ? "button" : undefined}
+                    tabIndex={isDeptVisible ? 0 : undefined}
+                    onKeyDown={isDeptVisible ? (e) => { if (e.key === "Enter") handleTabChange(key as TabKey); } : undefined}
+                    aria-label={isDeptVisible ? `${label} 탭으로 이동` : undefined}
+                  >
                     <div className="info-stat-label">{label}</div>
                     <div className="info-stat-pct" style={{ color }}>{pct}%</div>
                     <div className="info-stat-count">{present}/{total}명</div>

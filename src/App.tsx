@@ -722,9 +722,17 @@ export function App() {
           </button>
         </div>
         <p className="app-version-label desktop-only">v{__APP_VERSION__}</p>
-        {/* 모바일 뷰어 탭바 — 고정 헤더 안에 통합 (스크롤 콘텐츠 비침 방지) */}
-        {mobileTab === "edit" && mobileScreen === "editor" && appMode === "viewer" && viewerTabs.length > 1 && (
-          <div className="viewer-dept-tabs top-bar-viewer-tabs">
+        {/* 모바일 뷰어 탭바 — 헤더 높이 고정을 위해 항상 렌더링, 조건 미충족 시 visibility:hidden */}
+        {viewerTabs.length > 1 && (
+          <div
+            className="viewer-dept-tabs top-bar-viewer-tabs"
+            style={{
+              visibility: (mobileTab === "edit" && mobileScreen === "editor" && appMode === "viewer")
+                ? "visible"
+                : "hidden",
+            }}
+            aria-hidden={!(mobileTab === "edit" && mobileScreen === "editor" && appMode === "viewer")}
+          >
             {viewerTabs.map((tab, i) => (
               <button
                 key={tab.key}
