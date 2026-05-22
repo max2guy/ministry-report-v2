@@ -3880,7 +3880,7 @@ button:disabled {
     display: grid;
     grid-template:
       "sidebar center" 1fr
-      / 220px 1fr;
+      / 180px 1fr;
     height: 100vh;
     overflow: hidden;
     padding: 0 12px 16px 12px;
