@@ -722,8 +722,8 @@ export function App() {
           </button>
         </div>
         <p className="app-version-label desktop-only">v{__APP_VERSION__}</p>
-        {/* 모바일 뷰어 탭바 — 헤더 높이 고정을 위해 항상 렌더링, 조건 미충족 시 visibility:hidden */}
-        {viewerTabs.length > 1 && (
+        {/* 모바일 뷰어 탭바 — 뷰어 모드에서만 렌더링, visibility:hidden으로 높이 고정 */}
+        {viewerTabs.length > 1 && appMode === "viewer" && (
           <div
             className="viewer-dept-tabs top-bar-viewer-tabs"
             style={{
