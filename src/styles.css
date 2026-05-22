@@ -3232,10 +3232,7 @@ button:disabled {
 .mobile-report-card-list {
   display: flex;
   flex-direction: column;
-  background: var(--clr-card-bg);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  overflow: hidden;
+  gap: 10px;
 }
 
 .mobile-report-card {
@@ -3247,15 +3244,12 @@ button:disabled {
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px;
-  border-bottom: 1px solid var(--clr-border-soft);
+  border-bottom: none;
   text-align: left;
   width: 100%;
   gap: 8px;
 }
 
-.mobile-report-card:last-child {
-  border-bottom: none;
-}
 
 .mobile-report-card:active {
   background: var(--clr-surface);
@@ -3839,9 +3833,15 @@ button:disabled {
 .mobile-report-card-row {
   display: flex;
   align-items: center;
+  background: var(--clr-card-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.mobile-report-card-row.is-editing {
   gap: 8px;
-  margin-bottom: 8px;
-  padding-left: 16px;
+  padding-left: 12px;
 }
 
 .mobile-report-card-row .mobile-report-card {
