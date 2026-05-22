@@ -42,6 +42,36 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // React core
+          if (id.includes("node_modules/react/") ||
+              id.includes("node_modules/react-dom/") ||
+              id.includes("node_modules/react-is/") ||
+              id.includes("node_modules/scheduler/")) {
+            return "vendor";
+          }
+          // Firebase Firestore (largest sub-package)
+          if (id.includes("node_modules/@firebase/firestore") ||
+              id.includes("node_modules/firebase/firestore")) {
+            return "firebase-firestore";
+          }
+          // Firebase Auth
+          if (id.includes("node_modules/@firebase/auth") ||
+              id.includes("node_modules/firebase/auth")) {
+            return "firebase-auth";
+          }
+          // Firebase core and remaining packages
+          if (id.includes("node_modules/firebase/") ||
+              id.includes("node_modules/@firebase/")) {
+            return "firebase-core";
+          }
+        },
+      },
+    },
+  },
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
   },
