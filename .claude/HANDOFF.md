@@ -3,18 +3,23 @@
 ## 현재 상태
 - 브랜치: main
 - 버전: 2.7.3
+- 최신 커밋: cd3ff64 — feat(ui): 모바일 기본정보 필드 — department-list 스타일로 통합
 
 ## 방금 수정한 내용
 
 ### 문제
-보고서 목록에서 항목 간 시각적 구분이 어려웠음 (하나의 흰 카드 안에 border-bottom만으로 구분).
+편집 화면의 보고일/제목 입력 필드가 별도 카드 스타일로 부서별 보고(department-list) 항목과 시각적으로 불일치.
 
-### 해결 (src/styles.css)
-- `.mobile-report-card-list`: 카드 스타일 제거 → `gap: 10px`만 유지
-- `.mobile-report-card-row`: 카드 스타일(bg + border-radius: 12px + box-shadow) 이동, overflow:hidden 제거
-- `.mobile-report-card`: `border-bottom` 제거, `border-radius: 12px` 추가 (active 클리핑용)
-- `.mobile-report-card:last-child`: 규칙 삭제 (불필요)
-- `.mobile-report-card-row.is-editing`: `gap: 8px; padding: 6px 0 6px 12px` 추가 (편집 모드 삭제 버튼 여백)
+### 해결 (src/styles.css — commit cd3ff64)
+- `.info-fields-row`: 래퍼 카드 제거 → `flex-direction: row; gap: 8px; background: transparent; box-shadow: none`
+- `.info-field-label`: `flex: 1` + department-list 아이템과 동일한 카드 스타일(border, border-radius: 8px, padding, min-height: 52px)
+- `.info-field-label input`: 내부 border 제거, `background: transparent; color: var(--clr-primary)` — 카드 안 인라인 텍스트처럼
+- `.info-fields-heading` 추가: 모바일 전용 섹션 헤더 (font-weight: 700, font-size: 13px)
+- 데스크탑 미디어쿼리: `.info-fields-heading { display: none }` 추가
+
+## 직전 주요 작업 (v2.7.2~)
+- 보고서 목록 카드 시각 분리: `.mobile-report-card-row`에 카드 스타일 이동, `gap: 10px`
+- 모바일 헤더 2단 분리: ResizeObserver 제거, CSS 상수 기반으로 교체
 
 ## 직전 주요 작업 (v2.7.2)
 - 모바일 헤더 2단 분리: ResizeObserver 제거, CSS 상수(--layer1-h, --layer2-h) 기반으로 교체
