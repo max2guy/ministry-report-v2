@@ -599,6 +599,7 @@ export function App() {
   }
   if ((report.departments.adult.zones?.length ?? 0) > 0) viewerTabs.push({ key: "adult", label: "교구" });
   const safeTabIdx = Math.min(viewerTabIdx, viewerTabs.length - 1);
+  // 모바일 전용: 뷰어 탭바 오버레이 표시 조건 (CSS .viewer-tab-bar는 데스크탑에서 display:none)
   const showViewerTabs =
     viewerTabs.length > 1 &&
     appMode === "viewer" &&
@@ -716,8 +717,7 @@ export function App() {
             <button
               key={tab.key}
               type="button"
-              role="tab"
-              aria-selected={i === safeTabIdx}
+              aria-pressed={i === safeTabIdx}
               className={`viewer-dept-tab-btn${i === safeTabIdx ? " is-active" : ""}`}
               onClick={() => setViewerTabIdx(i)}
             >
