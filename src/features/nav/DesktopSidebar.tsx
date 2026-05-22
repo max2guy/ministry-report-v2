@@ -141,7 +141,7 @@ export function DesktopSidebar({
             <span>저장된 보고서</span>
           </div>
           <ul className="dsb-reports-list">
-            {reports.slice().reverse().map((r) => (
+            {reports.map((r) => (
               <li key={r.id} className={`dsb-report-item${r.id === currentReportId ? " is-current" : ""}`}>
                 <button
                   type="button"

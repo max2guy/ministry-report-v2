@@ -198,7 +198,15 @@ export function App() {
     MemberRoster | undefined
   >();
 
-  // Firebase Auth 상태 구독
+  // ── 초기화(Hydration) 흐름 ──────────────────────────────────────
+  // 1. onAuthChange: Firebase Auth 상태 수신
+  //    - 비로그인 → isHydrated=true, 로그인 → loadCloudData() → isHydrated=true
+  // 2. authTimedOut: 2초 내 onAuthChange 미발화 시 AuthGate 노출 (빈 화면 방지)
+  // 3. handleSignedIn: AuthGate 경유 수동 로그인 시 loadCloudData() 직접 호출
+  //    (onAuthChange와 중복 실행될 수 있으나 mergeReports로 안전하게 병합)
+  // ─────────────────────────────────────────────────────────────────
+
+  // [1] Firebase Auth 상태 구독 → Firestore 데이터 로드
   useEffect(() => {
     const unsubscribe = onAuthChange((account) => {
       if (!account) {
@@ -212,20 +220,20 @@ export function App() {
     return unsubscribe;
   }, []);
 
-  // Auth 응답 타임아웃: 2초 후에도 isHydrated가 false면 AuthGate를 표시
+  // [2] Auth 타임아웃: 2초 후에도 isHydrated=false 이면 AuthGate 표시
   useEffect(() => {
     const timer = setTimeout(() => setAuthTimedOut(true), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // viewer 역할은 edit 모드에 진입할 수 없도록 강제로 view로 전환
+  // [권한 가드] viewer 역할 → edit 모드 진입 시 view로 강제 전환
   useEffect(() => {
     if (mode === "edit" && !permissions.canEditReport && currentAccount) {
       setMode("view");
     }
   }, [mode, permissions.canEditReport, currentAccount]);
 
-  // viewer 역할은 appMode를 항상 "viewer"로 고정 (reporter 모드로 보고서 편집기 진입 차단)
+  // [권한 가드] viewer 역할 → appMode를 항상 "viewer"로 고정
   useEffect(() => {
     if (appMode === "reporter" && !permissions.canCreateReport && currentAccount) {
       setAppMode("viewer");
@@ -301,6 +309,9 @@ export function App() {
   function handleSignedIn(account: Account) {
     setCurrentAccount(account);
     setSaveStatus(`${account.displayName}으로 로그인되었습니다.`);
+    // AuthGate 경유 로그인(auth 타임아웃 후 수동 로그인)에서도
+    // onAuthChange와 무관하게 데이터를 확실히 불러옴
+    void loadCloudData(account);
   }
 
   function handleDisplayNameChange(newName: string) {
