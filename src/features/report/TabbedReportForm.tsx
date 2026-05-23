@@ -117,6 +117,7 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
 
   function formatReportDate(iso: string): string {
     // "2026-05-17" → "2026. 05. 17."
+    if (!iso || !iso.includes("-")) return iso ?? "";
     const [y, mo, d] = iso.split("-");
     return `${y}. ${mo}. ${d}.`;
   }
@@ -192,7 +193,7 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
           <h3 className="info-fields-heading">기본정보</h3>
           {/* 보고일 / 제목 */}
           <div className="info-fields-row">
-            <label className="info-field-label">
+            <div className="info-field-label">
               보고일
               {/* 모바일: 날짜 네비게이션 (데스크탑은 CSS display:none) */}
               <div className="date-nav-row">
@@ -211,13 +212,15 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
                 >›</button>
               </div>
               {/* 데스크탑: 네이티브 date input (모바일은 CSS display:none) */}
+              <label htmlFor="report-date-input" className="sr-only">보고일</label>
               <input
+                id="report-date-input"
                 className="date-native-input"
                 type="date"
                 value={report.reportDate}
                 onChange={(e) => updateReport({ reportDate: e.currentTarget.value })}
               />
-            </label>
+            </div>
             <label className="info-field-label">
               제목
               <input
