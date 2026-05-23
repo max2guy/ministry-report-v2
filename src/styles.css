@@ -3677,9 +3677,9 @@ button:disabled {
     border-radius: 0;
   }
 
-  /* 탭 패널: 좌우 패딩 제거 → editor-workspace의 12px만 사용 (계정탭 카드 너비와 통일) */
+  /* 탭 패널: 좌우 12px 패딩 → 기본정보·부서별보고 콘텐츠가 화면 끝에 붙지 않도록 */
   .mobile-editor-screen .report-tab-panel {
-    padding: 12px 0;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -3705,6 +3705,16 @@ button:disabled {
   .mobile-editor-screen .stat-section {
     margin-top: 0;
     margin-bottom: 0;
+  }
+
+  /* 기본정보 섹션 헤더 → 보고일/제목 카드 간격 (department-section gap: 10px 동일) */
+  .mobile-editor-screen .info-fields-heading {
+    margin-bottom: 10px;
+  }
+
+  /* 보고일/제목 카드 → 부서별보고 섹션 사이 여백 */
+  .mobile-editor-screen .info-fields-row {
+    margin-bottom: 16px;
   }
 }
 
