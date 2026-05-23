@@ -155,6 +155,8 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
         hidden={activeTab !== "info"}
       >
         <div className="info-tab-content">
+          {/* 기본정보 섹션 헤더 (모바일 전용, 데스크탑은 CSS display:none) */}
+          <h3 className="info-fields-heading">기본정보</h3>
           {/* 보고일 / 제목 */}
           <div className="info-fields-row">
             <label className="info-field-label">
