@@ -1,40 +1,35 @@
-# ministry-report-v2 — Codex Handoff (v2.7.4)
+# ministry-report-v2 — Codex Handoff (v2.7.5)
 
 ## 현재 상태
 - 브랜치: main
-- 버전: 2.7.4
-- 최신 커밋: (v2.7.4 커밋 예정)
+- 버전: 2.7.5
+- 최신 커밋: 79bcf95 fix(ui): date-nav 버튼-label 충돌 방지 + formatReportDate 빈값 가드
 
 ## 방금 수정한 내용
 
 ### 문제
-모바일 편집 폼에서 보고일/제목 영역이 독립 흰 카드로 스타일링되어
-부서별 보고 섹션과 시각 언어가 달라 폼이 분리되어 보였음.
+모바일에서 보고일 `<input type="date">` 사용 시 OS 날짜 피커가 열려 주일 날짜를 빠르게 선택하기 불편했음.
 
 ### 해결
 
-#### src/styles.css (base 스타일 — 모바일 기준)
-- `.info-fields-row`: 카드 컨테이너 제거 → flex row, gap: 8px, 배경 없음
-- `.info-field-label`: department-list li 동일 스타일
-  (bg: clr-bg, border: 1px solid clr-border-soft, border-radius: 8px, padding: 10px 12px, min-height: 52px, flex: 1)
-- `.info-field-label input`: border/bg 제거, transparent, color: primary, bold
-- `.info-fields-heading` 추가: department-section h3 동일 스타일 (13px, bold, clr-text-secondary)
-
-#### src/styles.css (데스크탑 미디어쿼리 @media min-width 821px)
-- `.info-fields-heading { display: none }` — 모바일 전용 헤더 숨김
-- `.info-fields-row`: 원래 컨테이너 카드 스타일 복원 (padding: 12px 16px, bg: clr-card-bg, border-radius: 14px, box-shadow)
-- `.info-field-label`: flex: unset, border: none, padding: 0 등 리셋
-- `.info-field-label input`: 원래 border/bg 복원
-
 #### src/features/report/TabbedReportForm.tsx
-- `info-fields-row` 위에 `<h3 className="info-fields-heading">기본정보</h3>` 추가
+- 날짜 헬퍼 함수 추가: `localDateStr`, `formatReportDate` (빈값 가드 포함), `shiftWeek`, `getThisSunday`
+- 핸들러 추가: `handlePrevWeek` (-7일), `handleNextWeek` (+7일), `handleThisSunday` (이번 주일)
+- 보고일 `<label>` → `<div className="info-field-label">` 교체 (버튼-label 충돌 방지)
+- 내부: `<div class="date-nav-row">`(‹ 날짜 ›) + sr-only label + `<input id="report-date-input" class="date-native-input">` (데스크탑 전용)
+- `info-fields-row` 아래 `<button class="date-this-sunday-btn">이번 주일</button>` 추가
 
-## 직전 주요 작업 (v2.7.3)
-- 보고서 목록 항목별 독립 카드 분리 (`.mobile-report-card-row`에 카드 스타일 이동)
+#### src/styles.css
+- base 블록: `.date-nav-row`, `.date-nav-btn` (min 44×44px 터치 영역, :active 피드백), `.date-nav-display` 스타일 추가
+- base 블록: `.date-native-input { display: none }` (모바일 기본 숨김)
+- base 블록: `.date-this-sunday-btn` 스타일 추가
+- base 블록: `.sr-only` 접근성 유틸 추가
+- 데스크탑 미디어쿼리: `.date-nav-row, .date-this-sunday-btn { display: none }`, `.date-native-input { display: block }` 추가
+- 모바일 섹션: `.info-fields-row { margin-bottom: 8px }`, `.date-this-sunday-btn { margin-bottom: 16px }` 추가
 
-## 직전 주요 작업 (v2.7.2)
-- 모바일 헤더 2단 분리: ResizeObserver 제거, CSS 상수(--layer1-h, --layer2-h) 기반으로 교체
-- viewer-tab-bar를 header 밖으로 분리
+## 직전 주요 작업 (v2.7.4)
+- 모바일 기본정보 섹션 정렬·간격 수정 (패딩 12px, 헤딩 margin-bottom: 10px)
+- TabbedReportForm에 "기본정보" 섹션 헤더 추가
 
 ## 프로젝트 개요
 - **프레임워크**: React 19 + Vite + TypeScript
@@ -45,17 +40,24 @@
 
 ## 주요 파일
 - `src/styles.css` — 전체 스타일시트
-- `src/features/report/TabbedReportForm.tsx` — 편집 폼 (기본정보 탭)
+- `src/features/report/TabbedReportForm.tsx` — 편집 폼 (기본정보 탭, 날짜 네비게이션)
 - `src/features/report/MobileReportList.tsx` — 보고서 목록
-- `src/App.tsx` — 앱 루트, 헤더/viewer-tab-bar 구조
+- `src/App.tsx` — 앱 루트
 
 ## CSS 구조 주의사항
-- base 스타일(미디어쿼리 없음): 모바일 기준값 — `info-fields-*` 는 여기서 모바일 카드 스타일
-- `@media (min-width: 821px) and (pointer: fine)`: 데스크탑 오버라이드 — 반드시 원래 데스크탑 스타일 유지
-- `@media (max-width: 820px), (pointer: coarse)`: 모바일 추가 오버라이드 (헤더, 레이아웃 등)
+- base 스타일(미디어쿼리 없음): 모바일 기준값 — `.date-nav-*`은 여기서 표시
+- `@media (min-width: 821px) and (pointer: fine)`: 데스크탑 — `.date-nav-*` 숨김, `.date-native-input` 표시
+- `@media (max-width: 820px), (pointer: coarse)`: 모바일 추가 오버라이드
+
+## 날짜 네비게이션 로직
+- `shiftWeek(iso, delta)`: `new Date(iso + "T00:00:00")` 로컬 자정 기준, `delta * 7`일 이동
+- `getThisSunday()`: `d.setDate(d.getDate() - d.getDay())` (getDay()=0이 일요일)
+- `localDateStr(d)`: `toISOString()` 대신 로컬 날짜 직접 포맷 (KST 타임존 안전)
+- `formatReportDate(iso)`: 빈값/malformed 가드 포함 → `"2026-05-17"` → `"2026. 05. 17."`
 
 ## 다음으로 할 수 있는 작업
-- 기기 검증: 모바일에서 기본정보/부서별 보고 시각 통일 확인
+- 기기 검증: ‹/› 7일 이동, 이번 주일 버튼 동작 확인 (모바일)
+- 데스크탑: 기존 date input 정상 동작 확인
 - 모바일 헤더 `--layer2-h: 36px` 실제 탭바 높이 기기 확인 후 조정
 
 ## 빌드 & 배포
