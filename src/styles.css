@@ -2573,10 +2573,19 @@ button:disabled {
   color: var(--clr-primary);
   font-size: 20px;
   font-weight: 700;
-  padding: 0 2px;
+  padding: 8px 10px;
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.date-nav-btn:active {
+  opacity: 0.6;
 }
 
 .date-nav-display {
