@@ -2553,7 +2553,7 @@ button:disabled {
 
 .info-field-label input {
   font-family: inherit;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 1.4;
   border: none;
@@ -2600,12 +2600,12 @@ button:disabled {
 }
 
 .date-nav-display {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 1.4;
   color: var(--clr-text);
   text-align: left;
-  flex: 0 0 auto;   /* 날짜 텍스트 너비만큼만, 확장 안 함 */
+  flex: 0 0 auto;
   white-space: nowrap;
 }
 
