@@ -2540,7 +2540,7 @@ button:disabled {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   font-size: 11px;
   font-weight: 600;
   color: var(--clr-text-secondary);
@@ -2548,12 +2548,14 @@ button:disabled {
   border: 1px solid var(--clr-border-soft);
   border-radius: 8px;
   padding: 10px 12px;
-  min-height: 60px;
+  min-height: 68px;
 }
 
 .info-field-label input {
+  font: inherit;          /* 브라우저 기본 폰트 덮어쓰기 */
   font-size: 15px;
   font-weight: 700;
+  line-height: 1.4;
   border: none;
   border-radius: 0;
   padding: 0;
@@ -2576,32 +2578,34 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 0;
+  /* 터치 영역 확장 — 버튼이 카드 높이를 늘리지 않도록 */
+  margin: -8px -4px -8px 0;
+  padding: 8px 4px 8px 0;
 }
 
 .date-nav-btn {
   background: transparent;
   border: none;
   color: var(--clr-text-secondary);
-  font-size: 18px;
-  font-weight: 700;
-  padding: 4px 6px;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 8px 6px;
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
-  min-width: 32px;
-  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .date-nav-btn:active {
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .date-nav-display {
   font-size: 15px;
   font-weight: 700;
+  line-height: 1.4;
   color: var(--clr-text);
   text-align: left;
   flex: 1;
