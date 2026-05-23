@@ -194,7 +194,6 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
           {/* 보고일 / 제목 */}
           <div className="info-fields-row">
             <div className="info-field-label">
-              보고일
               {/* 모바일: 날짜 네비게이션 (데스크탑은 CSS display:none) */}
               <div className="date-nav-row">
                 <button
@@ -222,7 +221,6 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
               />
             </div>
             <label className="info-field-label">
-              제목
               <input
                 type="text"
                 value={report.title}
