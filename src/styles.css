@@ -2543,9 +2543,9 @@ button:disabled {
   gap: 4px;
   font-size: 12px;
   font-weight: 700;
-  color: var(--clr-text-secondary);
-  background: var(--clr-bg);
-  border: 1px solid var(--clr-border-soft);
+  color: rgba(255, 255, 255, 0.7);
+  background: var(--clr-primary);
+  border: none;
   border-radius: 8px;
   padding: 10px 12px;
   min-height: 52px;
@@ -2558,7 +2558,7 @@ button:disabled {
   border-radius: 0;
   padding: 0;
   background: transparent;
-  color: var(--clr-primary);
+  color: #ffffff;
   width: 100%;
   min-width: 0;
 }
@@ -2582,7 +2582,7 @@ button:disabled {
 .date-nav-btn {
   background: transparent;
   border: none;
-  color: var(--clr-primary);
+  color: #ffffff;
   font-size: 20px;
   font-weight: 700;
   padding: 8px 10px;
@@ -2601,9 +2601,9 @@ button:disabled {
 }
 
 .date-nav-display {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  color: var(--clr-primary);
+  color: #ffffff;
   text-align: center;
   flex: 1;
   min-width: 0;
@@ -2618,12 +2618,12 @@ button:disabled {
 /* 이번 주일 버튼 (모바일 전용) */
 .date-this-sunday-btn {
   width: 100%;
-  padding: 8px;
-  border: 1px solid var(--clr-border-soft);
+  padding: 10px;
+  border: none;
   border-radius: 8px;
-  background: transparent;
-  color: var(--clr-primary);
-  font-size: 13px;
+  background: var(--clr-primary);
+  color: #ffffff;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   text-align: center;
