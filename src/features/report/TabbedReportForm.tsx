@@ -106,6 +106,39 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
     if (dx > 0 && idx > 0) handleTabChange(keys[idx - 1]);               // ←
   }
 
+  // ── 날짜 네비게이션 헬퍼 ──────────────────────────────────────
+  function localDateStr(d: Date): string {
+    // toISOString()은 UTC → KST 자정 근처 날짜 오류. 로컬 날짜 직접 포맷.
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  }
+
+  function formatReportDate(iso: string): string {
+    // "2026-05-17" → "2026. 05. 17."
+    const [y, mo, d] = iso.split("-");
+    return `${y}. ${mo}. ${d}.`;
+  }
+
+  function shiftWeek(iso: string, delta: number): string {
+    // 로컬 자정 기준으로 delta * 7일 이동
+    const d = new Date(iso + "T00:00:00");
+    d.setDate(d.getDate() + delta * 7);
+    return localDateStr(d);
+  }
+
+  function getThisSunday(): string {
+    // 오늘 기준 가장 최근 일요일 (오늘이 일요일이면 오늘)
+    const d = new Date();
+    d.setDate(d.getDate() - d.getDay()); // getDay() 0=일요일
+    return localDateStr(d);
+  }
+
+  function handlePrevWeek() { updateReport({ reportDate: shiftWeek(report.reportDate, -1) }); }
+  function handleNextWeek() { updateReport({ reportDate: shiftWeek(report.reportDate, +1) }); }
+  function handleThisSunday() { updateReport({ reportDate: getThisSunday() }); }
+
   function updateReport(patch: Partial<MinistryReport>) {
     const now = new Date().toISOString();
     onChange({ ...report, ...patch, updatedAt: now });
@@ -161,7 +194,25 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
           <div className="info-fields-row">
             <label className="info-field-label">
               보고일
+              {/* 모바일: 날짜 네비게이션 (데스크탑은 CSS display:none) */}
+              <div className="date-nav-row">
+                <button
+                  type="button"
+                  className="date-nav-btn"
+                  aria-label="이전 주"
+                  onClick={handlePrevWeek}
+                >‹</button>
+                <span className="date-nav-display">{formatReportDate(report.reportDate)}</span>
+                <button
+                  type="button"
+                  className="date-nav-btn"
+                  aria-label="다음 주"
+                  onClick={handleNextWeek}
+                >›</button>
+              </div>
+              {/* 데스크탑: 네이티브 date input (모바일은 CSS display:none) */}
               <input
+                className="date-native-input"
                 type="date"
                 value={report.reportDate}
                 onChange={(e) => updateReport({ reportDate: e.currentTarget.value })}
@@ -177,6 +228,14 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
               />
             </label>
           </div>
+          {/* 이번 주일 버튼 (모바일 전용, 데스크탑은 CSS display:none) */}
+          <button
+            type="button"
+            className="date-this-sunday-btn"
+            onClick={handleThisSunday}
+          >
+            이번 주일
+          </button>
           {/* 출결 통계 카드 (데스크탑 전용) */}
           <div className="info-stats-section">
             <div className="info-stats-header">
