@@ -2563,6 +2563,8 @@ button:disabled {
   color: var(--clr-text);
   width: 100%;
   min-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* 기본정보 섹션 헤더 (모바일 전용, 데스크탑은 display:none) */
@@ -2600,7 +2602,7 @@ button:disabled {
 }
 
 .date-nav-display {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 1.4;
   color: var(--clr-text);
