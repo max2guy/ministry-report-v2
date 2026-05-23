@@ -197,13 +197,13 @@ export function TabbedReportForm({ report, reports, onChange, editableDepts }: P
               보고일
               {/* 모바일: 날짜 네비게이션 (데스크탑은 CSS display:none) */}
               <div className="date-nav-row">
+                <span className="date-nav-display">{formatReportDate(report.reportDate)}</span>
                 <button
                   type="button"
                   className="date-nav-btn"
                   aria-label="이전 주"
                   onClick={handlePrevWeek}
                 >‹</button>
-                <span className="date-nav-display">{formatReportDate(report.reportDate)}</span>
                 <button
                   type="button"
                   className="date-nav-btn"

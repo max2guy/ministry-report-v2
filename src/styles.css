@@ -2575,21 +2575,20 @@ button:disabled {
 .date-nav-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2px;
+  gap: 0;
 }
 
 .date-nav-btn {
   background: transparent;
   border: none;
-  color: var(--clr-primary);
-  font-size: 20px;
+  color: var(--clr-text-secondary);
+  font-size: 18px;
   font-weight: 700;
-  padding: 8px 10px;
+  padding: 4px 6px;
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
-  min-width: 44px;
+  min-width: 32px;
   min-height: 44px;
   display: flex;
   align-items: center;
@@ -2597,14 +2596,14 @@ button:disabled {
 }
 
 .date-nav-btn:active {
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .date-nav-display {
   font-size: 15px;
   font-weight: 700;
   color: var(--clr-text);
-  text-align: center;
+  text-align: left;
   flex: 1;
   min-width: 0;
   white-space: nowrap;
