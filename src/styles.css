@@ -2559,6 +2559,55 @@ button:disabled {
   margin: 0 0 2px;
 }
 
+/* ── 날짜 네비게이션 (모바일 기본값, 데스크탑은 미디어쿼리에서 숨김) ── */
+.date-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+.date-nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--clr-primary);
+  font-size: 20px;
+  font-weight: 700;
+  padding: 0 2px;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.date-nav-display {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--clr-primary);
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+/* 모바일: 네이티브 date input 숨김 */
+.date-native-input {
+  display: none;
+}
+
+/* 이번 주일 버튼 (모바일 전용) */
+.date-this-sunday-btn {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--clr-border-soft);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--clr-primary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+
 /* ── Attendance Summary Stats ── */
 /* ── 출결 통계 (bar-chart / report-canvas 스타일) ─────────── */
 .stat-section {
@@ -3712,8 +3761,13 @@ button:disabled {
     margin-bottom: 10px;
   }
 
-  /* 보고일/제목 카드 → 부서별보고 섹션 사이 여백 */
+  /* 보고일/제목 카드 → 이번주일 버튼 사이 여백 */
   .mobile-editor-screen .info-fields-row {
+    margin-bottom: 8px;
+  }
+
+  /* 이번 주일 버튼 → 부서별보고 섹션 사이 여백 */
+  .mobile-editor-screen .date-this-sunday-btn {
     margin-bottom: 16px;
   }
 }
@@ -4005,6 +4059,17 @@ button:disabled {
   /* 기본정보 헤더는 모바일 전용 */
   .info-fields-heading {
     display: none;
+  }
+
+  /* 날짜 네비게이션은 모바일 전용 */
+  .date-nav-row,
+  .date-this-sunday-btn {
+    display: none;
+  }
+
+  /* 데스크탑: 네이티브 date input 표시 복원 */
+  .date-native-input {
+    display: block;
   }
 
   /* 출결 통계 섹션 카드 (데스크탑) */
