@@ -2540,25 +2540,25 @@ button:disabled {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 12px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.7);
-  background: var(--clr-primary);
-  border: none;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  background: #ffffff;
+  border: 1px solid var(--clr-border-soft);
   border-radius: 8px;
   padding: 10px 12px;
-  min-height: 52px;
+  min-height: 60px;
 }
 
 .info-field-label input {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   border: none;
   border-radius: 0;
   padding: 0;
   background: transparent;
-  color: #ffffff;
+  color: var(--clr-text);
   width: 100%;
   min-width: 0;
 }
@@ -2582,7 +2582,7 @@ button:disabled {
 .date-nav-btn {
   background: transparent;
   border: none;
-  color: #ffffff;
+  color: var(--clr-primary);
   font-size: 20px;
   font-weight: 700;
   padding: 8px 10px;
@@ -2601,9 +2601,9 @@ button:disabled {
 }
 
 .date-nav-display {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--clr-text);
   text-align: center;
   flex: 1;
   min-width: 0;
