@@ -1,6 +1,7 @@
 export type Theme = "green" | "blue" | "orange";
 
 const STORAGE_KEY = "ministry-report-v2-theme";
+const THEME_MIGRATED_KEY = "ministry-report-v2-theme-migrated-v1";
 
 const THEME_COLORS: Record<Theme, string> = {
   green:  "#24564a",
@@ -9,6 +10,14 @@ const THEME_COLORS: Record<Theme, string> = {
 };
 
 export function getStoredTheme(): Theme {
+  // v2.7.x 이전엔 green이 기본값이었음 → 명시적으로 green을 고른 게 아니라면 blue로 마이그레이션
+  if (!localStorage.getItem(THEME_MIGRATED_KEY)) {
+    localStorage.setItem(THEME_MIGRATED_KEY, "1");
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === "green") {
+      localStorage.setItem(STORAGE_KEY, "blue");
+    }
+  }
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored === "blue" || stored === "orange" || stored === "green") return stored;
   return "blue";
