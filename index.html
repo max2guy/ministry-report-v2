@@ -11,6 +11,26 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <title>사역보고서 v2</title>
+    <!-- 테마 즉시 적용: React 렌더 전 FOUC 방지 -->
+    <script>
+      (function() {
+        var STORAGE_KEY = "ministry-report-v2-theme";
+        var MIGRATED_KEY = "ministry-report-v2-theme-migrated-v1";
+        try {
+          if (!localStorage.getItem(MIGRATED_KEY)) {
+            localStorage.setItem(MIGRATED_KEY, "1");
+            if (localStorage.getItem(STORAGE_KEY) === "green") {
+              localStorage.setItem(STORAGE_KEY, "blue");
+            }
+          }
+          var theme = localStorage.getItem(STORAGE_KEY);
+          if (theme === "green" || theme === "orange") {
+            document.documentElement.setAttribute("data-theme", theme);
+          }
+          // blue 또는 미설정 → data-theme 없음(기본 :root = blue)
+        } catch(e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
