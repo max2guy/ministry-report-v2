@@ -11,15 +11,15 @@ const THEME_COLORS: Record<Theme, string> = {
 export function getStoredTheme(): Theme {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored === "blue" || stored === "orange" || stored === "green") return stored;
-  return "green";
+  return "blue";
 }
 
 export function applyTheme(theme: Theme) {
   const root = document.documentElement;
-  if (theme === "green") {
-    root.removeAttribute("data-theme");
+  if (theme === "blue") {
+    root.removeAttribute("data-theme"); // blue = :root default
   } else {
-    root.setAttribute("data-theme", theme);
+    root.setAttribute("data-theme", theme); // green / orange
   }
   localStorage.setItem(STORAGE_KEY, theme);
 

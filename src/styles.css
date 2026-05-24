@@ -1,29 +1,6 @@
 /* ── Theme variables ── */
 :root {
-  /* Green (default) */
-  --clr-primary: #24564a;
-  --clr-primary-rgb: 36, 86, 74;
-  --clr-primary-light: #9ecfc2;
-  --clr-present-bg: #e5f1ed;
-  --clr-present-border: #24564a;
-  --clr-bg: #f4f5f7;
-  --clr-card-bg: #ffffff;
-  --clr-surface: #e8eae9;
-  --clr-border: #dde3e0;
-  --clr-border-soft: #e5e9e7;
-  --clr-muted: #8a9e97;
-  --clr-text: #17211d;
-  --clr-text-secondary: #374740;
-  --clr-text-muted: #5e6b65;
-  --clr-auth-top: #083949;
-  --clr-auth-bottom: #0b4252;
-  --clr-auth-text: #f4fbf8;
-  --clr-auth-badge: #4ce29e;
-  --clr-auth-muted: #d8ece7;
-  --clr-auth-label: #e9f7f3;
-}
-
-[data-theme="blue"] {
+  /* Blue (default) */
   --clr-primary: #1a4a8a;
   --clr-primary-rgb: 26, 74, 138;
   --clr-primary-light: #8ab4e0;
@@ -44,6 +21,29 @@
   --clr-auth-badge: #60aaff;
   --clr-auth-muted: #c0d8f8;
   --clr-auth-label: #d8eaff;
+}
+
+[data-theme="green"] {
+  --clr-primary: #24564a;
+  --clr-primary-rgb: 36, 86, 74;
+  --clr-primary-light: #9ecfc2;
+  --clr-present-bg: #e5f1ed;
+  --clr-present-border: #24564a;
+  --clr-bg: #f4f5f7;
+  --clr-card-bg: #ffffff;
+  --clr-surface: #e8eae9;
+  --clr-border: #dde3e0;
+  --clr-border-soft: #e5e9e7;
+  --clr-muted: #8a9e97;
+  --clr-text: #17211d;
+  --clr-text-secondary: #374740;
+  --clr-text-muted: #5e6b65;
+  --clr-auth-top: #083949;
+  --clr-auth-bottom: #0b4252;
+  --clr-auth-text: #f4fbf8;
+  --clr-auth-badge: #4ce29e;
+  --clr-auth-muted: #d8ece7;
+  --clr-auth-label: #e9f7f3;
 }
 
 [data-theme="orange"] {
