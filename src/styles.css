@@ -1424,7 +1424,7 @@ button:disabled {
   width: 100px;
   height: 100px;
   margin-bottom: 20px;
-  border-radius: 22px; /* PNG 흰 모서리 클리핑 — squircle 형태 일치 */
+  border-radius: 28px; /* PNG 흰 모서리 클리핑 */
   filter: drop-shadow(0 6px 20px rgba(0,0,0,0.35));
 }
 
