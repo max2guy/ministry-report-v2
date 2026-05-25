@@ -9,7 +9,7 @@ export function AuthGate({ onSignedIn }: AuthGateProps) {
   return (
     <div className="auth-gate-v2">
       <div className="auth-gate-banner">
-        <div className="auth-gate-banner-icon">⛪</div>
+        <img src="pwa-192x192.png" alt="사역보고서" className="auth-gate-banner-icon" />
         <h1 className="auth-gate-title">연천장로교회<br />사역보고서</h1>
         <p className="auth-gate-subtitle">주일 사역 출결 · 현황 보고</p>
       </div>

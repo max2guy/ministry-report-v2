@@ -13,6 +13,8 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
+        skipWaiting: true,
+        clientsClaim: true,
         globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest}"],
         runtimeCaching: [
           {
@@ -30,8 +32,8 @@ export default defineConfig({
         start_url: base,
         scope: base,
         display: "standalone",
-        background_color: "#24564a",
-        theme_color: "#000000",
+        background_color: "#1a3a6b",
+        theme_color: "#1a3a6b",
         lang: "ko",
         icons: [
           { src: "pwa-64x64.png",              sizes: "64x64",    type: "image/png" },

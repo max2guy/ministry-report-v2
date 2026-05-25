@@ -1422,9 +1422,11 @@ button:disabled {
 }
 
 .auth-gate-banner-icon {
-  font-size: 48px;
+  width: 96px;
+  height: 96px;
   margin-bottom: 16px;
-  line-height: 1;
+  border-radius: 20px;
+  object-fit: cover;
 }
 
 .auth-gate-title {
