@@ -1424,7 +1424,7 @@ button:disabled {
   width: 100px;
   height: 100px;
   margin-bottom: 20px;
-  border-radius: 28px; /* PNG 흰 모서리 클리핑 */
+  border-radius: 0; /* PNG 자체가 투명 squircle */
   filter: drop-shadow(0 6px 20px rgba(0,0,0,0.35));
 }
 
