@@ -23,6 +23,7 @@ import {
 } from "./domain/reportTypes";
 import { validateReportForSave } from "./domain/reportValidation";
 import { useInstallPrompt } from "./features/pwa/useInstallPrompt";
+import { InstallGuideBanner } from "./features/pwa/InstallGuideBanner";
 import { AuthGate } from "./features/auth/AuthGate";
 import { ReporterAccountPanel } from "./features/auth/ReporterAccountPanel";
 import { LegacyImportPanel } from "./features/import/LegacyImportPanel";
@@ -569,19 +570,30 @@ export function App() {
     // Auth 타임아웃 후에는 빈 화면 대신 로그인 화면을 표시
     if (authTimedOut) {
       return (
-        <main className="app-shell auth-shell">
-          <AuthGate onSignedIn={handleSignedIn} />
-        </main>
+        <>
+          <InstallGuideBanner />
+          <main className="app-shell auth-shell">
+            <AuthGate onSignedIn={handleSignedIn} />
+          </main>
+        </>
       );
     }
-    return <main className="app-shell" />;
+    return (
+      <>
+        <InstallGuideBanner />
+        <main className="app-shell" />
+      </>
+    );
   }
 
   if (!currentAccount) {
     return (
-      <main className="app-shell auth-shell">
-        <AuthGate onSignedIn={handleSignedIn} />
-      </main>
+      <>
+        <InstallGuideBanner />
+        <main className="app-shell auth-shell">
+          <AuthGate onSignedIn={handleSignedIn} />
+        </main>
+      </>
     );
   }
 
