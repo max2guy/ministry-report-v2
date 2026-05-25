@@ -1408,25 +1408,24 @@ button:disabled {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--clr-bg);
+  background: linear-gradient(180deg, var(--clr-primary) 0%, color-mix(in srgb, var(--clr-primary) 80%, #000) 100%);
 }
 
 .auth-gate-banner {
-  background: linear-gradient(135deg, var(--clr-primary) 0%, color-mix(in srgb, var(--clr-primary) 70%, #000) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 56px 24px 64px;
+  padding: 64px 24px 56px;
   text-align: center;
 }
 
 .auth-gate-banner-icon {
-  width: 96px;
-  height: 96px;
-  margin-bottom: 16px;
-  border-radius: 20px;
-  object-fit: cover;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+  /* PNG 자체가 squircle — 추가 border-radius 없음 */
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.25));
 }
 
 .auth-gate-title {
@@ -1448,8 +1447,9 @@ button:disabled {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 20px 40px;
-  margin-top: -32px;
+  padding: 32px 20px 40px;
+  background: var(--clr-bg);
+  border-radius: 28px 28px 0 0;
 }
 
 .auth-gate-card {
