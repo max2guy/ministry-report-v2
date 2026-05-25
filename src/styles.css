@@ -1424,8 +1424,8 @@ button:disabled {
   width: 100px;
   height: 100px;
   margin-bottom: 20px;
-  /* PNG 자체가 squircle — 추가 border-radius 없음 */
-  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.25));
+  border-radius: 22px; /* PNG 흰 모서리 클리핑 — squircle 형태 일치 */
+  filter: drop-shadow(0 6px 20px rgba(0,0,0,0.35));
 }
 
 .auth-gate-title {
