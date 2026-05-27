@@ -103,12 +103,20 @@ function IosSafariBanner({ onDismiss }: { onDismiss: () => void }) {
   );
 }
 
+// ── localStorage 안전 래퍼 (iOS Safari 개인정보 보호 모드 대응) ─
+function safeGetItem(key: string): string | null {
+  try { return localStorage.getItem(key); } catch { return null; }
+}
+function safeSetItem(key: string, value: string): void {
+  try { localStorage.setItem(key, value); } catch { /* ignore */ }
+}
+
 // ── 메인 export ────────────────────────────────────────────────
 const DISMISSED_KEY = "pwa-install-banner-dismissed";
 
 export function InstallGuideBanner() {
   const [dismissed, setDismissed] = useState(
-    () => !!localStorage.getItem(DISMISSED_KEY)
+    () => !!safeGetItem(DISMISSED_KEY)
   );
 
   // 이미 설치됨 → 아무것도 표시 안 함
@@ -122,7 +130,7 @@ export function InstallGuideBanner() {
     return (
       <IosSafariBanner
         onDismiss={() => {
-          localStorage.setItem(DISMISSED_KEY, "1");
+          safeSetItem(DISMISSED_KEY, "1");
           setDismissed(true);
         }}
       />
