@@ -8,22 +8,29 @@ type Props = {
   onClose: () => void;
 };
 
+const IS_MOBILE = isMobile();
+
 export function SmsPanel({ zones, reportDate, onClose }: Props) {
   const allTargets = buildSmsTargets(zones, reportDate);
   const [sentIds, setSentIds] = useState<Set<string>>(new Set());
   const [queueIdx, setQueueIdx] = useState<number | null>(null);
   const [awaitingConfirm, setAwaitingConfirm] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const pending = allTargets.filter(t => t.phone && !sentIds.has(t.id));
   const currentTarget: SmsTarget | null =
     queueIdx !== null ? (pending[queueIdx] ?? null) : null;
 
   function openSms(target: SmsTarget) {
-    if (!isMobile()) {
-      alert("이 기능은 모바일에서만 사용할 수 있습니다.");
-      return;
+    if (IS_MOBILE) {
+      window.location.href = `sms:${target.phone}?body=${encodeURIComponent(target.msg)}`;
+    } else {
+      navigator.clipboard.writeText(target.msg).catch(() => {
+        // clipboard 권한 거부 등 — 무시
+      });
+      setCopiedId(target.id);
+      setTimeout(() => setCopiedId(prev => (prev === target.id ? null : prev)), 1500);
     }
-    window.location.href = `sms:${target.phone}?body=${encodeURIComponent(target.msg)}`;
   }
 
   function startQueue() {
@@ -73,7 +80,7 @@ export function SmsPanel({ zones, reportDate, onClose }: Props) {
   return (
     <div className="sms-panel" role="dialog" aria-label="문자 발송">
       <div className="sms-panel-header">
-        <span>📱 문자 발송</span>
+        <span>{IS_MOBILE ? "📱" : "💬"} 문자 발송</span>
         <button type="button" className="sms-panel-close" onClick={onClose}>✕</button>
       </div>
 
@@ -92,6 +99,15 @@ export function SmsPanel({ zones, reportDate, onClose }: Props) {
         <span className="sms-progress">
           {isQueueActive ? `${(queueIdx ?? 0) + 1}/${pending.length}` : ""}
         </span>
+        {!IS_MOBILE && (
+          <button
+            type="button"
+            className="btn-sms-google"
+            onClick={() => window.open("https://messages.google.com/web/", "_blank", "noopener")}
+          >
+            🌐 Google Messages
+          </button>
+        )}
       </div>
 
       {missingPhone.length > 0 && (
@@ -106,7 +122,9 @@ export function SmsPanel({ zones, reportDate, onClose }: Props) {
 
       {awaitingConfirm && currentTarget && (
         <div className="sms-confirm-bar">
-          문자앱 전송 후 돌아와서 확인해주세요.
+          {IS_MOBILE
+            ? "문자앱 전송 후 돌아와서 확인해주세요."
+            : "Google Messages에서 전송 후 확인해주세요. (메시지가 클립보드에 복사됨)"}
           <button type="button" className="btn-sms-confirm" onClick={() => markSent(currentTarget.id)}>
             ✅ 전송완료
           </button>
@@ -125,6 +143,8 @@ export function SmsPanel({ zones, reportDate, onClose }: Props) {
               target={t}
               sent={sentIds.has(t.id)}
               isCurrent={isQueueActive && awaitingConfirm && currentTarget?.id === t.id}
+              isMobile={IS_MOBILE}
+              copied={copiedId === t.id}
               onOpen={() => openSms(t)}
               onMarkSent={() => markSent(t.id)}
             />
@@ -141,6 +161,8 @@ export function SmsPanel({ zones, reportDate, onClose }: Props) {
               target={t}
               sent={sentIds.has(t.id)}
               isCurrent={isQueueActive && awaitingConfirm && currentTarget?.id === t.id}
+              isMobile={IS_MOBILE}
+              copied={copiedId === t.id}
               onOpen={() => openSms(t)}
               onMarkSent={() => markSent(t.id)}
             />
@@ -159,12 +181,16 @@ function SmsItem({
   target,
   sent,
   isCurrent,
+  isMobile,
+  copied,
   onOpen,
   onMarkSent,
 }: {
   target: SmsTarget;
   sent: boolean;
   isCurrent: boolean;
+  isMobile: boolean;
+  copied: boolean;
   onOpen: () => void;
   onMarkSent: () => void;
 }) {
@@ -173,6 +199,9 @@ function SmsItem({
       <div className="sms-item-header">
         <span className="sms-item-label">{target.label}</span>
         <span className="sms-item-leader">{target.leaderName}</span>
+        {!isMobile && target.phone && (
+          <span className="sms-phone-display">{target.phone}</span>
+        )}
       </div>
       <pre className="sms-item-msg">{target.msg}</pre>
       <div className="sms-item-actions">
@@ -180,7 +209,12 @@ function SmsItem({
           <span className="sms-sent-badge">✓ 전송완료</span>
         ) : target.phone ? (
           <>
-            <button type="button" className="btn-sms-open" onClick={onOpen}>📨 문자앱 열기</button>
+            <button type="button" className="btn-sms-open" onClick={onOpen}>
+              {isMobile ? "📨 문자앱 열기" : (copied ? "✓ 복사됨" : "📋 메시지 복사")}
+            </button>
+            {copied && !isMobile && (
+              <span className="sms-copy-feedback">클립보드에 복사됨</span>
+            )}
             <button type="button" className="btn-sms-confirm-manual" onClick={onMarkSent}>✅ 수동완료</button>
           </>
         ) : (
