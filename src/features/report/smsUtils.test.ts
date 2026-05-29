@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { buildZoneSmsMessage, buildDistrictSmsMessage } from "./smsUtils";
+import { describe, expect, it, afterEach } from "vitest";
+import { buildZoneSmsMessage, buildDistrictSmsMessage, isMobile } from "./smsUtils";
 import type { DepartmentMemberRole, DepartmentZone } from "../../domain/reportTypes";
 
 const makeZone = (name: string, district: number, members: { name: string; status: "present" | "absent"; role?: DepartmentMemberRole }[]): DepartmentZone => ({
@@ -45,5 +45,29 @@ describe("buildDistrictSmsMessage", () => {
     expect(msg).toContain("1교구 총 결석 2명");
     expect(msg).toContain("1구역: 홍길동");
     expect(msg).toContain("2구역: 김철수");
+  });
+});
+
+describe("isMobile", () => {
+  const setUA = (ua: string) =>
+    Object.defineProperty(navigator, "userAgent", { value: ua, writable: true, configurable: true });
+
+  afterEach(() => {
+    setUA("");
+  });
+
+  it("returns true for Android UA", () => {
+    setUA("Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36");
+    expect(isMobile()).toBe(true);
+  });
+
+  it("returns true for iPhone UA", () => {
+    setUA("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1");
+    expect(isMobile()).toBe(true);
+  });
+
+  it("returns false for MacOS Chrome UA", () => {
+    setUA("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+    expect(isMobile()).toBe(false);
   });
 });
