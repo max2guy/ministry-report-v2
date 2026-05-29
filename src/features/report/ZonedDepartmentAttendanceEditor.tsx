@@ -403,15 +403,9 @@ export function ZonedDepartmentAttendanceEditor({ department, reportDate, onChan
         <button
           type="button"
           className="btn-sms-trigger"
-          onClick={() => {
-            if (!isMobile()) {
-              alert("이 기능은 모바일에서만 사용할 수 있습니다.");
-              return;
-            }
-            setShowSms(true);
-          }}
+          onClick={() => setShowSms(true)}
         >
-          📱 문자 발송
+          {isMobile() ? "📱" : "💬"} 문자 발송
         </button>
       </div>
 
