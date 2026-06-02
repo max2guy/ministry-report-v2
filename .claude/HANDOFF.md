@@ -1,22 +1,34 @@
-# ministry-report-v2 — Codex Handoff (v2.7.9)
+# ministry-report-v2 — Codex Handoff (v2.7.11)
 
 ## 현재 상태
 - 브랜치: `main`
-- 버전: 2.7.9
+- 버전: 2.7.11
 
 ## 방금 수정한 내용
 
-### 데스크탑 SMS 발송 지원
-- **파일**: `src/features/report/SmsPanel.tsx`, `src/styles.css`, `src/features/report/smsUtils.test.ts`
-- **문제**: 기존에는 `isMobile()` 검사로 데스크탑에서 문자 발송이 완전 차단됨
+### 다기기 출결 동기화 버그 수정 (draft 우선순위 오류)
+
+- **파일**: `src/App.tsx` (257번째 줄 근처 `loadCloudData` 함수)
+- **문제**: 모바일에서 출결 체크 후 Firestore 저장 → 데스크탑에서 열면 출결이 0으로 표시됨
+- **근본 원인**: `const initialReport = draft ?? latest;` — localStorage draft가 항상 Firestore 데이터보다 우선됨. 데스크탑의 draft는 출결 입력 이전에 저장된 오래된 상태
 - **수정**:
-  - `openSms()` 플랫폼 분기: 모바일 → `sms:` URL 유지, 데스크탑 → `navigator.clipboard.writeText(msg)`
-  - `copiedId` 상태로 항목별 복사 완료 피드백 (1.5초 자동 해제)
-  - 패널 상단에 "🌐 Google Messages" 버튼 추가 (데스크탑 전용, `_blank` 탭)
-  - 각 항목 헤더에 전화번호 표시 (데스크탑 전용, `sms-phone-display` 클래스)
-  - confirm-bar 안내 문구 모바일/데스크탑 분기
-  - 버튼 라벨: 데스크탑 "📋 메시지 복사" / 모바일 "📨 문자앱 열기"
-  - `isMobile()` 단위 테스트 3개 추가 (Android/iPhone/MacOS UA)
+  - 같은 보고서 ID일 때 `updatedAt` 타임스탬프를 비교하여 더 최신 버전 사용
+  - 다른 기기에서 저장 후 열기 → Firestore 버전(더 최신) 우선
+  - 같은 기기에서 미저장 편집 중 → draft(더 최신) 유지
+  - 완전히 다른 보고서 draft → 기존 동작 그대로
+
+```typescript
+// 수정 전 (버그)
+const initialReport = draft ?? latest;
+
+// 수정 후
+const initialReport =
+  draft && latest && draft.id === latest.id
+    ? draft.updatedAt > latest.updatedAt
+      ? draft
+      : latest
+    : (draft ?? latest);
+```
 
 ## 프로젝트 개요
 - **프레임워크**: React 19 + Vite + TypeScript PWA
@@ -27,15 +39,15 @@
 - **테스트**: `npm test` (vitest, 34개 테스트)
 
 ## 주요 파일
-- `src/App.tsx` — 루트 컴포넌트, 인증 상태 관리
+- `src/App.tsx` — 루트 컴포넌트, `loadCloudData()` 함수에 draft/cloud 우선순위 로직
+- `src/storage/reportDraftStore.ts` — localStorage draft 읽기/쓰기 (`"ministry-report-v2-current-draft"` 키)
 - `src/styles.css` — 전체 스타일 (단일 파일)
 - `src/features/report/SmsPanel.tsx` — 문자 발송 패널 (모바일+데스크탑 지원)
-- `src/features/report/smsUtils.ts` — 메시지 내용 생성 + isMobile()
-- `src/features/auth/AuthGate.tsx` — 로그인 화면
-- `src/features/pwa/InstallGuideBanner.tsx` — PWA 설치 안내
+- `src/features/report/DepartmentAttendanceEditor.tsx` — 유초등부/중고등부/청년부 출결 카드 UI
 
 ## 다음으로 할 수 있는 작업
 - 중고등부 통계 색상 변경 여부 결정 (보류 중)
+- SMS 자동 발송 자동화 (Playwright 활용, 보류 중)
 - 기타 UX 개선
 
 ## 빌드 & 배포

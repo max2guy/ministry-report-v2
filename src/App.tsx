@@ -254,7 +254,15 @@ export function App() {
 
       const storedRoster = cloudRoster ?? createDefaultRoster();
       const latest = latestReport(cloudReports);
-      const initialReport = draft ?? latest;
+      // 같은 보고서(ID 동일)일 때는 더 최신 버전 우선 사용.
+      // 다른 기기에서 저장 후 열면 Firestore 버전이 더 최신이므로 cloud 우선.
+      // 같은 기기에서 미저장 편집 중이면 draft가 더 최신이므로 draft 유지.
+      const initialReport =
+        draft && latest && draft.id === latest.id
+          ? draft.updatedAt > latest.updatedAt
+            ? draft
+            : latest
+          : (draft ?? latest);
 
       setReports(sortReports(cloudReports));
       setRoster(storedRoster);
