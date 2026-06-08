@@ -3530,6 +3530,11 @@ button:disabled {
   font-weight: 700;
   color: var(--clr-primary);   /* 보고서 날짜를 주색으로 */
 }
+.mobile-report-card-total {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--clr-text-muted);
+}
 
 .mobile-report-card-summary {
   font-size: 11px;

@@ -26,6 +26,13 @@ const DEPT_LABELS: { key: "elementary" | "middleHigh" | "youngAdult" | "adult"; 
   { key: "adult", label: "교구" },
 ];
 
+function totalAttendance(report: MinistryReport): number {
+  return Object.values(report.departments).reduce(
+    (sum, dept) => sum + dept.attendance,
+    0,
+  );
+}
+
 function deptSummary(report: MinistryReport): string {
   return DEPT_LABELS
     .filter(({ key }) => report.departments[key].attendance > 0)
@@ -119,7 +126,10 @@ export function MobileReportList({
                   disabled={isEditing}
                 >
                   <div className="mobile-report-card-body">
-                    <span className="mobile-report-card-date">{formatDate(r.reportDate)}</span>
+                    <span className="mobile-report-card-date">
+                      {formatDate(r.reportDate)}
+                      <span className="mobile-report-card-total"> · {totalAttendance(r)}명</span>
+                    </span>
                     <span className="mobile-report-card-summary">{deptSummary(r)}</span>
                   </div>
                   {canCreateReport ? (
