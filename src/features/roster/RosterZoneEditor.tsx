@@ -50,16 +50,14 @@ function ZoneSection({
             {zone.members.map(m => (
               <li key={m.id} className="roster-member-item">
                 <span>{m.name}{roleLabel(m.role)}</span>
-                {m.role === "member" && (
-                  <button
-                    type="button"
-                    className="roster-delete-btn"
-                    aria-label={`${m.name} 삭제`}
-                    onClick={() => handleDelete(m.id)}
-                  >
-                    삭제
-                  </button>
-                )}
+                <button
+                  type="button"
+                  className="roster-delete-btn"
+                  aria-label={`${m.name} 삭제`}
+                  onClick={() => handleDelete(m.id)}
+                >
+                  삭제
+                </button>
               </li>
             ))}
           </ul>
