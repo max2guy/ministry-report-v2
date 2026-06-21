@@ -267,7 +267,10 @@ export function App() {
       setReports(sortReports(cloudReports));
       setRoster(storedRoster);
       if (initialReport) {
-        const upgraded = upgradeReportForEditor(initialReport);
+        // 명단이 변경됐어도 리포트 draft에 이전 인원이 남아 있을 수 있으므로
+        // 항상 현재 명단 기준으로 동기화한 뒤 에디터에 세팅한다.
+        const synced = syncReportFromRoster(initialReport, storedRoster);
+        const upgraded = upgradeReportForEditor(synced);
         setReport(reportWithAccount(upgraded, account));
       }
       setIsHydrated(true);
