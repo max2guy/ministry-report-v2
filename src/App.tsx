@@ -50,10 +50,13 @@ import {
 } from "./storage/reportStore";
 import { loadRoster as localLoadRoster } from "./storage/memberRosterStore";
 
-/** roster 변경 시 현재 report의 members/zones를 동기화 */
+/** roster 변경 시 현재 report의 members/zones를 동기화.
+ *  reportDate(YYYY-MM-DD)가 주어지면 별명부 이동일이 그 이후인 멤버는
+ *  해당 보고서에서 여전히 구역원으로 취급한다(과거 기록 보존). */
 function syncReportFromRoster(
   report: MinistryReport,
   roster: MemberRoster,
+  reportDate?: string,
 ): MinistryReport {
   const departments = { ...report.departments };
 
@@ -78,10 +81,35 @@ function syncReportFromRoster(
 
   const rAdult = roster.departments.adult;
   if (rAdult.kind === "zoned") {
+    // reportDate보다 이후에 별명부로 이동된 멤버는 이 보고서에서 구역원으로 복원
+    let effectiveZones = rAdult.zones;
+    if (reportDate && roster.byeolmyeongbu?.length) {
+      const toRestore = roster.byeolmyeongbu.filter(
+        (m) => m.movedAt && m.movedAt.slice(0, 10) > reportDate,
+      );
+      if (toRestore.length > 0) {
+        effectiveZones = rAdult.zones.map((zone) => {
+          const restoring = toRestore.filter((m) => m.fromZoneId === zone.id);
+          if (restoring.length === 0) return zone;
+          return {
+            ...zone,
+            members: [
+              ...zone.members,
+              ...restoring.map((m) => ({
+                id: m.id,
+                name: m.name,
+                ...(m.role && { role: m.role }),
+              })),
+            ],
+          };
+        });
+      }
+    }
+
     const existingZones = departments.adult.zones ?? [];
     const existingById = new Map(existingZones.map((z) => [z.id, z]));
     const existingByName = new Map(existingZones.map((z) => [z.name, z]));
-    const zones = rAdult.zones.map((rz) => {
+    const zones = effectiveZones.map((rz) => {
       const existingZone = existingById.get(rz.id) ?? existingByName.get(rz.name);
       const existingMemberById = new Map(
         (existingZone?.members ?? []).map((m) => [m.id, m]),
@@ -269,7 +297,7 @@ export function App() {
       if (initialReport) {
         // 명단이 변경됐어도 리포트 draft에 이전 인원이 남아 있을 수 있으므로
         // 항상 현재 명단 기준으로 동기화한 뒤 에디터에 세팅한다.
-        const synced = syncReportFromRoster(initialReport, storedRoster);
+        const synced = syncReportFromRoster(initialReport, storedRoster, initialReport.reportDate);
         const upgraded = upgradeReportForEditor(synced);
         setReport(reportWithAccount(upgraded, account));
       }
@@ -451,7 +479,7 @@ export function App() {
     setRoster(nextRoster);
     void firestoreSaveRoster(nextRoster);
     setReport((currentReport) => {
-      const next = syncReportFromRoster(currentReport, nextRoster);
+      const next = syncReportFromRoster(currentReport, nextRoster, currentReport.reportDate);
       saveReportDraft(next);
       return next;
     });
@@ -459,7 +487,7 @@ export function App() {
 
   function handleLoadReport(storedReport: MinistryReport) {
     const upgradedReport = upgradeReportForEditor(storedReport);
-    const synced = roster ? syncReportFromRoster(upgradedReport, roster) : upgradedReport;
+    const synced = roster ? syncReportFromRoster(upgradedReport, roster, storedReport.reportDate) : upgradedReport;
     setReport(synced);
     saveReportDraft(synced);
     setSaveErrors([]);
