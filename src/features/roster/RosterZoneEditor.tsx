@@ -1,20 +1,26 @@
 import { useState } from "react";
-import type { MemberRoster, RosterZone } from "../../domain/memberRoster";
+import type { ByeolmyeongbuReason, MemberRoster, RosterZone } from "../../domain/memberRoster";
+import { moveToByeolmyeongbu } from "../../domain/memberRoster";
 
 type Props = {
   roster: MemberRoster;
   onChange: (roster: MemberRoster) => void;
 };
 
+type ByeolStep = null | { memberId: string };
+
 function ZoneSection({
   zone,
   onUpdate,
+  onMoveToByeolmyeongbu,
 }: {
   zone: RosterZone;
   onUpdate: (next: RosterZone) => void;
+  onMoveToByeolmyeongbu: (memberId: string, reason: ByeolmyeongbuReason) => void;
 }) {
   const [draft, setDraft] = useState("");
   const [open, setOpen] = useState(false);
+  const [byeolStep, setByeolStep] = useState<ByeolStep>(null);
 
   function handleAdd() {
     const name = draft.trim();
@@ -26,18 +32,25 @@ function ZoneSection({
   }
 
   function handleDelete(id: string) {
-    onUpdate({ ...zone, members: zone.members.filter(m => m.id !== id) });
+    onUpdate({ ...zone, members: zone.members.filter((m) => m.id !== id) });
+  }
+
+  function handleByeolConfirm(memberId: string, reason: ByeolmyeongbuReason) {
+    onMoveToByeolmyeongbu(memberId, reason);
+    setByeolStep(null);
   }
 
   const roleLabel = (role?: string) =>
     role === "leader" ? " (장)" : role === "inspector" ? " (권)" : "";
+
+  const REASONS: ByeolmyeongbuReason[] = ["타교", "요양", "장기결석", "소재불명"];
 
   return (
     <div className="roster-zone-section">
       <button
         type="button"
         className="roster-zone-header roster-zone-toggle"
-        onClick={() => setOpen(o => !o)}
+        onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
       >
         <span>{zone.name}</span>
@@ -47,17 +60,52 @@ function ZoneSection({
       {open && (
         <>
           <ul className="roster-member-list">
-            {zone.members.map(m => (
+            {zone.members.map((m) => (
               <li key={m.id} className="roster-member-item">
-                <span>{m.name}{roleLabel(m.role)}</span>
-                <button
-                  type="button"
-                  className="roster-delete-btn"
-                  aria-label={`${m.name} 삭제`}
-                  onClick={() => handleDelete(m.id)}
-                >
-                  삭제
-                </button>
+                {byeolStep?.memberId === m.id ? (
+                  <div className="byeol-reason-picker">
+                    <span className="byeol-reason-label">{m.name} 사유:</span>
+                    {REASONS.map((r) => (
+                      <button
+                        key={r}
+                        type="button"
+                        className="byeol-reason-btn"
+                        onClick={() => handleByeolConfirm(m.id, r)}
+                      >
+                        {r}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      className="byeol-cancel-btn"
+                      onClick={() => setByeolStep(null)}
+                    >
+                      취소
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <span>{m.name}{roleLabel(m.role)}</span>
+                    <div className="roster-member-actions">
+                      <button
+                        type="button"
+                        className="byeol-move-btn"
+                        aria-label={`${m.name} 별명부로 이동`}
+                        onClick={() => setByeolStep({ memberId: m.id })}
+                      >
+                        별명부
+                      </button>
+                      <button
+                        type="button"
+                        className="roster-delete-btn"
+                        aria-label={`${m.name} 삭제`}
+                        onClick={() => handleDelete(m.id)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </>
+                )}
               </li>
             ))}
           </ul>
@@ -66,10 +114,17 @@ function ZoneSection({
               aria-label={`${zone.name} 이름 입력`}
               value={draft}
               placeholder="이름 입력"
-              onChange={e => setDraft(e.currentTarget.value)}
-              onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); handleAdd(); } }}
+              onChange={(e) => setDraft(e.currentTarget.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleAdd();
+                }
+              }}
             />
-            <button type="button" onClick={handleAdd}>추가</button>
+            <button type="button" onClick={handleAdd}>
+              추가
+            </button>
           </div>
         </>
       )}
@@ -80,17 +135,16 @@ function ZoneSection({
 export function RosterZoneEditor({ roster, onChange }: Props) {
   const adult = roster.departments.adult;
   if (adult.kind !== "zoned") return null;
-  // 이름 기준 중복 제거 (Firestore에 이미 중복 저장된 경우 방어)
   const seenNames = new Set<string>();
   const zones = adult.zones.filter((z) => {
     if (seenNames.has(z.name)) return false;
     seenNames.add(z.name);
     return true;
   });
-  const districts = [...new Set(zones.map(z => z.district))].sort();
+  const districts = [...new Set(zones.map((z) => z.district))].sort();
 
   function handleZoneUpdate(updatedZone: RosterZone) {
-    const nextZones = zones.map(z => z.id === updatedZone.id ? updatedZone : z);
+    const nextZones = zones.map((z) => (z.id === updatedZone.id ? updatedZone : z));
     onChange({
       ...roster,
       departments: {
@@ -101,18 +155,27 @@ export function RosterZoneEditor({ roster, onChange }: Props) {
     });
   }
 
+  function handleMoveToByeolmyeongbu(memberId: string, reason: ByeolmyeongbuReason) {
+    onChange(moveToByeolmyeongbu(roster, memberId, reason));
+  }
+
   return (
     <div className="roster-zone-editor">
-      {districts.map(district => (
+      {districts.map((district) => (
         <div key={district} className="roster-district-section">
           <div className="roster-district-header">{district}교구</div>
-          {zones.filter(z => z.district === district).map(zone => (
-            <ZoneSection
-              key={zone.id}
-              zone={zone}
-              onUpdate={handleZoneUpdate}
-            />
-          ))}
+          {zones
+            .filter((z) => z.district === district)
+            .map((zone) => (
+              <ZoneSection
+                key={zone.id}
+                zone={zone}
+                onUpdate={handleZoneUpdate}
+                onMoveToByeolmyeongbu={(memberId, reason) =>
+                  handleMoveToByeolmyeongbu(memberId, reason)
+                }
+              />
+            ))}
         </div>
       ))}
     </div>
