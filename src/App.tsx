@@ -384,39 +384,8 @@ export function App() {
         }
       }
 
-      const reportAdult = upgradedReport.departments.adult;
-      const rAdult = prev.departments.adult;
-      if (rAdult.kind === "zoned" && reportAdult.zones) {
-        const rosterZoneById = new Map(rAdult.zones.map((z) => [z.id, z]));
-        let adultChanged = false;
-        const newRosterZones = reportAdult.zones.map((reportZone) => {
-          const rosterZone = rosterZoneById.get(reportZone.id);
-          const rosterMemberById = new Map(
-            (rosterZone?.members ?? []).map((m) => [m.id, m]),
-          );
-          const newMembers = reportZone.members.map(
-            (rm) => rosterMemberById.get(rm.id) ?? { id: rm.id, name: rm.name },
-          );
-          const oldIds = (rosterZone?.members ?? []).map((m) => m.id).join(",");
-          const newIds = newMembers.map((m) => m.id).join(",");
-          if (oldIds !== newIds) adultChanged = true;
-          return {
-            ...(rosterZone ?? {
-              id: reportZone.id,
-              name: reportZone.name,
-              district: reportZone.district,
-            }),
-            members: newMembers,
-          };
-        });
-        if (adultChanged) {
-          nextDepts = {
-            ...nextDepts,
-            adult: { kind: "zoned", zones: newRosterZones },
-          };
-          changed = true;
-        }
-      }
+      // 교구(adult) zones는 roster가 단독 권위: Report→Roster 역방향 동기화 없음.
+      // 역방향 동기화를 허용하면 roster에서 삭제한 멤버가 report를 통해 다시 추가된다.
 
       if (!changed) return prev;
       const nextRoster: MemberRoster = {
@@ -490,8 +459,9 @@ export function App() {
 
   function handleLoadReport(storedReport: MinistryReport) {
     const upgradedReport = upgradeReportForEditor(storedReport);
-    setReport(upgradedReport);
-    saveReportDraft(upgradedReport);
+    const synced = roster ? syncReportFromRoster(upgradedReport, roster) : upgradedReport;
+    setReport(synced);
+    saveReportDraft(synced);
     setSaveErrors([]);
     setSaveStatus(`${storedReport.reportDate} 보고서를 불러왔습니다.`);
     setMobileScreen("editor");
