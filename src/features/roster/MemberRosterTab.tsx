@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { MemberRoster } from "../../domain/memberRoster";
 import type { DepartmentKey } from "../../domain/reportTypes";
+import { ByeolmyeongbuEditor } from "./ByeolmyeongbuEditor";
 import { PhoneNumberManager } from "./PhoneNumberManager";
 import { RosterFlatEditor } from "./RosterFlatEditor";
 import { RosterZoneEditor } from "./RosterZoneEditor";
@@ -55,7 +56,10 @@ export function MemberRosterTab({ roster, onChange, visibleDepts }: Props) {
       </div>
 
       {activeDept === "adult" && (
-        <PhoneNumberManager roster={roster} onChange={onChange} />
+        <>
+          <ByeolmyeongbuEditor roster={roster} onChange={onChange} />
+          <PhoneNumberManager roster={roster} onChange={onChange} />
+        </>
       )}
     </div>
   );
