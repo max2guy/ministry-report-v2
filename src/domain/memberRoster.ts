@@ -19,8 +19,20 @@ export type RosterDepartment =
   | { kind: "flat"; members: RosterMember[] }
   | { kind: "zoned"; zones: RosterZone[] };
 
+export type ByeolmyeongbuReason = "타교" | "요양" | "장기결석" | "소재불명";
+
+export type ByeolmyeongbuMember = {
+  id: string;
+  name: string;
+  reason: ByeolmyeongbuReason;
+  fromZoneId: string;
+  fromZoneName: string;
+  role?: DepartmentMemberRole;
+};
+
 export type MemberRoster = {
   departments: Record<DepartmentKey, RosterDepartment>;
+  byeolmyeongbu?: ByeolmyeongbuMember[];
   updatedAt: string;
 };
 
@@ -211,4 +223,81 @@ function createDefaultAdultZones(): RosterZone[] {
       ...["안준용","이순용","강지아","나요나","전진구","박진아","정민시","이사라","천성현","최주희","정수미","민건우","한상미","윤승희"].map(mkZoneMember),
     ]),
   ];
+}
+
+export function moveToByeolmyeongbu(
+  roster: MemberRoster,
+  memberId: string,
+  reason: ByeolmyeongbuReason,
+): MemberRoster {
+  const adult = roster.departments.adult;
+  if (adult.kind !== "zoned") return roster;
+
+  let member: RosterMember | undefined;
+  let fromZoneId = "";
+  let fromZoneName = "";
+
+  const newZones = adult.zones.map((zone) => {
+    const found = zone.members.find((m) => m.id === memberId);
+    if (found) {
+      member = found;
+      fromZoneId = zone.id;
+      fromZoneName = zone.name;
+      return { ...zone, members: zone.members.filter((m) => m.id !== memberId) };
+    }
+    return zone;
+  });
+
+  if (!member) return roster;
+
+  const entry: ByeolmyeongbuMember = {
+    id: member.id,
+    name: member.name,
+    reason,
+    fromZoneId,
+    fromZoneName,
+    ...(member.role && { role: member.role }),
+  };
+
+  return {
+    ...roster,
+    departments: {
+      ...roster.departments,
+      adult: { kind: "zoned", zones: newZones },
+    },
+    byeolmyeongbu: [...(roster.byeolmyeongbu ?? []), entry],
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export function restoreFromByeolmyeongbu(
+  roster: MemberRoster,
+  memberId: string,
+  toZoneId: string,
+): MemberRoster {
+  const entry = (roster.byeolmyeongbu ?? []).find((m) => m.id === memberId);
+  if (!entry) return roster;
+
+  const adult = roster.departments.adult;
+  if (adult.kind !== "zoned") return roster;
+
+  const newZones = adult.zones.map((zone) => {
+    if (zone.id !== toZoneId) return zone;
+    const restored: RosterMember = {
+      id: entry.id,
+      name: entry.name,
+      ...(entry.role && { role: entry.role }),
+    };
+    return { ...zone, members: [...zone.members, restored] };
+  });
+
+  return {
+    ...roster,
+    departments: {
+      ...roster.departments,
+      adult: { kind: "zoned", zones: newZones },
+    },
+    byeolmyeongbu: (roster.byeolmyeongbu ?? []).filter((m) => m.id !== memberId),
+    updatedAt: new Date().toISOString(),
+  };
 }
