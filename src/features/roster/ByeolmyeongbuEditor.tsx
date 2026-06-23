@@ -1,6 +1,15 @@
 import type { MemberRoster } from "../../domain/memberRoster";
 import { restoreFromByeolmyeongbu } from "../../domain/memberRoster";
 
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}.${m}.${day}`;
+}
+
 type Props = {
   roster: MemberRoster;
   onChange: (roster: MemberRoster) => void;
@@ -44,6 +53,9 @@ export function ByeolmyeongbuEditor({ roster, onChange }: Props) {
             <span className="byeolmyeongbu-name">{m.name}</span>
             <span className="byeolmyeongbu-reason">{m.reason}</span>
             <span className="byeolmyeongbu-zone">{m.fromZoneName}</span>
+            {m.movedAt && (
+              <span className="byeolmyeongbu-date">{formatDate(m.movedAt)}</span>
+            )}
             <div className="byeolmyeongbu-actions">
               <button
                 type="button"

@@ -2136,6 +2136,11 @@ button:disabled {
   color: var(--clr-text-muted);
 }
 
+.byeolmyeongbu-date {
+  font-size: 11px;
+  color: var(--clr-text-muted);
+}
+
 .byeolmyeongbu-actions {
   margin-left: auto;
   display: flex;

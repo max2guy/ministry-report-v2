@@ -27,6 +27,7 @@ export type ByeolmyeongbuMember = {
   reason: ByeolmyeongbuReason;
   fromZoneId: string;
   fromZoneName: string;
+  movedAt: string;
   role?: DepartmentMemberRole;
 };
 
@@ -256,6 +257,7 @@ export function moveToByeolmyeongbu(
     reason,
     fromZoneId,
     fromZoneName,
+    movedAt: new Date().toISOString(),
     ...(member.role && { role: member.role }),
   };
 
