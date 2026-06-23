@@ -1,47 +1,57 @@
-# ministry-report-v2 — Codex Handoff (v2.7.15)
+# ministry-report-v2 — Codex Handoff (v2.7.16)
 
 ## 현재 상태
-- 브랜치: `main`
-- 버전: 2.7.15
+- 버전: 2.7.16
+- 브랜치: main
+- 최근 커밋: feat: add ByeolmyeongbuMember type and move/restore helpers → feat: add byeolmyeongbu button → feat: create ByeolmyeongbuEditor → feat: wire ByeolmyeongbuEditor → style: add byeolmyeongbu CSS
 
 ## 방금 수정한 내용
 
-### 교구 멤버 삭제 후 출석체크에 재출현 버그 (v2.7.15)
+### 별명부 기능 추가 (교구 전용)
+- 교구 구역원을 타교/요양/장기결석/소재불명 사유로 별명부로 이동 가능
+- 별명부 멤버는 보고서 출결체크 명단 및 전체 인원에서 자동 제외
+  - `syncReportFromRoster`가 구역 멤버만 읽기 때문에 byeolmyeongbu 멤버는 자동 제외됨
+- 복귀 버튼으로 원래 구역(fromZoneId)으로 되돌릴 수 있음. 구역이 없으면 첫 번째 구역으로.
+- 삭제 버튼으로 별명부에서 완전 제거 (구역 복귀 없이)
 
-**문제**: 명단(roster)의 9구역에서 박승애를 삭제해도 출석체크(attendance editor)에 계속 나타남
+**수정 파일:**
+- `src/domain/memberRoster.ts`: `ByeolmyeongbuReason`, `ByeolmyeongbuMember` 타입 + `MemberRoster.byeolmyeongbu?` 필드 + `moveToByeolmyeongbu` / `restoreFromByeolmyeongbu` 헬퍼 함수
+- `src/features/roster/RosterZoneEditor.tsx`: 구역원 행에 "별명부" 버튼 + 인라인 사유 선택기 (`byeol-*` CSS 클래스)
+- `src/features/roster/ByeolmyeongbuEditor.tsx` (신규): 별명부 목록 UI — 이름/사유/원래구역/복귀·삭제 버튼
+- `src/features/roster/MemberRosterTab.tsx`: 교구 탭에 `<ByeolmyeongbuEditor>` 추가 (PhoneNumberManager 위)
+- `src/styles.css`: `.byeolmyeongbu-*`, `.byeol-*` CSS 클래스 추가
 
-**근본 원인 두 가지**:
-
-1. **`handleReportChange`의 Report→Roster 역방향 동기화** (`src/App.tsx`)
-   - 출석을 수정할 때마다 report zones 기준으로 roster를 재구성
-   - `?? { id: rm.id, name: rm.name }` 폴백이 roster에서 삭제된 멤버를 다시 추가해 Firestore 저장
-   - **Fix**: 교구(adult) zones 역방향 동기화 블록 완전 제거
-
-2. **`handleLoadReport`** (`src/App.tsx`)
-   - 보고서 목록에서 불러올 때 `syncReportFromRoster` 미호출 → Firestore 버전(삭제 전 멤버) 그대로 사용
-   - **Fix**: `handleLoadReport`에서 `syncReportFromRoster(upgradedReport, roster)` 추가
-
-**변경 파일**: `src/App.tsx`, `package.json`, `.claude/HANDOFF.md`
-
-## 데이터 동기화 설계 (v2.7.15 이후)
-- Roster → Report: `syncReportFromRoster()` (handleRosterChange, loadCloudData, handleLoadReport)
-- Report → Roster: flat 부서만 양방향 동기화 (elementary, middleHigh, youngAdult)
-- 교구(adult) zones: roster 단독 권위, 역방향 동기화 없음
+### v2.7.15 이전 버그 수정 (참고)
+- 박승애 등 삭제된 구역원이 출결 편집기에 다시 나타나던 문제 수정
+  - `handleReportChange`의 adult zone Report→Roster 역방향 동기화 제거
+  - `handleLoadReport`에 `syncReportFromRoster` 호출 추가
 
 ## 프로젝트 개요
-- 프레임워크: React 19 + Vite + TypeScript PWA
-- 인증/DB: Firebase Auth + Firestore + FCM (`persistentLocalCache()`)
-- 배포: GitHub Actions → GitHub Pages
+- React 19 + Vite + TypeScript PWA
+- Firebase Auth + Firestore (persistentLocalCache, IndexedDB) + FCM
+- Firestore `roster/shared`: 전체 유저 공유 단일 문서 (명단)
+- Firestore `reports`: 보고서 컬렉션 (id 기준 문서)
+- `syncReportFromRoster()` in App.tsx: roster → report 단방향 동기화 (roster가 권위)
+- 빌드: `npm run build` / 테스트: `npm test`
 
 ## 주요 파일
-- `src/App.tsx` — 루트 컴포넌트, 모든 데이터 동기화 로직
-- `src/features/roster/RosterZoneEditor.tsx` — 교구 명단 편집 UI
-- `src/features/report/ZonedDepartmentAttendanceEditor.tsx` — 교구 출결 카드 UI
-- `src/storage/firestoreRosterStore.ts` — roster Firestore 저장소
+- `src/App.tsx`: 앱 전체 상태, `loadCloudData`, `syncReportFromRoster`, `handleRosterChange`, `handleLoadReport`
+- `src/domain/memberRoster.ts`: `MemberRoster` 타입, 별명부 타입/헬퍼 포함
+- `src/domain/reportTypes.ts`: `MinistryReport`, `DepartmentKey` 등 보고서 타입
+- `src/features/roster/RosterZoneEditor.tsx`: 교구 구역 편집 UI + 별명부 이동 버튼
+- `src/features/roster/ByeolmyeongbuEditor.tsx`: 별명부 목록 UI
+- `src/features/roster/MemberRosterTab.tsx`: 명단 탭 전체 (부서 탭 바 + 내용)
+- `src/storage/firestoreRosterStore.ts`: Firestore roster 저장/로드
+
+## 다음으로 할 수 있는 작업
+- 별명부 멤버 사유 변경 기능 (현재는 사유 수정 불가, 삭제 후 재등록 필요)
+- 별명부 이동 날짜 기록
+- 별명부 항목 정렬 (사유별, 이름별)
+- 구역 추가/삭제/이름 변경 기능 (현재는 기본 12구역 고정)
 
 ## 빌드 & 배포
 ```bash
-npm run build
-npm test
-git push origin main  # GitHub Actions 자동 배포
+npm run build          # TypeScript 체크 + Vite 빌드
+npm test               # Vitest 단위 테스트
+firebase deploy        # Firebase Hosting 배포 (firebase CLI 필요)
 ```
