@@ -72,15 +72,68 @@ function fixKnownNameTypos(
   return { roster: fixedRoster, changed };
 }
 
+/**
+ * 6구역 구역원 순서를 사용자가 지정한 순서로 교정한다.
+ * 구역장·권찰은 그대로 두고, 나머지 구역원만 지정된 순서로 재배치.
+ * 교정이 발생하면 { roster, changed: true }를 반환해 저장 트리거.
+ */
+function fixZone6MemberOrder(
+  roster: MemberRoster,
+): { roster: MemberRoster; changed: boolean } {
+  const DESIRED_ORDER = [
+    "김덕희", "김은주", "신영락", "노학심", "박순영", "변기성",
+    "이순희", "박종학", "이춘생", "최봉석", "윤숙경", "최태인",
+  ];
+
+  const adult = roster.departments.adult;
+  if (adult.kind !== "zoned") return { roster, changed: false };
+
+  let changed = false;
+  const fixedZones = adult.zones.map((z) => {
+    if (z.name !== "6구역") return z;
+
+    const fixed = z.members.filter(
+      (m) => m.role === "leader" || m.role === "inspector",
+    );
+    const regular = z.members.filter(
+      (m) => m.role !== "leader" && m.role !== "inspector",
+    );
+    const byName = new Map(regular.map((m) => [m.name, m]));
+    const reordered = DESIRED_ORDER.map((name) => byName.get(name)).filter(
+      (m): m is (typeof regular)[number] => m !== undefined,
+    );
+    // 지정 순서에 없는 나머지 구역원은 뒤에 그대로 유지
+    const leftover = regular.filter((m) => !DESIRED_ORDER.includes(m.name));
+    const nextMembers = [...fixed, ...reordered, ...leftover];
+
+    const sameOrder =
+      nextMembers.length === z.members.length &&
+      nextMembers.every((m, i) => m.id === z.members[i].id);
+    if (!sameOrder) changed = true;
+
+    return { ...z, members: nextMembers };
+  });
+
+  if (!changed) return { roster, changed: false };
+  return {
+    roster: {
+      ...roster,
+      departments: { ...roster.departments, adult: { kind: "zoned", zones: fixedZones } },
+    },
+    changed: true,
+  };
+}
+
 export async function firestoreLoadRoster(): Promise<MemberRoster | undefined> {
   const snap = await getDoc(doc(db, "roster", "shared"));
   if (!snap.exists()) return undefined;
 
   const deduped = deduplicateRoster(snap.data() as MemberRoster);
-  const { roster: fixed, changed } = fixKnownNameTypos(deduped);
+  const { roster: fixedTypos, changed: typoChanged } = fixKnownNameTypos(deduped);
+  const { roster: fixed, changed: orderChanged } = fixZone6MemberOrder(fixedTypos);
 
-  // 오타가 교정됐으면 Firestore에 즉시 반영
-  if (changed) {
+  // 교정이 발생했으면 Firestore에 즉시 반영
+  if (typoChanged || orderChanged) {
     await setDoc(doc(db, "roster", "shared"), fixed);
   }
 
