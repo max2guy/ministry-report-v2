@@ -92,9 +92,10 @@ function fixZone6MemberOrder(
   const fixedZones = adult.zones.map((z) => {
     if (z.name !== "6구역") return z;
 
-    const fixed = z.members.filter(
-      (m) => m.role === "leader" || m.role === "inspector",
-    );
+    const rolePriority = (role?: string) => (role === "leader" ? 0 : role === "inspector" ? 1 : 2);
+    const fixed = z.members
+      .filter((m) => m.role === "leader" || m.role === "inspector")
+      .sort((a, b) => rolePriority(a.role) - rolePriority(b.role));
     const regular = z.members.filter(
       (m) => m.role !== "leader" && m.role !== "inspector",
     );
