@@ -117,6 +117,7 @@ function syncReportFromRoster(
       const existingMemberByName = new Map(
         (existingZone?.members ?? []).map((m) => [m.name, m]),
       );
+      // roster 순서를 권위로 유지 (구역장→배우자→권찰→배우자→나머지 순서 보존)
       const members = rz.members.map((rm) => {
         const ex =
           existingMemberById.get(rm.id) ?? existingMemberByName.get(rm.name);
@@ -124,7 +125,6 @@ function syncReportFromRoster(
           ? { ...ex, id: rm.id, name: rm.name }
           : { id: rm.id, name: rm.name, status: "absent" as const };
       });
-      members.sort(byKo);
       return { id: rz.id, name: rz.name, district: rz.district, members };
     });
     const attendance = zones.reduce(

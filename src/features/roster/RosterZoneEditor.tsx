@@ -25,9 +25,14 @@ function ZoneSection({
   function handleAdd() {
     const name = draft.trim();
     if (!name) return;
-    const next = [...zone.members, { id: crypto.randomUUID(), name, role: "member" as const }];
-    next.sort((a, b) => a.name.localeCompare(b.name, "ko"));
-    onUpdate({ ...zone, members: next });
+    const newMember = { id: crypto.randomUUID(), name, role: "member" as const };
+    // 구역장·권찰은 현 위치 유지, 일반 구역원만 가나다순 정렬 후 뒤에 배치
+    const fixed = zone.members.filter((m) => m.role === "leader" || m.role === "inspector");
+    const regular = zone.members
+      .filter((m) => m.role !== "leader" && m.role !== "inspector")
+      .concat(newMember)
+      .sort((a, b) => a.name.localeCompare(b.name, "ko"));
+    onUpdate({ ...zone, members: [...fixed, ...regular] });
     setDraft("");
   }
 
