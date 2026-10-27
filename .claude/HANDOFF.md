@@ -7,6 +7,12 @@
 
 ## 방금 수정한 내용
 
+### 보고서 편집기에서 추가한 교구 인원이 사라지던 문제 (이번 세션)
+- 증상: 보고서 작성의 교구 구역 "인원추가"로 넣은 인원과 출석 체크가 사라짐 (폰에서 입력)
+- 원인: v2.7.15에서 adult zones의 Report→Roster 역방향 동기화를 전부 제거했고, roster에 없는 인원은 이후 `syncReportFromRoster`(실시간 구독/불러오기/명단 변경)에서 report에서 통째로 삭제됨
+- 수정: `App.tsx` `handleReportChange`에서 "이번 변경으로 새로 추가된" 구역원(이전 report 상태에 없던 id)만 roster 해당 구역에 반영(구역장·권찰 고정, 나머지 가나다순). 삭제 멤버 부활은 여전히 방지
+- 미해결: 이미 사라진 인원은 자동 복구되지 않음 (저장된 보고서 Firestore 원본에 남아 있을 수 있음 — 확인 필요)
+
 ### 기기 간 명단 실시간 동기화 (폰에서 추가한 인원이 맥북에 안 보이던 문제)
 - 원인: 명단을 앱 시작 시 `getDoc`으로 1회만 읽어 다른 기기 변경이 반영되지 않았고, 오래된 상태에서 수정하면 `setDoc`이 전체 문서를 덮어써 다른 기기 추가분이 유실될 위험이 있었음
 - `firestoreRosterStore.ts`: `firestoreSubscribeRoster()` 추가 (onSnapshot, hasPendingWrites 무시, 메모리 교정만 적용)

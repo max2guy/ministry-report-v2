@@ -429,8 +429,40 @@ export function App() {
         }
       }
 
-      // 교구(adult) zones는 roster가 단독 권위: Report→Roster 역방향 동기화 없음.
-      // 역방향 동기화를 허용하면 roster에서 삭제한 멤버가 report를 통해 다시 추가된다.
+      // 교구(adult) zones는 roster가 삭제의 권위: 보고서에 남아 있는 멤버를 roster로 되살리지 않는다
+      // (삭제한 멤버가 report를 통해 부활하는 것 방지). 단, 이번 변경으로 보고서 편집기에서
+      // "새로 추가된" 멤버(이전 보고서 상태에 없던 id)만 roster에 반영한다.
+      // 그렇지 않으면 다음 syncReportFromRoster에서 추가 인원과 출석 체크가 통째로 사라진다.
+      const rAdult = prev.departments.adult;
+      if (rAdult.kind === "zoned") {
+        const prevReportZones = new Map(
+          (report.departments.adult.zones ?? []).map((z) => [z.id, new Set(z.members.map((m) => m.id))]),
+        );
+        const rosterIds = new Set(rAdult.zones.flatMap((z) => z.members.map((m) => m.id)));
+        let zonesChanged = false;
+        const nextZones = rAdult.zones.map((rz) => {
+          const reportZone = (upgradedReport.departments.adult.zones ?? []).find(
+            (z) => z.id === rz.id || z.name === rz.name,
+          );
+          if (!reportZone) return rz;
+          const prevIds = prevReportZones.get(reportZone.id) ?? new Set<string>();
+          const added = reportZone.members.filter(
+            (m) => !prevIds.has(m.id) && !rosterIds.has(m.id),
+          );
+          if (added.length === 0) return rz;
+          zonesChanged = true;
+          const fixed = rz.members.filter((m) => m.role === "leader" || m.role === "inspector");
+          const regular = rz.members
+            .filter((m) => m.role !== "leader" && m.role !== "inspector")
+            .concat(added.map((m) => ({ id: m.id, name: m.name, role: "member" as const })))
+            .sort((a, b) => a.name.localeCompare(b.name, "ko"));
+          return { ...rz, members: [...fixed, ...regular] };
+        });
+        if (zonesChanged) {
+          nextDepts = { ...nextDepts, adult: { kind: "zoned", zones: nextZones } };
+          changed = true;
+        }
+      }
 
       if (!changed) return prev;
       const nextRoster: MemberRoster = {
