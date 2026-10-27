@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import type { MemberRoster } from "../domain/memberRoster";
 
@@ -139,6 +139,23 @@ export async function firestoreLoadRoster(): Promise<MemberRoster | undefined> {
   }
 
   return fixed;
+}
+
+/**
+ * 다른 기기에서 저장한 명단 변경을 실시간으로 수신한다.
+ * 이 기기의 미반영 쓰기(hasPendingWrites)는 무시하고, 서버 확정본만 전달한다.
+ * 교정은 메모리에서만 적용(재저장은 로드 시점에만 수행).
+ */
+export function firestoreSubscribeRoster(
+  onRoster: (roster: MemberRoster) => void,
+): () => void {
+  return onSnapshot(doc(db, "roster", "shared"), (snap) => {
+    if (!snap.exists() || snap.metadata.hasPendingWrites) return;
+    const deduped = deduplicateRoster(snap.data() as MemberRoster);
+    const { roster: typoFixed } = fixKnownNameTypos(deduped);
+    const { roster: fixed } = fixZone6MemberOrder(typoFixed);
+    onRoster(fixed);
+  });
 }
 
 export async function firestoreSaveRoster(roster: MemberRoster): Promise<void> {

@@ -7,6 +7,12 @@
 
 ## 방금 수정한 내용
 
+### 기기 간 명단 실시간 동기화 (폰에서 추가한 인원이 맥북에 안 보이던 문제)
+- 원인: 명단을 앱 시작 시 `getDoc`으로 1회만 읽어 다른 기기 변경이 반영되지 않았고, 오래된 상태에서 수정하면 `setDoc`이 전체 문서를 덮어써 다른 기기 추가분이 유실될 위험이 있었음
+- `firestoreRosterStore.ts`: `firestoreSubscribeRoster()` 추가 (onSnapshot, hasPendingWrites 무시, 메모리 교정만 적용)
+- `App.tsx`: 로그인+hydrate 후 구독하여 roster/report 갱신
+- 남은 위험: 두 기기가 동시에 수정하면 last-write-wins (필요 시 zone 단위 트랜잭션 병합 검토)
+
 ### 6구역 구역원 순서 Firestore 데이터 교정 (이번 세션)
 - 사용자가 "6구역만 아직 오류가 있군"이라며 정확한 순서를 지정: 김순이(구역장), 김미경(권찰), 김덕희, 김은주, 신영락, 노학심, 박순영, 변기성, 이순희, 박종학, 이춘생, 최봉석, 윤숙경, 최태인
 - 코드 레벨 정렬 버그(아래 항목)를 고쳐도 이미 Firestore에 저장된 6구역 순서 자체는 복구되지 않으므로, `fixKnownNameTypos`와 동일한 "load 시 자동 교정 후 재저장" 패턴으로 `fixZone6MemberOrder()` 함수를 추가

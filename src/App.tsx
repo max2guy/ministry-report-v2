@@ -42,6 +42,7 @@ import {
 import {
   firestoreLoadRoster,
   firestoreSaveRoster,
+  firestoreSubscribeRoster,
 } from "./storage/firestoreRosterStore";
 import {
   listReports as localListReports,
@@ -230,6 +231,22 @@ export function App() {
     });
     return unsubscribe;
   }, []);
+
+  // [1-b] 다른 기기에서 수정한 명단을 실시간 반영 (로드 완료 후 구독)
+  useEffect(() => {
+    if (!currentAccount || !isHydrated) return;
+    return firestoreSubscribeRoster((remote) => {
+      setRoster((prev) => {
+        if (prev && JSON.stringify(prev) === JSON.stringify(remote)) return prev;
+        setReport((cur) => {
+          const next = syncReportFromRoster(cur, remote, cur.reportDate);
+          saveReportDraft(next);
+          return next;
+        });
+        return remote;
+      });
+    });
+  }, [currentAccount, isHydrated]);
 
   // [2] Auth 타임아웃: 2초 후에도 isHydrated=false 이면 AuthGate 표시
   useEffect(() => {
