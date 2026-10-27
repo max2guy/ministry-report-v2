@@ -536,7 +536,58 @@ export function App() {
 
   function handleLoadReport(storedReport: MinistryReport) {
     const upgradedReport = upgradeReportForEditor(storedReport);
-    const synced = roster ? syncReportFromRoster(upgradedReport, roster, storedReport.reportDate) : upgradedReport;
+    let baseRoster = roster;
+
+    // 저장된 보고서에는 있으나 명단(구역/별명부)에 없는 교구 인원(예: 보고서에서 추가했다가
+    // 동기화로 사라진 인원)을 찾아, 사용자가 확인하면 명단에 복구한다.
+    const rAdult = roster?.departments.adult;
+    if (roster && rAdult?.kind === "zoned") {
+      const knownIds = new Set([
+        ...rAdult.zones.flatMap((z) => z.members.map((m) => m.id)),
+        ...(roster.byeolmyeongbu ?? []).map((m) => m.id),
+      ]);
+      const knownNames = new Set([
+        ...rAdult.zones.flatMap((z) => z.members.map((m) => `${z.name}:${m.name}`)),
+        ...(roster.byeolmyeongbu ?? []).map((m) => `${m.fromZoneId ?? ""}:${m.name}`),
+      ]);
+      const missing = rAdult.zones
+        .map((rz) => {
+          const zone = (upgradedReport.departments.adult.zones ?? []).find(
+            (z) => z.id === rz.id || z.name === rz.name,
+          );
+          return {
+            rz,
+            extras: (zone?.members ?? []).filter(
+              (m) => !knownIds.has(m.id) && !knownNames.has(`${rz.name}:${m.name}`),
+            ),
+          };
+        })
+        .filter((x) => x.extras.length > 0);
+      if (missing.length > 0) {
+        const lines = missing.map((x) => `${x.rz.name}: ${x.extras.map((m) => m.name).join(", ")}`);
+        if (window.confirm(`이 보고서에는 있으나 현재 명단에 없는 인원이 있습니다.\n\n${lines.join("\n")}\n\n명단에 복구할까요?`)) {
+          const nextZones = rAdult.zones.map((rz) => {
+            const found = missing.find((x) => x.rz.id === rz.id);
+            if (!found) return rz;
+            const fixed = rz.members.filter((m) => m.role === "leader" || m.role === "inspector");
+            const regular = rz.members
+              .filter((m) => m.role !== "leader" && m.role !== "inspector")
+              .concat(found.extras.map((m) => ({ id: m.id, name: m.name, role: "member" as const })))
+              .sort((a, b) => a.name.localeCompare(b.name, "ko"));
+            return { ...rz, members: [...fixed, ...regular] };
+          });
+          baseRoster = {
+            ...roster,
+            departments: { ...roster.departments, adult: { kind: "zoned", zones: nextZones } },
+            updatedAt: new Date().toISOString(),
+          };
+          setRoster(baseRoster);
+          void firestoreSaveRoster(baseRoster);
+        }
+      }
+    }
+
+    const synced = baseRoster ? syncReportFromRoster(upgradedReport, baseRoster, storedReport.reportDate) : upgradedReport;
     setReport(synced);
     saveReportDraft(synced);
     setSaveErrors([]);
